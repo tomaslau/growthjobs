@@ -1,16 +1,21 @@
-# Contributing to Job Board Starter Kit
+# Contributing to Job Board Starter
 
 Thank you for your interest in contributing! Here's how you can help:
 
-## Development Process
+## Getting Started
 
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature/your-feature-name`
-3. Make your changes
-4. Run tests and linting: `npm run lint`
-5. Commit your changes: `git commit -m 'Add some feature'`
-6. Push to the branch: `git push origin feature/your-feature-name`
-7. Submit a pull request
+1. Fork the repo
+2. Clone it to your machine
+3. Create a new branch:
+```bash
+git checkout -b feature/your-feature-name
+```
+
+4. Make your changes
+5. Run tests and linting: `npm run lint`
+6. Commit your changes: `git commit -m 'Add some feature'`
+7. Push to the branch: `git push origin feature/your-feature-name`
+8. Submit a pull request
 
 ## Development Setup
 

@@ -12,11 +12,11 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - 🔍 Client-side search
 - 📱 Fully responsive
 - ⚡️ Fast and SEO friendly
-- ✨ Modern UI with Geist font
+- ✨ Modern UI with Geist font, Tailwind CSS, and Shadcn UI
 
 ## Quick Start
 
-1. Clone and install:
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/jobboard-starter
 cd jobboard-starter
