@@ -2,6 +2,8 @@
 
 A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. Features static generation, client-side search, and a clean UI with Geist font.
 
+![Job Board Starter Screenshot](public/screenshot.png)
+
 ## Features
 
 - 🚀 Built with Next.js 15 (App Router)
