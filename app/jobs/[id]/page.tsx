@@ -2,11 +2,9 @@ import { getJob } from "@/lib/db/airtable";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
 
-export default async function JobPage({
-  params: { id },
-}: {
-  params: { id: string };
-}) {
+export default async function JobPage({ params }: { params: { id: string } }) {
+  const { id } = params;
+
   const job = await getJob(id);
 
   if (!job) {

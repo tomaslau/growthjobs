@@ -1,9 +1,10 @@
 import Airtable from "airtable";
 
 // Initialize Airtable with Personal Access Token
-const airtable = new Airtable({
+const base = new Airtable({
   apiKey: process.env.AIRTABLE_ACCESS_TOKEN,
-}).base(process.env.AIRTABLE_BASE_ID!);
+  endpointUrl: "https://api.airtable.com",
+}).base(process.env.AIRTABLE_BASE_ID || "");
 
 export interface Job {
   id: string;
@@ -18,32 +19,39 @@ export interface Job {
   status: "active" | "inactive";
 }
 
-export async function getJobs(): Promise<Job[]> {
+export async function getJobs() {
   try {
-    const records = await airtable("Jobs")
+    if (!process.env.AIRTABLE_ACCESS_TOKEN || !process.env.AIRTABLE_BASE_ID) {
+      console.error("Missing env vars:", {
+        hasToken: !!process.env.AIRTABLE_ACCESS_TOKEN,
+        hasBaseId: !!process.env.AIRTABLE_BASE_ID,
+      });
+      throw new Error("Airtable credentials are not configured");
+    }
+
+    console.log(
+      "Attempting to fetch jobs with token:",
+      process.env.AIRTABLE_ACCESS_TOKEN?.slice(0, 10) + "..."
+    );
+
+    const records = await base("Jobs")
       .select({
         filterByFormula: "{status} = 'active'",
         sort: [{ field: "posted_date", direction: "desc" }],
       })
       .all();
 
+    console.log("Successfully fetched records:", records.length);
+
     return records.map((record) => ({
       id: record.id,
-      title: record.get("title") as string,
-      company: record.get("company") as string,
-      location: record.get("location") as string,
-      type: record.get("type") as Job["type"],
-      salary_range: record.get("salary_range") as string,
-      description: record.get("description") as string,
-      apply_url: record.get("apply_url") as string,
-      posted_date: record.get("posted_date") as string,
-      status: record.get("status") as Job["status"],
+      ...record.fields,
     }));
   } catch (error) {
     console.error("Error fetching jobs:", {
       message: (error as Error).message,
+      name: (error as Error).name,
       stack: (error as Error).stack,
-      error,
     });
     return [];
   }
@@ -51,7 +59,7 @@ export async function getJobs(): Promise<Job[]> {
 
 export async function getJob(id: string): Promise<Job | null> {
   try {
-    const record = await airtable("Jobs").find(id);
+    const record = await base("Jobs").find(id);
 
     return {
       id: record.id,
@@ -74,7 +82,7 @@ export async function getJob(id: string): Promise<Job | null> {
 export async function testConnection() {
   try {
     // Try to list records from the Jobs table
-    const records = await airtable("Jobs")
+    const records = await base("Jobs")
       .select({
         maxRecords: 1, // Just get one record to test
       })
