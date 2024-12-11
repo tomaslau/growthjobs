@@ -14,13 +14,14 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - Fast and SEO friendly
 - Modern UI with Geist font, Tailwind CSS, and Shadcn UI
 - Incremental Static Regeneration (ISR) for real-time updates
+- Rich text support for job descriptions
 
 ## Quick Start
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/jobboard-starter
-cd jobboard-starter
+git clone https://github.com/tomaslau/jobboardstarter
+cd jobboardstarter
 npm install
 ```
 
@@ -33,7 +34,7 @@ npm install
   location: Single line text
   type: Single select (Full-time, Part-time, Contract)
   salary_range: Single line text
-  description: Long text
+  description: Long text (with rich text enabled)
   apply_url: URL
   posted_date: Date
   status: Single select (active, inactive)
