@@ -6,13 +6,13 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 
 ## Features
 
-- 🚀 Built with Next.js 15 (App Router)
-- 🎨 Styled with Tailwind CSS
-- 📊 Airtable as the backend
-- 🔍 Client-side search
-- 📱 Fully responsive
-- ⚡️ Fast and SEO friendly
-- ✨ Modern UI with Geist font, Tailwind CSS, and Shadcn UI
+- Built with Next.js 15
+- Styled with Tailwind CSS
+- Airtable as the backend
+- Client-side search
+- Fully responsive
+- Fast and SEO friendly
+- Modern UI with Geist font, Tailwind CSS, and Shadcn UI
 
 ## Quick Start
 
@@ -56,6 +56,16 @@ npm run dev
 ```
 
 Visit `http://localhost:3000` to see your job board.
+
+## Environment Variables
+
+⚠️ IMPORTANT: Never commit your API keys or sensitive credentials to the repository!
+
+Required environment variables:
+- AIRTABLE_ACCESS_TOKEN=your_token_here
+- AIRTABLE_BASE_ID=your_base_id_here
+
+Create a `.env` file in your project root and add these variables there.
 
 ## Project Structure
 
@@ -113,13 +123,3 @@ If you find this helpful, please ⭐️ this repository!
 ## Credits
 
 Built by [Tomas Laurinavicius](https://github.com/tomaslau)
-
-## Environment Variables
-
-⚠️ IMPORTANT: Never commit your API keys or sensitive credentials to the repository!
-
-Required environment variables:
-- AIRTABLE_ACCESS_TOKEN=your_token_here
-- AIRTABLE_BASE_ID=your_base_id_here
-
-Create a `.env` file in your project root and add these variables there.
