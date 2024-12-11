@@ -1,12 +1,12 @@
 import { getJob } from "@/lib/db/airtable";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
+import ReactMarkdown from "react-markdown";
 
 export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function JobPage({ params }: { params: { id: string } }) {
   const { id } = params;
-
   const job = await getJob(id);
 
   if (!job) {
@@ -17,8 +17,8 @@ export default async function JobPage({ params }: { params: { id: string } }) {
 
   return (
     <main className="container mx-auto px-4 py-6">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-6">
+      <article className="max-w-3xl mx-auto">
+        <div className="mb-8">
           <h1 className="text-2xl font-medium mb-2">{job.title}</h1>
           <div className="flex items-center gap-3 text-sm text-gray-600">
             <span>{job.company}</span>
@@ -33,17 +33,19 @@ export default async function JobPage({ params }: { params: { id: string } }) {
           </div>
         </div>
 
-        <div className="prose max-w-none text-sm">
-          <div className="mb-6">
-            <h2 className="text-base font-medium mb-2">Salary Range</h2>
-            <p>{job.salary_range}</p>
-          </div>
+        <div className="mb-8">
+          <h2 className="text-base font-medium mb-2">Salary Range</h2>
+          <p className="text-gray-700 text-sm">{job.salary_range}</p>
+        </div>
 
-          <div className="mb-6">
-            <h2 className="text-base font-medium mb-2">Description</h2>
-            <div className="whitespace-pre-wrap">{job.description}</div>
+        <div className="prose prose-sm prose-gray max-w-none">
+          <h2 className="text-lg font-medium mb-4">Description</h2>
+          <div className="markdown-content">
+            <ReactMarkdown>{job.description}</ReactMarkdown>
           </div>
+        </div>
 
+        <div className="mt-8">
           <a
             href={job.apply_url}
             target="_blank"
@@ -53,7 +55,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
             Apply for this position
           </a>
         </div>
-      </div>
+      </article>
     </main>
   );
 }
