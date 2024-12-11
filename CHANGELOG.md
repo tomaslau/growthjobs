@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2024-12-11
+
+### Added
+- Dedicated changelog page with markdown rendering
+- Implemented static page generation reading directly from `CHANGELOG.md`
+- Minimal footer with quick navigation links
+
+### Technical
+- Added static page generation for changelog using `fs.readFileSync`
+- Integrated `ReactMarkdown` for rendering markdown content
+- Maintained consistent max-width (700px) with job posts
+
 ## [0.0.4] - 2024-12-11
 
 ### Changed
