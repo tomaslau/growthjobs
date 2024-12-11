@@ -2,6 +2,8 @@ import { getJob } from "@/lib/db/airtable";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
 
+export const revalidate = 60; // Revalidate every 60 seconds
+
 export default async function JobPage({ params }: { params: { id: string } }) {
   const { id } = params;
 

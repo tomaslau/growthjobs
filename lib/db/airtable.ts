@@ -19,7 +19,7 @@ export interface Job {
   status: "active" | "inactive";
 }
 
-export async function getJobs() {
+export async function getJobs(): Promise<Job[]> {
   try {
     if (!process.env.AIRTABLE_ACCESS_TOKEN || !process.env.AIRTABLE_BASE_ID) {
       console.error("Missing env vars:", {
@@ -45,7 +45,15 @@ export async function getJobs() {
 
     return records.map((record) => ({
       id: record.id,
-      ...record.fields,
+      title: record.fields.title as string,
+      company: record.fields.company as string,
+      location: record.fields.location as string,
+      type: record.fields.type as Job["type"],
+      salary_range: record.fields.salary_range as string,
+      description: record.fields.description as string,
+      apply_url: record.fields.apply_url as string,
+      posted_date: record.fields.posted_date as string,
+      status: record.fields.status as Job["status"],
     }));
   } catch (error) {
     console.error("Error fetching jobs:", {

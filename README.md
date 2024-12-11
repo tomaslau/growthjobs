@@ -13,6 +13,7 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - Fully responsive
 - Fast and SEO friendly
 - Modern UI with Geist font, Tailwind CSS, and Shadcn UI
+- Incremental Static Regeneration (ISR) for real-time updates
 
 ## Quick Start
 
@@ -66,6 +67,18 @@ Required environment variables:
 - AIRTABLE_BASE_ID=your_base_id_here
 
 Create a `.env` file in your project root and add these variables there.
+
+## Data Revalidation
+
+The job board uses Next.js Incremental Static Regeneration (ISR) to keep data fresh:
+- Pages automatically revalidate every 60 seconds
+- New jobs appear without manual rebuilds
+- Maintains fast static page delivery
+- Zero downtime updates
+
+You can adjust the revalidation interval in:
+- `app/page.tsx` (job listing page)
+- `app/jobs/[id]/page.tsx` (individual job pages)
 
 ## Project Structure
 
