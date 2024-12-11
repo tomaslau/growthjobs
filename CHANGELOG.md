@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2024-12-11
+
+### Added
+- Rich text support for job descriptions
+- Tailwind Typography plugin integration
+- Responsive typography styling
+- Enhanced code block and blockquote formatting
+
+### Changed
+- Improved job description readability
+- Updated markdown content styling
+- Refined list spacing and indentation
+
 ## [0.0.2] - 2024-12-11
 
 ### Added
