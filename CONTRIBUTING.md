@@ -29,7 +29,7 @@ npm install
 - Get your Personal Access Token
 - Add required scopes (data.records:read, schema.bases:read)
 
-3. Create a `.env.local` file:
+3. Create a `.env` file:
 ```env
 AIRTABLE_ACCESS_TOKEN=your_token_here
 AIRTABLE_BASE_ID=your_base_id_here

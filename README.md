@@ -44,7 +44,7 @@ npm install
 - Add your base to the token's access list
 
 3. Environment Setup:
-Create a `.env.local` file:
+Create a `.env` file:
 ```env
 AIRTABLE_ACCESS_TOKEN=your_token_here
 AIRTABLE_BASE_ID=your_base_id_here
@@ -113,3 +113,13 @@ If you find this helpful, please ⭐️ this repository!
 ## Credits
 
 Built by [Tomas Laurinavicius](https://github.com/tomaslau)
+
+## Environment Variables
+
+⚠️ IMPORTANT: Never commit your API keys or sensitive credentials to the repository!
+
+Required environment variables:
+- AIRTABLE_ACCESS_TOKEN=your_token_here
+- AIRTABLE_BASE_ID=your_base_id_here
+
+Create a `.env` file in your project root and add these variables there.
