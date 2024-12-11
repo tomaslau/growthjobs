@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
 import Link from "next/link";
-import { Github } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { GitHubIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "Job Board Starter",
@@ -23,14 +24,21 @@ export default function RootLayout({
             <Link href="/" className="text-base font-medium">
               Job Board Starter
             </Link>
-            <Link
-              href="https://github.com/tomaslau/jobboardstarter"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+            <Button
+              asChild
+              variant="outline"
+              size="sm"
+              className="gap-2 font-normal"
             >
-              <Github size={20} />
-            </Link>
+              <Link
+                href="https://github.com/tomaslau/jobboardstarter"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GitHubIcon className="h-4 w-4" />
+                Clone & Start
+              </Link>
+            </Button>
           </div>
         </nav>
         <main className="flex-1">{children}</main>
