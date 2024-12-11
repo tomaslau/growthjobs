@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4] - 2024-12-11
+
+### Changed
+- Improved layout consistency with global container configuration
+- Optimized content width for better readability
+- Standardized max-width (1100px) across all pages
+- Refined job post layout with 700px content width
+- Enhanced maintainability with centralized container settings
+
 ## [0.0.3] - 2024-12-11
 
 ### Added

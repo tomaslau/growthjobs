@@ -16,8 +16,8 @@ export default async function JobPage({ params }: { params: { id: string } }) {
   const { fullDate, relativeTime } = formatDate(job.posted_date);
 
   return (
-    <main className="container mx-auto px-4 py-6">
-      <article className="max-w-3xl mx-auto">
+    <main className="container py-6">
+      <article className="max-w-[700px]">
         <div className="mb-8">
           <h1 className="text-2xl font-medium mb-2">{job.title}</h1>
           <div className="flex items-center gap-3 text-sm text-gray-600">

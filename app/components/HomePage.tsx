@@ -10,7 +10,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const [filteredJobs, setFilteredJobs] = useState(initialJobs);
 
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container py-8">
       <TestFeatures />
       <h1 className="text-4xl font-bold mb-8">Latest Jobs</h1>
 

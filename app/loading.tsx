@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container py-8">
       <h1 className="text-4xl font-bold mb-8">Latest Jobs</h1>
       <div className="space-y-4">
         {[...Array(5)].map((_, i) => (
