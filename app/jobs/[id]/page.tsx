@@ -2,12 +2,20 @@ import { getJob } from "@/lib/db/airtable";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
 import ReactMarkdown from "react-markdown";
+import { unstable_cache } from "next/cache";
 
-export const revalidate = 60; // Revalidate every 60 seconds
+// Cache the getJob function with a 5-minute revalidation period
+const getCachedJob = unstable_cache(
+  async (id: string) => getJob(id),
+  ["job"],
+  { revalidate: 300 } // 5 minutes
+);
+
+export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function JobPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const job = await getJob(id);
+  const job = await getCachedJob(id);
 
   if (!job) {
     notFound();

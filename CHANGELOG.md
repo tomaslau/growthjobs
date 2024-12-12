@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.6] - 2024-12-12
+
+### Changed
+- Optimized data fetching with server-side caching
+- Improved loading states with content-specific skeletons
+- Enhanced job post page performance with 5-minute cache
+- Reduced unnecessary re-renders in job listings
+
+### Technical
+- Implemented Next.js unstable_cache for Airtable data
+- Added custom loading skeleton for job posts
+- Extended revalidation period to 300 seconds
+- Optimized client-side search with useMemo
+
 ## [0.0.5] - 2024-12-11
 
 ### Added

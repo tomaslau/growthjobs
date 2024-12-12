@@ -29,19 +29,12 @@ export async function getJobs(): Promise<Job[]> {
       throw new Error("Airtable credentials are not configured");
     }
 
-    console.log(
-      "Attempting to fetch jobs with token:",
-      process.env.AIRTABLE_ACCESS_TOKEN?.slice(0, 10) + "..."
-    );
-
     const records = await base("Jobs")
       .select({
         filterByFormula: "{status} = 'active'",
         sort: [{ field: "posted_date", direction: "desc" }],
       })
       .all();
-
-    console.log("Successfully fetched records:", records.length);
 
     return records.map((record) => ({
       id: record.id,
@@ -67,22 +60,56 @@ export async function getJobs(): Promise<Job[]> {
 
 export async function getJob(id: string): Promise<Job | null> {
   try {
+    if (!process.env.AIRTABLE_ACCESS_TOKEN || !process.env.AIRTABLE_BASE_ID) {
+      throw new Error("Airtable credentials are not configured");
+    }
+
     const record = await base("Jobs").find(id);
+
+    if (!record || !record.fields) {
+      return null;
+    }
+
+    // Validate required fields
+    const requiredFields = [
+      "title",
+      "company",
+      "location",
+      "type",
+      "salary_range",
+      "description",
+      "apply_url",
+      "posted_date",
+      "status",
+    ];
+
+    const missingFields = requiredFields.filter(
+      (field) => !record.fields[field]
+    );
+
+    if (missingFields.length > 0) {
+      console.error(`Missing required fields: ${missingFields.join(", ")}`);
+      return null;
+    }
 
     return {
       id: record.id,
-      title: record.get("title") as string,
-      company: record.get("company") as string,
-      location: record.get("location") as string,
-      type: record.get("type") as Job["type"],
-      salary_range: record.get("salary_range") as string,
-      description: record.get("description") as string,
-      apply_url: record.get("apply_url") as string,
-      posted_date: record.get("posted_date") as string,
-      status: record.get("status") as Job["status"],
+      title: record.fields.title as string,
+      company: record.fields.company as string,
+      location: record.fields.location as string,
+      type: record.fields.type as Job["type"],
+      salary_range: record.fields.salary_range as string,
+      description: record.fields.description as string,
+      apply_url: record.fields.apply_url as string,
+      posted_date: record.fields.posted_date as string,
+      status: record.fields.status as Job["status"],
     };
   } catch (error) {
-    console.error("Error fetching job:", error);
+    console.error("Error fetching job:", {
+      message: (error as Error).message,
+      name: (error as Error).name,
+      stack: (error as Error).stack,
+    });
     return null;
   }
 }
