@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.10] - 2024-12-12
+
+### Changed
+- Updated navigation with improved GitHub icon
+- Enhanced hero section badge to highlight open-source nature
+- Refined navigation layout and button styling
+
 ## [0.0.9] - 2024-12-12
 
 ### Added

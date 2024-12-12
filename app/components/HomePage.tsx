@@ -47,7 +47,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
           <div className="max-w-[640px] space-y-6">
             <div className="space-y-4">
               <Badge variant="outline" className="mb-2">
-                The #1 Tech Job Board
+                The #1 Open Source Tech Job Board
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Find Your Next Tech Role
