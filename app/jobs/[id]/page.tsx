@@ -3,6 +3,14 @@ import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
 import ReactMarkdown from "react-markdown";
 import { draftMode } from "next/headers";
+import { unstable_cache } from "next/cache";
+
+// Cache the getJob function
+const getCachedJob = unstable_cache(
+  async (id: string) => getJob(id),
+  ["job", "id"],
+  { revalidate: 300, tags: ["job"] } // 5 minutes
+);
 
 // Generate static params for all active jobs
 export async function generateStaticParams() {
@@ -18,10 +26,10 @@ export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function JobPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const isDraft = draftMode().isEnabled;
+  const { isEnabled: isDraft } = await draftMode();
 
-  // If in draft mode, fetch fresh data
-  const job = isDraft ? await getJob(id) : await getJob(id).catch(() => null);
+  // If in draft mode, fetch fresh data, otherwise use cached data
+  const job = isDraft ? await getJob(id) : await getCachedJob(id);
 
   if (!job) {
     notFound();
