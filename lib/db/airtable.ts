@@ -38,7 +38,7 @@ export interface Job {
   apply_url: string;
   posted_date: string;
   status: "active" | "inactive";
-  remote_friendly: boolean;
+  remote_friendly: "Yes" | "No" | "Not specified";
   career_level: CareerLevel[];
   visa_sponsorship: "Yes" | "No" | "Not specified";
   job_timezone: string;
@@ -71,6 +71,23 @@ function normalizeCareerLevel(value: unknown): CareerLevel[] {
   return [normalized as CareerLevel];
 }
 
+// Convert remote friendly value to Yes/No/Not specified
+function normalizeRemoteFriendly(value: unknown): Job["remote_friendly"] {
+  console.log("Raw remote_friendly value:", value);
+
+  // Handle string values from Airtable single select
+  if (typeof value === "string") {
+    if (value === "Yes" || value === "No") return value;
+    return "Not specified";
+  }
+
+  // Handle legacy boolean values
+  if (value === true) return "Yes";
+  if (value === false) return "No";
+
+  return "Not specified";
+}
+
 export async function getJobs(): Promise<Job[]> {
   try {
     if (!process.env.AIRTABLE_ACCESS_TOKEN || !process.env.AIRTABLE_BASE_ID) {
@@ -91,6 +108,10 @@ export async function getJobs(): Promise<Job[]> {
     return records.map((record) => {
       console.log(`Processing job ${record.id}:`, record.fields.title);
       console.log("Career level from Airtable:", record.fields.career_level);
+      console.log(
+        "Remote friendly from Airtable:",
+        record.fields.remote_friendly
+      );
 
       const job = {
         id: record.id,
@@ -103,7 +124,7 @@ export async function getJobs(): Promise<Job[]> {
         apply_url: record.fields.apply_url as string,
         posted_date: record.fields.posted_date as string,
         status: record.fields.status as Job["status"],
-        remote_friendly: (record.fields.remote_friendly as boolean) || false,
+        remote_friendly: normalizeRemoteFriendly(record.fields.remote_friendly),
         career_level: normalizeCareerLevel(record.fields.career_level),
         visa_sponsorship:
           (record.fields.visa_sponsorship as Job["visa_sponsorship"]) ||
@@ -111,6 +132,7 @@ export async function getJobs(): Promise<Job[]> {
         job_timezone: (record.fields.job_timezone as string) || "Not specified",
       };
 
+      console.log("Normalized remote friendly:", job.remote_friendly);
       console.log("Normalized career levels:", job.career_level);
       return job;
     });
@@ -160,6 +182,10 @@ export async function getJob(id: string): Promise<Job | null> {
 
     console.log(`Fetching single job ${id}:`, record.fields.title);
     console.log("Career level from Airtable:", record.fields.career_level);
+    console.log(
+      "Remote friendly from Airtable:",
+      record.fields.remote_friendly
+    );
 
     const job = {
       id: record.id,
@@ -172,7 +198,7 @@ export async function getJob(id: string): Promise<Job | null> {
       apply_url: record.fields.apply_url as string,
       posted_date: record.fields.posted_date as string,
       status: record.fields.status as Job["status"],
-      remote_friendly: (record.fields.remote_friendly as boolean) || false,
+      remote_friendly: normalizeRemoteFriendly(record.fields.remote_friendly),
       career_level: normalizeCareerLevel(record.fields.career_level),
       visa_sponsorship:
         (record.fields.visa_sponsorship as Job["visa_sponsorship"]) ||
@@ -180,6 +206,7 @@ export async function getJob(id: string): Promise<Job | null> {
       job_timezone: (record.fields.job_timezone as string) || "Not specified",
     };
 
+    console.log("Normalized remote friendly:", job.remote_friendly);
     console.log("Normalized career levels:", job.career_level);
     return job;
   } catch (error) {

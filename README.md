@@ -41,7 +41,7 @@ npm install
   apply_url: URL
   posted_date: Date
   status: Single select (active, inactive)
-  remote_friendly: Checkbox
+  remote_friendly: Single select (Yes, No, Not specified)
   career_level: Multiple select (Internship, Entry Level, Associate, Junior, Mid Level, Senior, Staff, Principal, Lead, Manager, Senior Manager, Director, Senior Director, VP, SVP, EVP, C-Level, Founder, Not Specified)
   visa_sponsorship: Single select (Yes, No, Not specified)
   job_timezone: Single line text

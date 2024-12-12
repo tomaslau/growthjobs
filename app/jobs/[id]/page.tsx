@@ -128,9 +128,17 @@ export default async function JobPage({ params }: { params: { id: string } }) {
 
             <div>
               <h2 className="text-base font-medium mb-2">Remote-Friendly</h2>
-              <p className="text-sm text-gray-600">
-                {job.remote_friendly ? "Yes" : "No"}
-              </p>
+              <span
+                className={`inline-block px-2 py-1 text-xs rounded-full ${
+                  job.remote_friendly === "Yes"
+                    ? "bg-green-100 text-green-700"
+                    : job.remote_friendly === "No"
+                    ? "bg-red-100 text-red-700"
+                    : "bg-gray-100 text-gray-700"
+                }`}
+              >
+                {job.remote_friendly}
+              </span>
             </div>
 
             <div>
