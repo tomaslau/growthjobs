@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.7] - 2024-12-12
+
+### Changed
+- Updated Next.js to version 15.1.0
+- Updated ESLint configuration
+- Updated @types/node to latest version
+
+### Technical
+- Upgraded core dependencies for better stability
+- Maintained React 19 experimental features
+- Fixed peer dependency warnings
+
 ## [0.0.6] - 2024-12-12
 
 ### Changed
