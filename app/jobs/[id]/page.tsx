@@ -5,17 +5,21 @@ import ReactMarkdown from "react-markdown";
 import { unstable_cache } from "next/cache";
 
 // Cache the getJob function with a 5-minute revalidation period
-const getCachedJob = unstable_cache(
-  async (id: string) => getJob(id),
-  ["job"],
-  { revalidate: 300 } // 5 minutes
-);
+const getCachedJob = (id: string) =>
+  unstable_cache(
+    async () => getJob(id),
+    [`job-${id}`], // Make cache key unique per job
+    {
+      revalidate: 300, // 5 minutes
+      tags: [`job-${id}`], // Add tags for better cache control
+    }
+  );
 
 export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function JobPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const job = await getCachedJob(id);
+  const job = await getCachedJob(id)();
 
   if (!job) {
     notFound();
