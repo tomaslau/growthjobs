@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.9] - 2024-12-12
+
+### Added
+- Detailed job sidebar with comprehensive job details
+- Multi-select career levels with standardized options
+- Improved job metadata display with tags
+- Career level validation and formatting
+
+### Technical
+- Added type-safe career level handling
+- Implemented deduplication for multiple selections
+- Added fallback handling for empty fields
+- Fixed React key warnings in career level tags
+
 ## [0.0.8] - 2024-12-12
 
 ### Changed

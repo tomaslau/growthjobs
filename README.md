@@ -17,6 +17,7 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - Modern UI with Geist font, Tailwind CSS, and Shadcn UI
 - Incremental Static Regeneration (ISR) for real-time updates
 - Rich text support for job descriptions
+- Comprehensive job metadata with multi-select career levels
 
 ## Quick Start
 
@@ -40,6 +41,10 @@ npm install
   apply_url: URL
   posted_date: Date
   status: Single select (active, inactive)
+  remote_friendly: Checkbox
+  career_level: Multiple select (Internship, Entry Level, Associate, Junior, Mid Level, Senior, Staff, Principal, Lead, Manager, Senior Manager, Director, Senior Director, VP, SVP, EVP, C-Level, Founder, Not Specified)
+  visa_sponsorship: Single select (Yes, No, Not specified)
+  job_timezone: Single line text
   ```
 - Create a Personal Access Token at https://airtable.com/create/tokens
 - Add these scopes to your token:
