@@ -8,11 +8,14 @@ All notable changes to this project will be documented in this file.
 - Updated Next.js to version 15.1.0
 - Updated ESLint configuration
 - Updated @types/node to latest version
+- Improved job post page caching with static generation
 
 ### Technical
 - Upgraded core dependencies for better stability
 - Maintained React 19 experimental features
 - Fixed peer dependency warnings
+- Implemented generateStaticParams for job posts
+- Added draft mode support for previews
 
 ## [0.0.6] - 2024-12-12
 

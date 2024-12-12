@@ -1,21 +1,27 @@
-import { getJob } from "@/lib/db/airtable";
+import { getJob, getJobs } from "@/lib/db/airtable";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
 import ReactMarkdown from "react-markdown";
-import { cache } from "react";
+import { draftMode } from "next/headers";
 
-// Cache the getJob function using React's cache
-const getJobCached = cache(async (id: string) => {
-  const job = await getJob(id);
-  if (!job) return null;
-  return job;
-});
+// Generate static params for all active jobs
+export async function generateStaticParams() {
+  const jobs = await getJobs();
+  return jobs.map((job) => ({
+    id: job.id,
+  }));
+}
 
+// Force static generation unless in draft mode
+export const dynamic = "force-static";
 export const revalidate = 300; // Revalidate every 5 minutes
 
 export default async function JobPage({ params }: { params: { id: string } }) {
   const { id } = params;
-  const job = await getJobCached(id);
+  const isDraft = draftMode().isEnabled;
+
+  // If in draft mode, fetch fresh data
+  const job = isDraft ? await getJob(id) : await getJob(id).catch(() => null);
 
   if (!job) {
     notFound();
