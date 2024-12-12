@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.8] - 2024-12-12
+
+### Changed
+- Enhanced hero section with improved UX and aesthetics
+- Added dynamic "Last Updated" timestamp based on job posts
+- Refined stats section with trending companies
+- Implemented left-aligned minimal design
+- Integrated shadcn/ui components for consistent styling
+
 ## [0.0.7] - 2024-12-12
 
 ### Changed

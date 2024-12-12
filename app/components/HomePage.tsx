@@ -7,6 +7,7 @@ import { TestFeatures } from "@/components/TestFeatures";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,18 +28,31 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     );
   }, [initialJobs, searchTerm]);
 
+  // Get the most recent job's posted date
+  const lastUpdated = useMemo(() => {
+    if (initialJobs.length === 0) return "No jobs yet";
+
+    const mostRecentDate = Math.max(
+      ...initialJobs.map((job) => new Date(job.posted_date).getTime())
+    );
+
+    return formatDistanceToNow(mostRecentDate, { addSuffix: true });
+  }, [initialJobs]);
+
   return (
     <main className="min-h-screen bg-background">
       {/* Hero Section */}
       <div className="border-b">
         <div className="container mx-auto px-4 py-12 md:py-16">
-          <div className="max-w-[640px] space-y-4">
-            <div className="space-y-2">
-              <Badge variant="secondary">Job Board Starter</Badge>
+          <div className="max-w-[640px] space-y-6">
+            <div className="space-y-4">
+              <Badge variant="outline" className="mb-2">
+                The #1 Tech Job Board
+              </Badge>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
                 Find Your Next Tech Role
               </h1>
-              <p className="text-sm text-muted-foreground md:text-base">
+              <p className="text-sm text-muted-foreground md:text-base max-w-[540px]">
                 Browse curated tech opportunities from leading companies.
                 Updated daily with the latest positions.
               </p>
@@ -59,20 +73,22 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
             </div>
 
             {/* Quick Stats */}
-            <div className="pt-4 grid grid-cols-3 gap-4 text-sm text-muted-foreground max-w-[480px]">
+            <div className="grid grid-cols-3 gap-4 text-xs text-muted-foreground max-w-[480px]">
               <div>
-                <div className="font-medium text-foreground">
-                  {initialJobs.length}
+                <div className="font-medium text-foreground">Open Jobs</div>
+                <div>{initialJobs.length}</div>
+              </div>
+              <div>
+                <div className="font-medium text-foreground">Last Updated</div>
+                <div>{lastUpdated}</div>
+              </div>
+              <div>
+                <div className="font-medium text-foreground">Trending</div>
+                <div>
+                  {Array.from(new Set(initialJobs.map((job) => job.company)))
+                    .slice(0, 3)
+                    .join(", ")}
                 </div>
-                <div>Open Positions</div>
-              </div>
-              <div>
-                <div className="font-medium text-foreground">Real-time</div>
-                <div>Updates</div>
-              </div>
-              <div>
-                <div className="font-medium text-foreground">Free</div>
-                <div>Job Board</div>
               </div>
             </div>
           </div>
