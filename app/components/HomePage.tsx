@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { JobCard } from "@/components/jobs/JobCard";
+import { JobCard } from "../../components/jobs/JobCard";
 import type { Job } from "@/lib/db/airtable";
-import { TestFeatures } from "@/components/TestFeatures";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
+import { Input } from "../../components/ui/input";
+import { Badge } from "../../components/ui/badge";
 import { Search } from "lucide-react";
 import { formatDistanceToNow, isToday } from "date-fns";
 
@@ -139,8 +138,6 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
 
       {/* Jobs Section */}
       <div className="container mx-auto px-4 py-8">
-        <TestFeatures />
-
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold tracking-tight">
             Latest Opportunities
