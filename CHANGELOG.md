@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.12] - 2024-12-13
+
+### Changed
+- Enhanced job details sidebar with icons and improved layout
+- Added colored status badges for visa sponsorship
+- Made sidebar layout more compact and readable
+- Refined report button styling and alignment
+
 ## [0.0.11] - 2024-12-13
 
 ### Added

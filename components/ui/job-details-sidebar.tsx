@@ -1,4 +1,15 @@
 import { CareerLevel } from "@/lib/db/airtable";
+import {
+  Calendar,
+  MapPin,
+  Laptop,
+  DollarSign,
+  Briefcase,
+  Link,
+  Globe,
+  Clock,
+  Flag,
+} from "lucide-react";
 
 interface JobDetailsSidebarProps {
   fullDate: string;
@@ -49,29 +60,45 @@ export function JobDetailsSidebar({
   visa_sponsorship,
   job_timezone,
 }: JobDetailsSidebarProps) {
-  // Ensure career_level is always an array and filter out duplicates
   const careerLevels = Array.from(
     new Set(Array.isArray(career_level) ? career_level : [career_level])
   );
 
   return (
-    <div className="p-6 border rounded-lg space-y-6">
+    <div className="p-5 border rounded-lg space-y-4">
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="text-lg font-semibold">Job Details</h2>
+        <button className="text-red-600/70 hover:text-red-600 text-xs font-medium flex items-center gap-1">
+          <Flag className="h-3 w-3" />
+          Report
+        </button>
+      </div>
+
       <div>
-        <h2 className="text-sm font-medium mb-2">Date Posted</h2>
-        <p className="text-sm text-gray-600">
+        <div className="flex items-center gap-2 mb-1">
+          <Calendar className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Date Posted</h2>
+        </div>
+        <p className="text-sm text-gray-600 ml-6">
           {fullDate} ({relativeTime})
         </p>
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Job Location</h2>
-        <p className="text-sm text-gray-600">{location}</p>
+        <div className="flex items-center gap-2 mb-1">
+          <MapPin className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Job Location</h2>
+        </div>
+        <p className="text-sm text-gray-600 ml-6">{location}</p>
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Remote-Friendly</h2>
+        <div className="flex items-center gap-2 mb-1">
+          <Laptop className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Remote-Friendly</h2>
+        </div>
         <span
-          className={`inline-block px-2 py-1 text-xs rounded-full ${
+          className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
             remote_friendly === "Yes"
               ? "bg-green-100 text-green-700"
               : remote_friendly === "No"
@@ -84,17 +111,23 @@ export function JobDetailsSidebar({
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Salary</h2>
-        <p className="text-sm text-gray-600">{salary_range}</p>
+        <div className="flex items-center gap-2 mb-1">
+          <DollarSign className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Salary</h2>
+        </div>
+        <p className="text-sm text-gray-600 ml-6">{salary_range}</p>
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Career Level</h2>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex items-center gap-2 mb-1">
+          <Briefcase className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Career Level</h2>
+        </div>
+        <div className="flex flex-wrap gap-1.5 ml-6">
           {careerLevels.map((level, index) => (
             <span
               key={`${level}-${index}`}
-              className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full"
+              className="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded-full"
             >
               {formatCareerLevel(level)}
             </span>
@@ -103,25 +136,44 @@ export function JobDetailsSidebar({
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Job Source</h2>
+        <div className="flex items-center gap-2 mb-1">
+          <Link className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Job Source</h2>
+        </div>
         <a
           href={apply_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm text-blue-600 hover:underline ml-6"
         >
           Apply on company website
         </a>
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Visa Sponsorship</h2>
-        <p className="text-sm text-gray-600">{visa_sponsorship}</p>
+        <div className="flex items-center gap-2 mb-1">
+          <Globe className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Visa Sponsorship</h2>
+        </div>
+        <span
+          className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
+            visa_sponsorship === "Yes"
+              ? "bg-green-100 text-green-700"
+              : visa_sponsorship === "No"
+              ? "bg-red-100 text-red-700"
+              : "bg-gray-100 text-gray-700"
+          }`}
+        >
+          {visa_sponsorship}
+        </span>
       </div>
 
       <div>
-        <h2 className="text-sm font-medium mb-2">Job Timezones</h2>
-        <p className="text-sm text-gray-600">{job_timezone}</p>
+        <div className="flex items-center gap-2 mb-1">
+          <Clock className="h-4 w-4 text-gray-500 shrink-0" />
+          <h2 className="text-sm font-medium">Job Timezones</h2>
+        </div>
+        <p className="text-sm text-gray-600 ml-6">{job_timezone}</p>
       </div>
     </div>
   );
