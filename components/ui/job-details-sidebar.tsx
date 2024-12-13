@@ -1,9 +1,9 @@
-import { CareerLevel } from "@/lib/db/airtable";
+import { CareerLevel, Salary, formatSalary } from "@/lib/db/airtable";
 import {
   Calendar,
   MapPin,
   Laptop,
-  DollarSign,
+  Wallet,
   Briefcase,
   Link,
   Globe,
@@ -16,8 +16,8 @@ interface JobDetailsSidebarProps {
   relativeTime: string;
   location: string;
   remote_friendly: string;
-  salary_range?: string;
-  career_level: CareerLevel | CareerLevel[];
+  salary: Salary | null;
+  career_level: CareerLevel[];
   apply_url: string;
   visa_sponsorship: string;
   job_timezone: string;
@@ -54,12 +54,13 @@ export function JobDetailsSidebar({
   relativeTime,
   location,
   remote_friendly,
-  salary_range,
+  salary,
   career_level,
   apply_url,
   visa_sponsorship,
   job_timezone,
 }: JobDetailsSidebarProps) {
+  const showSalary = salary && (salary.min !== null || salary.max !== null);
   const careerLevels = Array.from(
     new Set(Array.isArray(career_level) ? career_level : [career_level])
   );
@@ -110,15 +111,17 @@ export function JobDetailsSidebar({
         </span>
       </div>
 
-      <div>
-        <div className="flex items-center gap-2 mb-1">
-          <DollarSign className="h-4 w-4 text-gray-500 shrink-0" />
-          <h2 className="text-sm font-medium">Salary</h2>
+      {showSalary && (
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Wallet className="h-4 w-4 text-gray-500 shrink-0" />
+            <h2 className="text-sm font-medium">Salary</h2>
+          </div>
+          <span className="text-sm text-gray-600 ml-6">
+            {formatSalary(salary)}
+          </span>
         </div>
-        <span className="text-sm text-gray-600 ml-6">
-          {salary_range || "Not specified"}
-        </span>
-      </div>
+      )}
 
       <div>
         <div className="flex items-center gap-2 mb-1">

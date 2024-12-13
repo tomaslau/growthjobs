@@ -27,13 +27,23 @@ export type CareerLevel =
   | "Founder"
   | "NotSpecified";
 
+export type SalaryUnit = "hour" | "day" | "week" | "month" | "year" | "project";
+export type SalaryCurrency = "USD" | "EUR" | "GBP";
+
+export interface Salary {
+  min: number | null;
+  max: number | null;
+  currency: SalaryCurrency;
+  unit: SalaryUnit;
+}
+
 export interface Job {
   id: string;
   title: string;
   company: string;
   location: string;
   type: "Full-time" | "Part-time" | "Contract";
-  salary_range?: string;
+  salary: Salary | null;
   description: string;
   apply_url: string;
   posted_date: string;
@@ -42,6 +52,80 @@ export interface Job {
   career_level: CareerLevel[];
   visa_sponsorship: "Yes" | "No" | "Not specified";
   job_timezone: string;
+}
+
+// Format salary for display
+export function formatSalary(salary: Salary | null): string {
+  if (!salary || (!salary.min && !salary.max)) return "Not specified";
+
+  const currencySymbols: Record<SalaryCurrency, string> = {
+    USD: "$",
+    EUR: "€",
+    GBP: "£",
+  };
+
+  const formatNumber = (num: number | null): string => {
+    if (!num) return "";
+    // Only use k format for numbers >= 10000
+    if (num >= 10000) {
+      return `${(num / 1000).toFixed(0)}k`;
+    }
+    // For smaller numbers, show the full value with thousands separator
+    return num.toLocaleString();
+  };
+
+  const symbol = currencySymbols[salary.currency];
+
+  // Handle single value cases (only min or only max)
+  let range;
+  if (salary.min && salary.max) {
+    range =
+      salary.min === salary.max
+        ? formatNumber(salary.min)
+        : `${formatNumber(salary.min)}-${formatNumber(salary.max)}`;
+  } else {
+    range = formatNumber(salary.min || salary.max);
+  }
+
+  // Use full words with slash
+  const unitDisplay = {
+    hour: "/hour",
+    day: "/day",
+    week: "/week",
+    month: "/month",
+    year: "/year",
+    project: "/project",
+  }[salary.unit];
+
+  return `${symbol}${range}${unitDisplay}`;
+}
+
+// Normalize salary for comparison (convert to annual USD)
+export function normalizeAnnualSalary(salary: Salary | null): number {
+  if (!salary || (!salary.min && !salary.max)) return -1;
+
+  // Currency conversion rates (simplified - in production, use real-time rates)
+  const currencyRates: Record<SalaryCurrency, number> = {
+    USD: 1,
+    EUR: 1.1,
+    GBP: 1.27,
+  };
+
+  // Annualization multipliers
+  const annualMultiplier: Record<SalaryUnit, number> = {
+    hour: 2080, // 40 hours/week * 52 weeks
+    day: 260, // 52 weeks * 5 days
+    week: 52,
+    month: 12,
+    year: 1,
+    project: 1, // Projects treated as one-time annual equivalent
+  };
+
+  // Use the maximum value for comparison, or minimum if no maximum
+  const value = salary.max || salary.min || 0;
+
+  // Convert to USD and annualize
+  return value * currencyRates[salary.currency] * annualMultiplier[salary.unit];
 }
 
 // Ensure career level is always returned as an array
@@ -106,20 +190,26 @@ export async function getJobs(): Promise<Job[]> {
       .all();
 
     return records.map((record) => {
-      console.log(`Processing job ${record.id}:`, record.fields.title);
-      console.log("Career level from Airtable:", record.fields.career_level);
-      console.log(
-        "Remote friendly from Airtable:",
-        record.fields.remote_friendly
-      );
+      // Parse salary data
+      const hasSalaryData =
+        record.fields.salary_min || record.fields.salary_max;
+      const salary = hasSalaryData
+        ? {
+            min: (record.fields.salary_min as number) || null,
+            max: (record.fields.salary_max as number) || null,
+            currency:
+              (record.fields.salary_currency as SalaryCurrency) || "USD",
+            unit: (record.fields.salary_unit as SalaryUnit) || "year",
+          }
+        : null;
 
-      const job = {
+      return {
         id: record.id,
         title: record.fields.title as string,
         company: record.fields.company as string,
         location: record.fields.location as string,
         type: record.fields.type as Job["type"],
-        salary_range: record.fields.salary_range as string,
+        salary,
         description: record.fields.description as string,
         apply_url: record.fields.apply_url as string,
         posted_date: record.fields.posted_date as string,
@@ -131,10 +221,6 @@ export async function getJobs(): Promise<Job[]> {
           "Not specified",
         job_timezone: (record.fields.job_timezone as string) || "Not specified",
       };
-
-      console.log("Normalized remote friendly:", job.remote_friendly);
-      console.log("Normalized career levels:", job.career_level);
-      return job;
     });
   } catch (error) {
     console.error("Error fetching jobs:", {
@@ -192,7 +278,12 @@ export async function getJob(id: string): Promise<Job | null> {
       company: record.fields.company as string,
       location: record.fields.location as string,
       type: record.fields.type as Job["type"],
-      salary_range: (record.fields.salary_range as string) || "Not specified",
+      salary: {
+        min: (record.fields.salary_min as number) || null,
+        max: (record.fields.salary_max as number) || null,
+        currency: (record.fields.salary_currency as SalaryCurrency) || "USD",
+        unit: (record.fields.salary_unit as SalaryUnit) || "year",
+      },
       description: record.fields.description as string,
       apply_url: record.fields.apply_url as string,
       posted_date: record.fields.posted_date as string,

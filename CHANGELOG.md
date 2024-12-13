@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.16] - 2024-12-13
+
+### Added
+- Implemented comprehensive salary structure with currency and time unit support
+- Added salary normalization for accurate sorting
+- Added URL-based pagination with configurable items per page
+- Added sorting options (newest, oldest, highest salary)
+- Replaced dollar icon with wallet icon in job details
+- Added loading state for job details page
+
+### Changed
+- Updated salary display format to use slashes (e.g., "/year" instead of "per year")
+- Improved salary sorting logic with normalization to annual USD
+- Enhanced job details sidebar with better icon choices
+- Updated README with new salary and pagination features
+- Improved type safety in pagination implementation
+
 ## [0.0.15] - 2024-12-13
 
 ### Added

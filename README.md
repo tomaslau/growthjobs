@@ -18,6 +18,10 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - Incremental Static Regeneration (ISR) for real-time updates
 - Rich text support for job descriptions
 - Comprehensive job metadata with multi-select career levels
+- Advanced salary structure with currency and time unit support
+- Smart pagination with URL-based navigation
+- Sorting options (newest, oldest, highest salary)
+- Dynamic jobs per page selection
 
 ## Quick Start
 
@@ -36,7 +40,10 @@ npm install
   company: Single line text
   location: Single line text
   type: Single select (Full-time, Part-time, Contract)
-  salary_range: Single line text
+  salary_min: Number
+  salary_max: Number
+  salary_currency: Single select (USD, EUR, GBP)
+  salary_unit: Single select (hour, day, week, month, year, project)
   description: Long text (with rich text enabled)
   apply_url: URL
   posted_date: Date
@@ -99,16 +106,37 @@ app/
   jobs/
     [id]/
       page.tsx       # Individual job page
+      loading.tsx    # Loading state for job page
 lib/
   db/
-    airtable.ts     # Airtable integration
+    airtable.ts     # Airtable integration and salary formatting
   utils/
     formatDate.ts   # Date formatting utilities
 components/
+  ui/
+    job-details-sidebar.tsx  # Job details sidebar
+    post-job-banner.tsx     # Post job promotion banner
+    similar-jobs.tsx        # Similar jobs suggestions
   jobs/
     JobCard.tsx     # Job listing card
-    JobSearch.tsx   # Search component
 ```
+
+## Salary Structure
+
+The job board supports a comprehensive salary structure:
+- Minimum and maximum salary ranges
+- Multiple currencies (USD, EUR, GBP)
+- Various time units (hour, day, week, month, year, project)
+- Smart formatting (e.g., "$80k/year" or "$80k - $100k/year")
+- Salary-based sorting with normalization to annual USD
+
+## Pagination and Sorting
+
+- URL-based pagination for better UX and SEO
+- Configurable items per page (10, 25, 50, 100)
+- Sort by newest, oldest, or highest salary
+- Maintains state in URL parameters
+- Elegant pagination UI with ellipsis for large page counts
 
 ## Customization
 

@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { Job } from "@/lib/db/airtable";
+import { Job, formatSalary } from "@/lib/db/airtable";
 import { formatDate } from "@/lib/utils/formatDate";
 
 export function JobCard({ job }: { job: Job }) {
   const { fullDate, relativeTime } = formatDate(job.posted_date);
-  const showSalary = job.salary_range && job.salary_range !== "Not specified";
+  const showSalary =
+    job.salary && (job.salary.min !== null || job.salary.max !== null);
 
   return (
     <Link
@@ -23,7 +24,7 @@ export function JobCard({ job }: { job: Job }) {
 
       <div className="mt-3 flex items-center gap-3 text-xs text-gray-500">
         <span>{job.location}</span>
-        {showSalary && <span>{job.salary_range}</span>}
+        {showSalary && <span>{formatSalary(job.salary)}</span>}
         <time dateTime={job.posted_date}>
           {fullDate} ({relativeTime})
         </time>

@@ -150,7 +150,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
               relativeTime={relativeTime}
               location={job.location}
               remote_friendly={job.remote_friendly}
-              salary_range={job.salary_range}
+              salary={job.salary}
               career_level={job.career_level}
               apply_url={job.apply_url}
               visa_sponsorship={job.visa_sponsorship}
