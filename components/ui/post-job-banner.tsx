@@ -11,15 +11,15 @@ export function PostJobBanner() {
       </p>
       <div className="flex items-center gap-2 mb-4">
         <div className="flex -space-x-3">
-          <Avatar className="h-8 w-8 border-2 border-background">
+          <Avatar className="h-8 w-8 border border-background">
             <AvatarImage src="/avatars/bestwriting.png" alt="Best Writing" />
             <AvatarFallback>BW</AvatarFallback>
           </Avatar>
-          <Avatar className="h-8 w-8 border-2 border-background">
+          <Avatar className="h-8 w-8 border border-background">
             <AvatarImage src="/avatars/marketful.png" alt="Marketful" />
             <AvatarFallback>MF</AvatarFallback>
           </Avatar>
-          <Avatar className="h-8 w-8 border-2 border-background">
+          <Avatar className="h-8 w-8 border border-background">
             <AvatarImage src="/avatars/uithings.png" alt="UI Things" />
             <AvatarFallback>UI</AvatarFallback>
           </Avatar>
