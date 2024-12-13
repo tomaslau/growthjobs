@@ -10,6 +10,10 @@ All notable changes to this project will be documented in this file.
 - Made sidebar layout more compact and readable
 - Refined report button styling and alignment
 
+### Fixed
+- Added fallback for missing salary range values
+- Made salary range field optional in job details
+
 ## [0.0.11] - 2024-12-13
 
 ### Added

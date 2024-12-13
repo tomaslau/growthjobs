@@ -33,7 +33,7 @@ export interface Job {
   company: string;
   location: string;
   type: "Full-time" | "Part-time" | "Contract";
-  salary_range: string;
+  salary_range?: string;
   description: string;
   apply_url: string;
   posted_date: string;
@@ -164,7 +164,6 @@ export async function getJob(id: string): Promise<Job | null> {
       "company",
       "location",
       "type",
-      "salary_range",
       "description",
       "apply_url",
       "posted_date",
@@ -193,7 +192,7 @@ export async function getJob(id: string): Promise<Job | null> {
       company: record.fields.company as string,
       location: record.fields.location as string,
       type: record.fields.type as Job["type"],
-      salary_range: record.fields.salary_range as string,
+      salary_range: (record.fields.salary_range as string) || "Not specified",
       description: record.fields.description as string,
       apply_url: record.fields.apply_url as string,
       posted_date: record.fields.posted_date as string,

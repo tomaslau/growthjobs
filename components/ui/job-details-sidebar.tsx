@@ -16,7 +16,7 @@ interface JobDetailsSidebarProps {
   relativeTime: string;
   location: string;
   remote_friendly: string;
-  salary_range: string;
+  salary_range?: string;
   career_level: CareerLevel | CareerLevel[];
   apply_url: string;
   visa_sponsorship: string;
@@ -115,7 +115,9 @@ export function JobDetailsSidebar({
           <DollarSign className="h-4 w-4 text-gray-500 shrink-0" />
           <h2 className="text-sm font-medium">Salary</h2>
         </div>
-        <p className="text-sm text-gray-600 ml-6">{salary_range}</p>
+        <span className="text-sm text-gray-600 ml-6">
+          {salary_range || "Not specified"}
+        </span>
       </div>
 
       <div>
