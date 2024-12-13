@@ -146,7 +146,7 @@ export function JobDetailsSidebar({
           href={apply_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-blue-600 hover:underline ml-6"
+          className="text-sm text-zinc-900 underline underline-offset-4 hover:text-zinc-800 transition-colors ml-6"
         >
           Apply on company website
         </a>

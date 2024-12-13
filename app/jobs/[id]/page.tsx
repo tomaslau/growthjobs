@@ -62,9 +62,9 @@ export default async function JobPage({ params }: { params: { id: string } }) {
       <div className="flex justify-between gap-16">
         {/* Main content */}
         <article className="flex-1 max-w-[640px]">
-          <div className="mb-3">
+          <div className="mb-4">
             <Breadcrumb>
-              <BreadcrumbList className="gap-1">
+              <BreadcrumbList className="gap-1 text-xs">
                 <BreadcrumbItem>
                   <BreadcrumbLink
                     className="text-gray-500 hover:text-gray-900 transition-colors"
@@ -92,34 +92,40 @@ export default async function JobPage({ params }: { params: { id: string } }) {
             </Breadcrumb>
           </div>
           <div className="mb-8">
-            <h1 className="text-2xl font-medium mb-2">{job.title}</h1>
-            <div className="flex items-center gap-3 text-sm text-gray-600">
-              <span>{job.company}</span>
-              <span>•</span>
-              <span>{job.location}</span>
-              <span>•</span>
-              <span>{job.type}</span>
-              <span>•</span>
-              <time dateTime={job.posted_date} className="text-gray-500">
-                {fullDate} ({relativeTime})
-              </time>
+            <div className="flex flex-col gap-2">
+              <h1 className="text-2xl font-semibold">{job.title}</h1>
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-3 text-sm text-gray-600">
+                  <span>{job.company}</span>
+                  <span>•</span>
+                  <span>{job.location}</span>
+                  <span>•</span>
+                  <span>{job.type}</span>
+                  <span>•</span>
+                  <time dateTime={job.posted_date} className="text-gray-500">
+                    {fullDate} ({relativeTime})
+                  </time>
+                </div>
+                <Button
+                  asChild
+                  size="sm"
+                  className="bg-zinc-900 text-white hover:bg-zinc-800 shrink-0"
+                >
+                  <a
+                    href={job.apply_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Apply
+                  </a>
+                </Button>
+              </div>
             </div>
           </div>
 
-          <div className="mb-6">
-            <Button
-              asChild
-              className="bg-zinc-900 text-white hover:bg-zinc-800"
-            >
-              <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
-                Apply
-              </a>
-            </Button>
-          </div>
-
           <div className="prose prose-sm prose-gray max-w-none">
-            <h2 className="text-lg font-medium mb-4">Description</h2>
-            <div className="markdown-content">
+            <div className="h-px bg-gray-200 my-8" aria-hidden="true" />
+            <div className="markdown-content [&_a]:text-zinc-900 [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-zinc-800 [&_a]:transition-colors">
               <ReactMarkdown>{job.description}</ReactMarkdown>
             </div>
           </div>
