@@ -4,7 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function PostJobBanner() {
   return (
-    <Card className="p-6 border shadow-none">
+    <Card className="p-6 border shadow-none rounded-lg">
       <h3 className="text-lg font-semibold mb-3">Hiring? Post Your Job Here</h3>
       <p className="text-sm mb-4 text-muted-foreground">
         Reach talented professionals. Get quality applications fast.
@@ -29,7 +29,7 @@ export function PostJobBanner() {
         </span>
       </div>
       <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800">
-        Post a Job ($59)
+        Post a job ($59)
       </Button>
       <p className="text-xs text-center mt-4 text-muted-foreground">
         30-day money-back guarantee

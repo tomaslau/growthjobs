@@ -65,7 +65,7 @@ export function JobDetailsSidebar({
   );
 
   return (
-    <div className="p-5 border rounded-lg space-y-4">
+    <div className="p-5 border rounded-lg space-y-4 bg-gray-50">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-semibold">Job Details</h2>
         <button className="text-red-700 hover:text-red-800 text-xs font-medium flex items-center gap-1">
@@ -100,10 +100,10 @@ export function JobDetailsSidebar({
         <span
           className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
             remote_friendly === "Yes"
-              ? "bg-green-100 text-green-700"
+              ? "bg-green-50 border-green-100 border text-green-700"
               : remote_friendly === "No"
-              ? "bg-red-100 text-red-700"
-              : "bg-gray-100 text-gray-700"
+              ? "bg-red-50 border-red-100 border text-red-700"
+              : "bg-white border text-gray-700"
           }`}
         >
           {remote_friendly}
@@ -129,7 +129,7 @@ export function JobDetailsSidebar({
           {careerLevels.map((level, index) => (
             <span
               key={`${level}-${index}`}
-              className="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded-full"
+              className="inline-block px-2 py-0.5 text-xs bg-white border text-gray-700 rounded-full"
             >
               {formatCareerLevel(level)}
             </span>
@@ -160,10 +160,10 @@ export function JobDetailsSidebar({
         <span
           className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
             visa_sponsorship === "Yes"
-              ? "bg-green-100 text-green-700"
+              ? "bg-green-50 border-green-100 border text-green-700"
               : visa_sponsorship === "No"
-              ? "bg-red-100 text-red-700"
-              : "bg-gray-100 text-gray-700"
+              ? "bg-red-50 border-red-100 border text-red-700"
+              : "bg-white border text-gray-700"
           }`}
         >
           {visa_sponsorship}

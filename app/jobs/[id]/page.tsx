@@ -6,6 +6,7 @@ import { draftMode } from "next/headers";
 import { unstable_cache } from "next/cache";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { JobDetailsSidebar } from "@/components/ui/job-details-sidebar";
+import { Button } from "@/components/ui/button";
 
 // Cache the getJob function
 const getCachedJob = unstable_cache(
@@ -67,14 +68,14 @@ export default async function JobPage({ params }: { params: { id: string } }) {
           </div>
 
           <div className="mt-8">
-            <a
-              href={job.apply_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            <Button
+              asChild
+              className="bg-zinc-900 text-white hover:bg-zinc-800"
             >
-              Apply for this position
-            </a>
+              <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
+                Apply for this position
+              </a>
+            </Button>
           </div>
         </article>
 
