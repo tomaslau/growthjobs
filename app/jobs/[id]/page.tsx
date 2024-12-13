@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils/formatDate";
 import ReactMarkdown from "react-markdown";
 import { draftMode } from "next/headers";
 import { unstable_cache } from "next/cache";
+import { PostJobBanner } from "@/components/ui/post-job-banner";
 
 // Cache the getJob function
 const getCachedJob = unstable_cache(
@@ -113,74 +114,78 @@ export default async function JobPage({ params }: { params: { id: string } }) {
 
         {/* Sidebar */}
         <aside className="w-[300px] shrink-0">
-          <div className="sticky top-6 p-6 border rounded-lg space-y-6">
-            <div>
-              <h2 className="text-base font-medium mb-2">Date Posted</h2>
-              <p className="text-sm text-gray-600">
-                {fullDate} ({relativeTime})
-              </p>
-            </div>
+          <div className="sticky top-6 space-y-6">
+            <div className="p-6 border rounded-lg space-y-6">
+              <div>
+                <h2 className="text-sm font-medium mb-2">Date Posted</h2>
+                <p className="text-sm text-gray-600">
+                  {fullDate} ({relativeTime})
+                </p>
+              </div>
 
-            <div>
-              <h2 className="text-base font-medium mb-2">Job Location</h2>
-              <p className="text-sm text-gray-600">{job.location}</p>
-            </div>
+              <div>
+                <h2 className="text-sm font-medium mb-2">Job Location</h2>
+                <p className="text-sm text-gray-600">{job.location}</p>
+              </div>
 
-            <div>
-              <h2 className="text-base font-medium mb-2">Remote-Friendly</h2>
-              <span
-                className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  job.remote_friendly === "Yes"
-                    ? "bg-green-100 text-green-700"
-                    : job.remote_friendly === "No"
-                    ? "bg-red-100 text-red-700"
-                    : "bg-gray-100 text-gray-700"
-                }`}
-              >
-                {job.remote_friendly}
-              </span>
-            </div>
+              <div>
+                <h2 className="text-sm font-medium mb-2">Remote-Friendly</h2>
+                <span
+                  className={`inline-block px-2 py-1 text-xs rounded-full ${
+                    job.remote_friendly === "Yes"
+                      ? "bg-green-100 text-green-700"
+                      : job.remote_friendly === "No"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-gray-100 text-gray-700"
+                  }`}
+                >
+                  {job.remote_friendly}
+                </span>
+              </div>
 
-            <div>
-              <h2 className="text-base font-medium mb-2">Salary</h2>
-              <p className="text-sm text-gray-600">{job.salary_range}</p>
-            </div>
+              <div>
+                <h2 className="text-sm font-medium mb-2">Salary</h2>
+                <p className="text-sm text-gray-600">{job.salary_range}</p>
+              </div>
 
-            <div>
-              <h2 className="text-base font-medium mb-2">Career Level</h2>
-              <div className="flex flex-wrap gap-2">
-                {careerLevels.map((level, index) => (
-                  <span
-                    key={`${level}-${index}`}
-                    className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full"
-                  >
-                    {formatCareerLevel(level)}
-                  </span>
-                ))}
+              <div>
+                <h2 className="text-sm font-medium mb-2">Career Level</h2>
+                <div className="flex flex-wrap gap-2">
+                  {careerLevels.map((level, index) => (
+                    <span
+                      key={`${level}-${index}`}
+                      className="inline-block px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full"
+                    >
+                      {formatCareerLevel(level)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-medium mb-2">Job Source</h2>
+                <a
+                  href={job.apply_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  Apply on company website
+                </a>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-medium mb-2">Visa Sponsorship</h2>
+                <p className="text-sm text-gray-600">{job.visa_sponsorship}</p>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-medium mb-2">Job Timezones</h2>
+                <p className="text-sm text-gray-600">{job.job_timezone}</p>
               </div>
             </div>
 
-            <div>
-              <h2 className="text-base font-medium mb-2">Job Source</h2>
-              <a
-                href={job.apply_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm text-blue-600 hover:underline"
-              >
-                Apply on company website
-              </a>
-            </div>
-
-            <div>
-              <h2 className="text-base font-medium mb-2">Visa Sponsorship</h2>
-              <p className="text-sm text-gray-600">{job.visa_sponsorship}</p>
-            </div>
-
-            <div>
-              <h2 className="text-base font-medium mb-2">Job Timezones</h2>
-              <p className="text-sm text-gray-600">{job.job_timezone}</p>
-            </div>
+            <PostJobBanner />
           </div>
         </aside>
       </div>
