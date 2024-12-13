@@ -7,7 +7,7 @@ import { TestFeatures } from "@/components/TestFeatures";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, isToday } from "date-fns";
 
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -39,8 +39,34 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     return formatDistanceToNow(mostRecentDate, { addSuffix: true });
   }, [initialJobs]);
 
+  // Calculate jobs added today
+  const jobsAddedToday = useMemo(() => {
+    return initialJobs.filter((job) => isToday(new Date(job.posted_date)))
+      .length;
+  }, [initialJobs]);
+
   return (
     <main className="min-h-screen bg-background">
+      <style jsx>{`
+        @keyframes pulse {
+          0% {
+            transform: scale(0.95);
+            opacity: 0.5;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+          }
+          100% {
+            transform: scale(0.95);
+            opacity: 0.5;
+          }
+        }
+        .pulse-dot {
+          animation: pulse 2s infinite;
+        }
+      `}</style>
+
       {/* Hero Section */}
       <div className="border-b">
         <div className="container mx-auto px-4 py-12 md:py-16">
@@ -76,7 +102,15 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
             <div className="grid grid-cols-3 gap-4 text-xs text-muted-foreground max-w-[480px]">
               <div>
                 <div className="font-medium text-foreground">Open Jobs</div>
-                <div>{initialJobs.length}</div>
+                <div className="flex items-center">
+                  {jobsAddedToday > 0 && (
+                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 pulse-dot"></span>
+                  )}
+                  {initialJobs.length}
+                  {jobsAddedToday > 0 && (
+                    <span className="ml-1">({jobsAddedToday} added today)</span>
+                  )}
+                </div>
               </div>
               <div>
                 <div className="font-medium text-foreground">Last Updated</div>

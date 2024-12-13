@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.13] - 2024-12-13
+
+### Changed
+- Added jobs added today counter with pulsating dot indicator
+- Simplified job card date format by removing "Posted" prefix
+- Enhanced homepage stats display with dynamic job counters
+
 ## [0.0.12] - 2024-12-13
 
 ### Changed

@@ -25,7 +25,7 @@ export function JobCard({ job }: { job: Job }) {
         <span>{job.location}</span>
         {showSalary && <span>{job.salary_range}</span>}
         <time dateTime={job.posted_date}>
-          Posted {fullDate} ({relativeTime})
+          {fullDate} ({relativeTime})
         </time>
       </div>
     </Link>
