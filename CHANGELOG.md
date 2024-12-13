@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Added fallback for missing salary range values
 - Made salary range field optional in job details
 - Improved job card to hide salary when not specified
+- Fixed report button color contrast for better accessibility
 
 ## [0.0.11] - 2024-12-13
 

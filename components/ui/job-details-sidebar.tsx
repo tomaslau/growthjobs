@@ -68,7 +68,7 @@ export function JobDetailsSidebar({
     <div className="p-5 border rounded-lg space-y-4">
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-lg font-semibold">Job Details</h2>
-        <button className="text-red-600/70 hover:text-red-600 text-xs font-medium flex items-center gap-1">
+        <button className="text-red-700 hover:text-red-800 text-xs font-medium flex items-center gap-1">
           <Flag className="h-3 w-3" />
           Report
         </button>
