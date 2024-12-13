@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.15] - 2024-12-13
+
+### Added
+- Added breadcrumb navigation to job post page using shadcn components
+- Implemented compact breadcrumb design with hover interactions
+- Added second apply button between metadata and job description
+
+### Changed
+- Simplified "Apply for this position" button text to just "Apply"
+- Enhanced breadcrumb styling with consistent gray color scheme
+- Optimized spacing between breadcrumbs and job title
+
 ## [0.0.14] - 2024-12-13
 
 ### Added

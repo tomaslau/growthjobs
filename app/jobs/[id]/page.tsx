@@ -8,6 +8,14 @@ import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { JobDetailsSidebar } from "@/components/ui/job-details-sidebar";
 import { SimilarJobs } from "@/components/ui/similar-jobs";
 import { Button } from "@/components/ui/button";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 
 // Cache the getJob function
 const getCachedJob = unstable_cache(
@@ -54,6 +62,35 @@ export default async function JobPage({ params }: { params: { id: string } }) {
       <div className="flex justify-between gap-16">
         {/* Main content */}
         <article className="flex-1 max-w-[640px]">
+          <div className="mb-3">
+            <Breadcrumb>
+              <BreadcrumbList className="gap-1">
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    className="text-gray-500 hover:text-gray-900 transition-colors"
+                    href="/"
+                  >
+                    Home
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="text-gray-300 mx-[-0.25rem]" />
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    className="text-gray-500 hover:text-gray-900 transition-colors"
+                    href="/"
+                  >
+                    Jobs
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="text-gray-300 mx-[-0.25rem]" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="text-gray-900">
+                    {job.title}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
           <div className="mb-8">
             <h1 className="text-2xl font-medium mb-2">{job.title}</h1>
             <div className="flex items-center gap-3 text-sm text-gray-600">
@@ -69,6 +106,17 @@ export default async function JobPage({ params }: { params: { id: string } }) {
             </div>
           </div>
 
+          <div className="mb-6">
+            <Button
+              asChild
+              className="bg-zinc-900 text-white hover:bg-zinc-800"
+            >
+              <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
+                Apply
+              </a>
+            </Button>
+          </div>
+
           <div className="prose prose-sm prose-gray max-w-none">
             <h2 className="text-lg font-medium mb-4">Description</h2>
             <div className="markdown-content">
@@ -82,7 +130,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
               className="bg-zinc-900 text-white hover:bg-zinc-800"
             >
               <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
-                Apply for this position
+                Apply
               </a>
             </Button>
           </div>
