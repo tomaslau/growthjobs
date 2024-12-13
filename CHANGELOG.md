@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Created reusable PostJobBanner component for job posting promotion
+- Created JobDetailsSidebar component for better code organization
 - Implemented company avatars with fallback support
 - Added dark button variant using shadcn components
 
@@ -13,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Refined sidebar labels with smaller font sizes
 - Improved component organization for better maintainability
 - Enhanced banner styling with New York theme
+- Moved job details sidebar logic into separate component
 
 ## [0.0.10] - 2024-12-12
 
