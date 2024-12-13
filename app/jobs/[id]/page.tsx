@@ -144,7 +144,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
 
         {/* Sidebar */}
         <aside className="w-[300px] shrink-0">
-          <div className="sticky top-6 space-y-6">
+          <div className="space-y-6">
             <JobDetailsSidebar
               fullDate={fullDate}
               relativeTime={relativeTime}
