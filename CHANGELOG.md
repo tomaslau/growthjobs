@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.14] - 2024-12-13
+
+### Added
+- Added Similar Jobs component to job post page
+- Implemented job similarity matching based on title keywords and location
+- Limited to 5 similar job suggestions per post
+
 ## [0.0.13] - 2024-12-13
 
 ### Changed

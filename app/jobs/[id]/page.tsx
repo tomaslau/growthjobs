@@ -6,6 +6,7 @@ import { draftMode } from "next/headers";
 import { unstable_cache } from "next/cache";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { JobDetailsSidebar } from "@/components/ui/job-details-sidebar";
+import { SimilarJobs } from "@/components/ui/similar-jobs";
 import { Button } from "@/components/ui/button";
 
 // Cache the getJob function
@@ -13,6 +14,13 @@ const getCachedJob = unstable_cache(
   async (id: string) => getJob(id),
   ["job", "id"],
   { revalidate: 300, tags: ["job"] } // 5 minutes
+);
+
+// Cache the getJobs function
+const getCachedJobs = unstable_cache(
+  async () => getJobs(),
+  ["jobs"],
+  { revalidate: 300, tags: ["jobs"] } // 5 minutes
 );
 
 // Generate static params for all active jobs
@@ -33,6 +41,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
 
   // If in draft mode, fetch fresh data, otherwise use cached data
   const job = isDraft ? await getJob(id) : await getCachedJob(id);
+  const allJobs = isDraft ? await getJobs() : await getCachedJobs();
 
   if (!job) {
     notFound();
@@ -55,7 +64,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
               <span>{job.type}</span>
               <span>•</span>
               <time dateTime={job.posted_date} className="text-gray-500">
-                Posted {fullDate} ({relativeTime})
+                {fullDate} ({relativeTime})
               </time>
             </div>
           </div>
@@ -94,6 +103,7 @@ export default async function JobPage({ params }: { params: { id: string } }) {
               job_timezone={job.job_timezone}
             />
             <PostJobBanner />
+            <SimilarJobs currentJob={job} allJobs={allJobs} />
           </div>
         </aside>
       </div>
