@@ -13,5 +13,15 @@ export const revalidate = 300; // Revalidate page every 5 minutes
 
 export default async function Page() {
   const jobs = await getCachedJobs();
+  console.log("Server-side jobs fetched:", jobs.length);
+
+  // If no jobs, try fetching directly
+  if (!jobs.length) {
+    console.log("No cached jobs found, fetching directly");
+    const directJobs = await getJobs();
+    console.log("Direct fetch results:", directJobs.length);
+    return <HomePage initialJobs={directJobs} />;
+  }
+
   return <HomePage initialJobs={jobs} />;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { JobCard } from "@/components/jobs/JobCard";
 import type { Job } from "@/lib/db/airtable";
 import { TestFeatures } from "@/components/TestFeatures";
@@ -12,20 +12,28 @@ import { formatDistanceToNow, isToday } from "date-fns";
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Debug log for initial jobs
+  useEffect(() => {
+    console.log("Initial jobs:", initialJobs);
+  }, [initialJobs]);
+
   const handleSearch = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   }, []);
 
   const filteredJobs = useMemo(() => {
+    console.log("Filtering jobs with search term:", searchTerm);
     if (!searchTerm) return initialJobs;
 
     const searchLower = searchTerm.toLowerCase();
-    return initialJobs.filter(
+    const filtered = initialJobs.filter(
       (job) =>
         job.title.toLowerCase().includes(searchLower) ||
         job.company.toLowerCase().includes(searchLower) ||
         job.location.toLowerCase().includes(searchLower)
     );
+    console.log("Filtered jobs:", filtered);
+    return filtered;
   }, [initialJobs, searchTerm]);
 
   // Get the most recent job's posted date
