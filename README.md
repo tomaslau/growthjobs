@@ -22,6 +22,8 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - Smart pagination with URL-based navigation
 - Sorting options (newest, oldest, highest salary)
 - Dynamic jobs per page selection
+- Featured job posts with distinct styling
+- Similar jobs suggestions based on title and location
 
 ## Quick Start
 
@@ -52,6 +54,7 @@ npm install
   career_level: Multiple select (Internship, Entry Level, Associate, Junior, Mid Level, Senior, Staff, Principal, Lead, Manager, Senior Manager, Director, Senior Director, VP, SVP, EVP, C-Level, Founder, Not Specified)
   visa_sponsorship: Single select (Yes, No, Not specified)
   job_timezone: Single line text
+  featured: Checkbox
   ```
 - Create a Personal Access Token at https://airtable.com/create/tokens
 - Add these scopes to your token:

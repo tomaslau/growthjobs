@@ -52,6 +52,7 @@ export interface Job {
   career_level: CareerLevel[];
   visa_sponsorship: "Yes" | "No" | "Not specified";
   job_timezone: string;
+  featured: boolean;
 }
 
 // Format salary for display
@@ -220,14 +221,11 @@ export async function getJobs(): Promise<Job[]> {
           (record.fields.visa_sponsorship as Job["visa_sponsorship"]) ||
           "Not specified",
         job_timezone: (record.fields.job_timezone as string) || "Not specified",
+        featured: record.fields.featured === true,
       };
     });
   } catch (error) {
-    console.error("Error fetching jobs:", {
-      message: (error as Error).message,
-      name: (error as Error).name,
-      stack: (error as Error).stack,
-    });
+    console.error("Error fetching jobs:", error);
     return [];
   }
 }
@@ -294,6 +292,7 @@ export async function getJob(id: string): Promise<Job | null> {
         (record.fields.visa_sponsorship as Job["visa_sponsorship"]) ||
         "Not specified",
       job_timezone: (record.fields.job_timezone as string) || "Not specified",
+      featured: record.fields.featured === true,
     };
 
     console.log("Normalized remote friendly:", job.remote_friendly);

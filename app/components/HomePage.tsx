@@ -134,13 +134,41 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     return filtered;
   }, [initialJobs, searchTerm, sortBy]);
 
+  // Sort jobs based on selected option and featured status
+  const sortedJobs = useMemo(() => {
+    // First sort by featured status, then by the selected sort option
+    return [...filteredJobs].sort((a, b) => {
+      // First compare by featured status
+      if (a.featured !== b.featured) {
+        return a.featured ? -1 : 1;
+      }
+
+      // Then apply the selected sort for jobs with the same featured status
+      switch (sortBy) {
+        case "newest":
+          return (
+            new Date(b.posted_date).getTime() -
+            new Date(a.posted_date).getTime()
+          );
+        case "oldest":
+          return (
+            new Date(a.posted_date).getTime() -
+            new Date(b.posted_date).getTime()
+          );
+        case "salary":
+          const aSalary = a.salary ? normalizeAnnualSalary(a.salary) : 0;
+          const bSalary = b.salary ? normalizeAnnualSalary(b.salary) : 0;
+          return bSalary - aSalary;
+        default:
+          return 0;
+      }
+    });
+  }, [filteredJobs, sortBy]);
+
   // Calculate pagination
-  const totalPages = Math.ceil(filteredJobs.length / jobsPerPage);
+  const totalPages = Math.ceil(sortedJobs.length / jobsPerPage);
   const startIndex = (currentPage - 1) * jobsPerPage;
-  const paginatedJobs = filteredJobs.slice(
-    startIndex,
-    startIndex + jobsPerPage
-  );
+  const paginatedJobs = sortedJobs.slice(startIndex, startIndex + jobsPerPage);
 
   // Get the most recent job's posted date
   const lastUpdated = useMemo(() => {
@@ -266,8 +294,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                 )}
               </h2>
               <p className="text-sm text-muted-foreground">
-                Showing {paginatedJobs.length} of {filteredJobs.length}{" "}
-                positions
+                Showing {paginatedJobs.length} of {sortedJobs.length} positions
               </p>
             </div>
             <div className="flex items-center gap-3 pb-[1px]">
@@ -331,7 +358,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
         </div>
 
         {/* Pagination */}
-        {filteredJobs.length > jobsPerPage && (
+        {sortedJobs.length > jobsPerPage && (
           <div className="mt-8 flex justify-start">
             <Pagination>
               <PaginationContent className="flex gap-2">

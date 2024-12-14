@@ -1,4 +1,4 @@
-import { getJob, getJobs } from "@/lib/db/airtable";
+import { getJob, getJobs, formatSalary } from "@/lib/db/airtable";
 import { notFound } from "next/navigation";
 import { formatDate } from "@/lib/utils/formatDate";
 import ReactMarkdown from "react-markdown";
@@ -56,6 +56,8 @@ export default async function JobPage({ params }: { params: { id: string } }) {
   }
 
   const { fullDate, relativeTime } = formatDate(job.posted_date);
+  const showSalary =
+    job.salary && (job.salary.min !== null || job.salary.max !== null);
 
   return (
     <main className="container py-6">
@@ -92,17 +94,22 @@ export default async function JobPage({ params }: { params: { id: string } }) {
             </Breadcrumb>
           </div>
           <div className="mb-8">
-            <div className="flex flex-col gap-2">
+            <div className="space-y-2">
               <h1 className="text-2xl font-semibold">{job.title}</h1>
+              <div className="text-base text-gray-600">{job.company}</div>
               <div className="flex justify-between items-center">
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <span>{job.company}</span>
-                  <span>•</span>
+                <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <span>{job.type}</span>
+                  {showSalary && (
+                    <>
+                      <span>•</span>
+                      <span>{formatSalary(job.salary)}</span>
+                    </>
+                  )}
+                  {(showSalary || job.type) && <span>•</span>}
                   <span>{job.location}</span>
                   <span>•</span>
-                  <span>{job.type}</span>
-                  <span>•</span>
-                  <time dateTime={job.posted_date} className="text-gray-500">
+                  <time dateTime={job.posted_date}>
                     {fullDate} ({relativeTime})
                   </time>
                 </div>

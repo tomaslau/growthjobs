@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.17] - 2024-12-14
+
+### Changed
+- Updated job card metadata styling with consistent text sizes
+- Improved featured job styling with zinc color scheme
+- Enhanced metadata display order across job cards and similar jobs
+- Refined spacing in job cards for better aesthetics
+- Standardized job metadata presentation across all views
+
 ## [0.0.16] - 2024-12-13
 
 ### Added

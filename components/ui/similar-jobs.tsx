@@ -41,9 +41,9 @@ export function SimilarJobs({ currentJob, allJobs }: SimilarJobsProps) {
             <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
               <span>{job.company}</span>
               <span>•</span>
-              <span>{job.location}</span>
-              <span>•</span>
               <span>{job.type}</span>
+              <span>•</span>
+              <span>{job.location}</span>
             </div>
           </Link>
         ))}
