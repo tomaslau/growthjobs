@@ -1,11 +1,11 @@
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { useState } from "react";
-import { CareerLevel } from "@/lib/db/airtable";
+import { useState, useMemo, useCallback, useEffect } from "react";
+import { CareerLevel, Job, normalizeAnnualSalary } from "@/lib/db/airtable";
 
 type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
-type FilterValue = string | boolean | CareerLevel;
+type FilterValue = string[] | boolean | CareerLevel[] | true;
 
 interface JobFiltersProps {
   onFilterChange: (filterType: FilterType, value: FilterValue) => void;
@@ -16,11 +16,13 @@ interface JobFiltersProps {
     salaryRanges: string[];
     visa: boolean;
   };
+  jobs: Job[];
 }
 
 export function JobFilters({
   onFilterChange,
   initialFilters,
+  jobs,
 }: JobFiltersProps) {
   const [selectedTypes, setSelectedTypes] = useState<string[]>(
     initialFilters.types
@@ -87,52 +89,162 @@ export function JobFilters({
     ? [...initialLevels, ...additionalLevels]
     : initialLevels;
 
-  const handleTypeChange = (checked: boolean, value: string) => {
-    const newTypes = checked
-      ? [...selectedTypes, value]
-      : selectedTypes.filter((type) => type !== value);
-    setSelectedTypes(newTypes);
-    onFilterChange("type", value);
-  };
+  useEffect(() => {
+    const currentFilters = {
+      types: selectedTypes,
+      roles: selectedLevels,
+      remote: isRemoteOnly,
+      salaryRanges: selectedSalaryRanges,
+      visa: isVisaSponsorship,
+    };
 
-  const handleLevelChange = (checked: boolean, value: CareerLevel) => {
-    const newLevels = checked
-      ? [...selectedLevels, value]
-      : selectedLevels.filter((level) => level !== value);
-    setSelectedLevels(newLevels);
-    onFilterChange("role", value);
-  };
+    const hasChanges = Object.entries(currentFilters).some(([key, value]) => {
+      const initialValue = initialFilters[key as keyof typeof initialFilters];
+      if (Array.isArray(value) && Array.isArray(initialValue)) {
+        return JSON.stringify(value) !== JSON.stringify(initialValue);
+      }
+      return value !== initialValue;
+    });
 
-  const handleRemoteChange = (checked: boolean) => {
+    if (hasChanges) {
+      if (selectedTypes !== initialFilters.types) {
+        onFilterChange("type", selectedTypes);
+      }
+      if (selectedLevels !== initialFilters.roles) {
+        onFilterChange("role", selectedLevels);
+      }
+      if (isRemoteOnly !== initialFilters.remote) {
+        onFilterChange("remote", isRemoteOnly);
+      }
+      if (selectedSalaryRanges !== initialFilters.salaryRanges) {
+        onFilterChange("salary", selectedSalaryRanges);
+      }
+      if (isVisaSponsorship !== initialFilters.visa) {
+        onFilterChange("visa", isVisaSponsorship);
+      }
+    }
+  }, [
+    selectedTypes,
+    selectedLevels,
+    isRemoteOnly,
+    selectedSalaryRanges,
+    isVisaSponsorship,
+    onFilterChange,
+    initialFilters,
+  ]);
+
+  const handleTypeChange = useCallback((checked: boolean, value: string) => {
+    setSelectedTypes((prev) => {
+      const newTypes = new Set(prev);
+      if (checked) {
+        newTypes.add(value);
+      } else {
+        newTypes.delete(value);
+      }
+      return Array.from(newTypes);
+    });
+  }, []);
+
+  const handleLevelChange = useCallback(
+    (checked: boolean, value: CareerLevel) => {
+      setSelectedLevels((prev) => {
+        const newLevels = new Set(prev);
+        if (checked) {
+          newLevels.add(value);
+        } else {
+          newLevels.delete(value);
+        }
+        return Array.from(newLevels);
+      });
+    },
+    []
+  );
+
+  const handleRemoteChange = useCallback((checked: boolean) => {
     setIsRemoteOnly(checked);
-    onFilterChange("remote", checked);
-  };
+  }, []);
 
-  const handleSalaryChange = (checked: boolean, value: string) => {
-    const newSalaryRanges = checked
-      ? [...selectedSalaryRanges, value]
-      : selectedSalaryRanges.filter((range) => range !== value);
-    setSelectedSalaryRanges(newSalaryRanges);
-    onFilterChange("salary", value);
-  };
+  const handleSalaryChange = useCallback((checked: boolean, value: string) => {
+    setSelectedSalaryRanges((prev) => {
+      const newRanges = new Set(prev);
+      if (checked) {
+        newRanges.add(value);
+      } else {
+        newRanges.delete(value);
+      }
+      return Array.from(newRanges);
+    });
+  }, []);
 
-  const handleVisaChange = (checked: boolean) => {
+  const handleVisaChange = useCallback((checked: boolean) => {
     setIsVisaSponsorship(checked);
-    onFilterChange("visa", checked);
-  };
+  }, []);
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     setSelectedTypes([]);
     setSelectedLevels([]);
     setIsRemoteOnly(false);
     setIsVisaSponsorship(false);
     setSelectedSalaryRanges([]);
     onFilterChange("clear", true);
-  };
+  }, [onFilterChange]);
 
   const handleShowMoreLevels = () => {
     setShowAllLevels(!showAllLevels);
   };
+
+  const typeCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      "Full-time": 0,
+      "Part-time": 0,
+      Contract: 0,
+    };
+    jobs.forEach((job) => {
+      if (job.type in counts) {
+        counts[job.type]++;
+      }
+    });
+    return counts;
+  }, [jobs]);
+
+  const roleCounts = useMemo(() => {
+    const counts: Record<CareerLevel, number> = {} as Record<
+      CareerLevel,
+      number
+    >;
+    jobs.forEach((job) => {
+      job.career_level.forEach((level: CareerLevel) => {
+        counts[level] = (counts[level] || 0) + 1;
+      });
+    });
+    return counts;
+  }, [jobs]);
+
+  const remoteCount = useMemo(() => {
+    return jobs.filter((job) => job.remote_friendly === "Yes").length;
+  }, [jobs]);
+
+  const visaCount = useMemo(() => {
+    return jobs.filter((job) => job.visa_sponsorship === "Yes").length;
+  }, [jobs]);
+
+  const salaryRangeCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      "< $50K": 0,
+      "$50K - $100K": 0,
+      "$100K - $200K": 0,
+      "> $200K": 0,
+    };
+    jobs.forEach((job) => {
+      if (!job.salary) return;
+      const annualSalary = normalizeAnnualSalary(job.salary);
+      if (annualSalary < 50000) counts["< $50K"]++;
+      else if (annualSalary <= 100000) counts["$50K - $100K"]++;
+      else if (annualSalary <= 200000) counts["$100K - $200K"]++;
+      else counts["> $200K"]++;
+    });
+    return counts;
+  }, [jobs]);
 
   return (
     <div className="p-5 border rounded-lg space-y-6 bg-gray-50 relative">
@@ -150,41 +262,74 @@ export function JobFilters({
       <div className="space-y-4">
         <h2 className="text-md font-semibold">Job Type</h2>
         <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="full-time"
-              checked={selectedTypes.includes("Full-time")}
-              onCheckedChange={(checked: boolean) =>
-                handleTypeChange(checked, "Full-time")
-              }
-            />
-            <Label htmlFor="full-time" className="text-sm font-normal">
-              Full-time
-            </Label>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="full-time"
+                checked={selectedTypes.includes("Full-time")}
+                onCheckedChange={(checked: boolean) =>
+                  handleTypeChange(checked, "Full-time")
+                }
+              />
+              <Label htmlFor="full-time" className="text-sm font-normal">
+                Full-time
+              </Label>
+            </div>
+            <span
+              className={`text-xs px-2 py-0.5 rounded-full ${
+                selectedTypes.includes("Full-time")
+                  ? "bg-zinc-900 text-zinc-50"
+                  : "bg-zinc-100 text-zinc-500"
+              }`}
+            >
+              {typeCounts["Full-time"]}
+            </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="part-time"
-              checked={selectedTypes.includes("Part-time")}
-              onCheckedChange={(checked: boolean) =>
-                handleTypeChange(checked, "Part-time")
-              }
-            />
-            <Label htmlFor="part-time" className="text-sm font-normal">
-              Part-time
-            </Label>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="part-time"
+                checked={selectedTypes.includes("Part-time")}
+                onCheckedChange={(checked: boolean) =>
+                  handleTypeChange(checked, "Part-time")
+                }
+              />
+              <Label htmlFor="part-time" className="text-sm font-normal">
+                Part-time
+              </Label>
+            </div>
+            <span
+              className={`text-xs px-2 py-0.5 rounded-full ${
+                selectedTypes.includes("Part-time")
+                  ? "bg-zinc-900 text-zinc-50"
+                  : "bg-zinc-100 text-zinc-500"
+              }`}
+            >
+              {typeCounts["Part-time"]}
+            </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="contract"
-              checked={selectedTypes.includes("Contract")}
-              onCheckedChange={(checked: boolean) =>
-                handleTypeChange(checked, "Contract")
-              }
-            />
-            <Label htmlFor="contract" className="text-sm font-normal">
-              Contract
-            </Label>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="contract"
+                checked={selectedTypes.includes("Contract")}
+                onCheckedChange={(checked: boolean) =>
+                  handleTypeChange(checked, "Contract")
+                }
+              />
+              <Label htmlFor="contract" className="text-sm font-normal">
+                Contract
+              </Label>
+            </div>
+            <span
+              className={`text-xs px-2 py-0.5 rounded-full ${
+                selectedTypes.includes("Contract")
+                  ? "bg-zinc-900 text-zinc-50"
+                  : "bg-zinc-100 text-zinc-500"
+              }`}
+            >
+              {typeCounts["Contract"]}
+            </span>
           </div>
         </div>
       </div>
@@ -194,20 +339,31 @@ export function JobFilters({
         <h2 className="text-md font-semibold">Career Level</h2>
         <div className="space-y-3">
           {visibleLevels.map((level) => (
-            <div key={level} className="flex items-center space-x-2">
-              <Checkbox
-                id={level.toLowerCase().replace(" ", "-")}
-                checked={selectedLevels.includes(level)}
-                onCheckedChange={(checked: boolean) =>
-                  handleLevelChange(checked, level)
-                }
-              />
-              <Label
-                htmlFor={level.toLowerCase().replace(" ", "-")}
-                className="text-sm font-normal"
+            <div key={level} className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={level.toLowerCase().replace(" ", "-")}
+                  checked={selectedLevels.includes(level)}
+                  onCheckedChange={(checked: boolean) =>
+                    handleLevelChange(checked, level)
+                  }
+                />
+                <Label
+                  htmlFor={level.toLowerCase().replace(" ", "-")}
+                  className="text-sm font-normal"
+                >
+                  {levelDisplayNames[level]}
+                </Label>
+              </div>
+              <span
+                className={`text-xs px-2 py-0.5 rounded-full ${
+                  selectedLevels.includes(level)
+                    ? "bg-zinc-900 text-zinc-50"
+                    : "bg-zinc-100 text-zinc-500"
+                }`}
               >
-                {levelDisplayNames[level]}
-              </Label>
+                {roleCounts[level] || 0}
+              </span>
             </div>
           ))}
         </div>
@@ -222,18 +378,29 @@ export function JobFilters({
       {/* Remote Only */}
       <div className="space-y-4">
         <h2 className="text-md font-semibold">Remote Only</h2>
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="remote-only"
-            checked={isRemoteOnly}
-            onCheckedChange={handleRemoteChange}
-          />
-          <Label
-            htmlFor="remote-only"
-            className="text-sm font-normal text-gray-500"
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="remote-only"
+              checked={isRemoteOnly}
+              onCheckedChange={handleRemoteChange}
+            />
+            <Label
+              htmlFor="remote-only"
+              className="text-sm font-normal text-gray-500"
+            >
+              {isRemoteOnly ? "Yes" : "No"}
+            </Label>
+          </div>
+          <span
+            className={`text-xs px-2 py-0.5 rounded-full ${
+              isRemoteOnly
+                ? "bg-zinc-900 text-zinc-50"
+                : "bg-zinc-100 text-zinc-500"
+            }`}
           >
-            {isRemoteOnly ? "Yes" : "No"}
-          </Label>
+            {remoteCount}
+          </span>
         </div>
       </div>
 
@@ -241,72 +408,65 @@ export function JobFilters({
       <div className="space-y-4">
         <h2 className="text-md font-semibold">Salary Range</h2>
         <div className="space-y-3">
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="salary-50k"
-              checked={selectedSalaryRanges.includes("< $50K")}
-              onCheckedChange={(checked: boolean) =>
-                handleSalaryChange(checked, "< $50K")
-              }
-            />
-            <Label htmlFor="salary-50k" className="text-sm font-normal">
-              {"< $50K/year"}
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="salary-50k-100k"
-              checked={selectedSalaryRanges.includes("$50K - $100K")}
-              onCheckedChange={(checked: boolean) =>
-                handleSalaryChange(checked, "$50K - $100K")
-              }
-            />
-            <Label htmlFor="salary-50k-100k" className="text-sm font-normal">
-              $50K - $100K/year
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="salary-100k-200k"
-              checked={selectedSalaryRanges.includes("$100K - $200K")}
-              onCheckedChange={(checked: boolean) =>
-                handleSalaryChange(checked, "$100K - $200K")
-              }
-            />
-            <Label htmlFor="salary-100k-200k" className="text-sm font-normal">
-              $100K - $200K/year
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="salary-200k"
-              checked={selectedSalaryRanges.includes("> $200K")}
-              onCheckedChange={(checked: boolean) =>
-                handleSalaryChange(checked, "> $200K")
-              }
-            />
-            <Label htmlFor="salary-200k" className="text-sm font-normal">
-              {"> $200K/year"}
-            </Label>
-          </div>
+          {Object.entries(salaryRangeCounts).map(([range, count]) => (
+            <div key={range} className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={`salary-${range.toLowerCase().replace(/[\s\$>]/g, "-")}`}
+                  checked={selectedSalaryRanges.includes(range)}
+                  onCheckedChange={(checked: boolean) =>
+                    handleSalaryChange(checked, range)
+                  }
+                />
+                <Label
+                  htmlFor={`salary-${range
+                    .toLowerCase()
+                    .replace(/[\s\$>]/g, "-")}`}
+                  className="text-sm font-normal"
+                >
+                  {range}/year
+                </Label>
+              </div>
+              <span
+                className={`text-xs px-2 py-0.5 rounded-full ${
+                  selectedSalaryRanges.includes(range)
+                    ? "bg-zinc-900 text-zinc-50"
+                    : "bg-zinc-100 text-zinc-500"
+                }`}
+              >
+                {count}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Visa Sponsorship */}
       <div className="space-y-4">
         <h2 className="text-md font-semibold">Visa Sponsorship</h2>
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="visa-sponsorship"
-            checked={isVisaSponsorship}
-            onCheckedChange={handleVisaChange}
-          />
-          <Label
-            htmlFor="visa-sponsorship"
-            className="text-sm font-normal text-gray-500"
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="visa-sponsorship"
+              checked={isVisaSponsorship}
+              onCheckedChange={handleVisaChange}
+            />
+            <Label
+              htmlFor="visa-sponsorship"
+              className="text-sm font-normal text-gray-500"
+            >
+              {isVisaSponsorship ? "Yes" : "No"}
+            </Label>
+          </div>
+          <span
+            className={`text-xs px-2 py-0.5 rounded-full ${
+              isVisaSponsorship
+                ? "bg-zinc-900 text-zinc-50"
+                : "bg-zinc-100 text-zinc-500"
+            }`}
           >
-            {isVisaSponsorship ? "Yes" : "No"}
-          </Label>
+            {visaCount}
+          </span>
         </div>
       </div>
     </div>

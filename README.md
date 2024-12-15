@@ -31,6 +31,12 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
   - Remote work preference
   - Salary ranges
   - Visa sponsorship status
+- Enhanced user experience
+  - Keyboard navigation for search (Escape to clear)
+  - Loading states with smooth transitions
+  - Smart pagination with dynamic range
+  - No page jumps during filtering
+  - Accessible UI with ARIA labels
 
 ## Quick Start
 

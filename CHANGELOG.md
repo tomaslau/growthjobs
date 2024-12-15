@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.19] - 2024-12-14
+
+### Added
+- Added loading states for filter changes with smooth transitions
+- Implemented keyboard navigation for search (Escape to clear)
+- Added clear button for search input
+- Added ARIA labels for better accessibility
+
+### Changed
+- Optimized pagination with smarter range algorithm
+- Improved filter state management to prevent unnecessary updates
+- Enhanced URL handling to prevent page jumps when filtering
+- Refined loading indicators with better visual feedback
+
 ## [0.0.18] - 2024-12-14
 
 ### Added

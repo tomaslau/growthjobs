@@ -38,13 +38,14 @@ interface Filters {
 }
 
 type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
-type FilterValue = string | boolean | CareerLevel;
+type FilterValue = string[] | boolean | CareerLevel[] | true;
 
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [isFiltering, setIsFiltering] = useState(false);
 
   // Parse initial filters from URL
   const initialFilters = {
@@ -84,7 +85,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
         }
       });
 
-      router.push(`/?${params.toString()}`);
+      router.replace(`/?${params.toString()}`, { scroll: false });
       setPendingUrlUpdate(null);
     }
   }, [pendingUrlUpdate, router, searchParams]);
@@ -131,81 +132,102 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     [updateParams]
   );
 
+  // Handle search with debounce
   const handleSearch = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearchTerm(e.target.value);
-      updateParams({ page: null }); // Reset to first page when searching
+      setIsFiltering(true);
+      const timer = setTimeout(() => {
+        updateParams({ page: null }); // Reset to first page when searching
+        setIsFiltering(false);
+      }, 300);
+      return () => clearTimeout(timer);
     },
     [updateParams]
   );
 
-  const handleFilterChange = (filterType: FilterType, value: FilterValue) => {
-    if (filterType === "clear") {
-      const clearedFilters = {
-        types: [],
-        roles: [] as CareerLevel[],
-        remote: false,
-        salaryRanges: [],
-        visa: false,
-      };
-      setFilters(clearedFilters);
-      updateFilterParams(clearedFilters);
-      return;
-    }
+  // Handle keyboard navigation
+  const handleSearchKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Escape") {
+        setSearchTerm("");
+        updateParams({ page: null });
+      }
+    },
+    [updateParams]
+  );
 
-    setFilters((prev) => {
-      const newFilters = { ...prev };
-
-      switch (filterType) {
-        case "type":
-          if (typeof value === "string") {
-            const types = new Set(prev.types);
-            if (types.has(value)) {
-              types.delete(value);
-            } else {
-              types.add(value);
-            }
-            newFilters.types = Array.from(types);
-          }
-          break;
-        case "role":
-          if (typeof value === "string") {
-            const roles = new Set(prev.roles);
-            if (roles.has(value as CareerLevel)) {
-              roles.delete(value as CareerLevel);
-            } else {
-              roles.add(value as CareerLevel);
-            }
-            newFilters.roles = Array.from(roles) as CareerLevel[];
-          }
-          break;
-        case "remote":
-          if (typeof value === "boolean") {
-            newFilters.remote = value;
-          }
-          break;
-        case "salary":
-          if (typeof value === "string") {
-            const salaryRanges = new Set(prev.salaryRanges);
-            if (salaryRanges.has(value)) {
-              salaryRanges.delete(value);
-            } else {
-              salaryRanges.add(value);
-            }
-            newFilters.salaryRanges = Array.from(salaryRanges);
-          }
-          break;
-        case "visa":
-          if (typeof value === "boolean") {
-            newFilters.visa = value;
-          }
-          break;
+  const handleFilterChange = useCallback(
+    (filterType: FilterType, value: FilterValue) => {
+      if (filterType === "clear") {
+        const clearedFilters = {
+          types: [],
+          roles: [] as CareerLevel[],
+          remote: false,
+          salaryRanges: [],
+          visa: false,
+        };
+        setFilters(clearedFilters);
+        updateFilterParams(clearedFilters);
+        return;
       }
 
-      updateFilterParams(newFilters);
-      return newFilters;
-    });
-  };
+      setFilters((prev) => {
+        const newFilters = { ...prev };
+
+        switch (filterType) {
+          case "type":
+            if (
+              Array.isArray(value) &&
+              JSON.stringify(value) !== JSON.stringify(prev.types)
+            ) {
+              newFilters.types = value;
+            } else {
+              return prev;
+            }
+            break;
+          case "role":
+            if (
+              Array.isArray(value) &&
+              JSON.stringify(value) !== JSON.stringify(prev.roles)
+            ) {
+              newFilters.roles = value as CareerLevel[];
+            } else {
+              return prev;
+            }
+            break;
+          case "remote":
+            if (typeof value === "boolean" && value !== prev.remote) {
+              newFilters.remote = value;
+            } else {
+              return prev;
+            }
+            break;
+          case "salary":
+            if (
+              Array.isArray(value) &&
+              JSON.stringify(value) !== JSON.stringify(prev.salaryRanges)
+            ) {
+              newFilters.salaryRanges = value;
+            } else {
+              return prev;
+            }
+            break;
+          case "visa":
+            if (typeof value === "boolean" && value !== prev.visa) {
+              newFilters.visa = value;
+            } else {
+              return prev;
+            }
+            break;
+        }
+
+        updateFilterParams(newFilters);
+        return newFilters;
+      });
+    },
+    [updateFilterParams]
+  );
 
   // Sort and filter jobs
   const filteredJobs = useMemo(() => {
@@ -361,6 +383,38 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     }
   }, [currentPage, totalPages, updateParams]);
 
+  // Optimize pagination range calculation
+  const getPaginationRange = useCallback((current: number, total: number) => {
+    const delta = 2;
+    const range = [];
+    const rangeWithDots = [];
+    let l;
+
+    for (let i = 1; i <= total; i++) {
+      if (
+        i === 1 ||
+        i === total ||
+        (i >= current - delta && i <= current + delta)
+      ) {
+        range.push(i);
+      }
+    }
+
+    for (const i of range) {
+      if (l) {
+        if (i - l === 2) {
+          rangeWithDots.push(l + 1);
+        } else if (i - l !== 1) {
+          rangeWithDots.push("...");
+        }
+      }
+      rangeWithDots.push(i);
+      l = i;
+    }
+
+    return rangeWithDots;
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
       <style jsx>{`
@@ -410,7 +464,21 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                   className="pl-9 h-10"
                   value={searchTerm}
                   onChange={handleSearch}
+                  onKeyDown={handleSearchKeyDown}
+                  aria-label="Search jobs"
                 />
+                {searchTerm && (
+                  <button
+                    onClick={() => {
+                      setSearchTerm("");
+                      updateParams({ page: null });
+                    }}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    aria-label="Clear search"
+                  >
+                    ×
+                  </button>
+                )}
               </div>
             </div>
 
@@ -512,7 +580,14 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
             </div>
 
             <div className="space-y-4">
-              {paginatedJobs.length === 0 ? (
+              {isFiltering ? (
+                <div className="text-center py-8">
+                  <div className="inline-block h-6 w-6 animate-spin rounded-full border-2 border-gray-900 border-r-transparent"></div>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Updating results...
+                  </p>
+                </div>
+              ) : paginatedJobs.length === 0 ? (
                 <div className="text-center py-8">
                   <p className="text-sm text-muted-foreground">
                     No positions found matching your search criteria. Try
@@ -524,7 +599,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
               )}
             </div>
 
-            {/* Pagination */}
+            {/* Pagination with optimized range */}
             {sortedJobs.length > jobsPerPage && (
               <div className="mt-8 flex justify-start">
                 <Pagination>
@@ -536,10 +611,13 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                         }
                         onClick={(e) => {
                           e.preventDefault();
-                          if (currentPage > 1)
+                          if (currentPage > 1) {
+                            setIsFiltering(true);
                             updateParams({
                               page: (currentPage - 1).toString(),
                             });
+                            setTimeout(() => setIsFiltering(false), 300);
+                          }
                         }}
                         className={`hover:bg-gray-100 transition-colors ${
                           currentPage === 1
@@ -549,32 +627,21 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                       />
                     </PaginationItem>
 
-                    {/* First page */}
-                    <PaginationItem>
-                      <PaginationLink
-                        href="/"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          updateParams({ page: null });
-                        }}
-                        isActive={currentPage === 1}
-                        className="hover:bg-gray-100 transition-colors"
-                      >
-                        1
-                      </PaginationLink>
-                    </PaginationItem>
-
-                    {/* Current page and surrounding pages */}
-                    {Array.from({ length: 3 }, (_, i) => {
-                      const pageNum = currentPage - 1 + i;
-                      if (pageNum > 1 && pageNum < totalPages) {
-                        return (
+                    {getPaginationRange(currentPage, totalPages).map(
+                      (pageNum, idx) =>
+                        pageNum === "..." ? (
+                          <PaginationItem key={`ellipsis-${idx}`}>
+                            <PaginationEllipsis />
+                          </PaginationItem>
+                        ) : (
                           <PaginationItem key={pageNum}>
                             <PaginationLink
                               href={`/?page=${pageNum}`}
                               onClick={(e) => {
                                 e.preventDefault();
+                                setIsFiltering(true);
                                 updateParams({ page: pageNum.toString() });
+                                setTimeout(() => setIsFiltering(false), 300);
                               }}
                               isActive={currentPage === pageNum}
                               className="hover:bg-gray-100 transition-colors"
@@ -582,33 +649,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                               {pageNum}
                             </PaginationLink>
                           </PaginationItem>
-                        );
-                      }
-                      return null;
-                    })}
-
-                    {/* Show ellipsis if there are many pages remaining */}
-                    {currentPage < totalPages - 2 && (
-                      <PaginationItem>
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                    )}
-
-                    {/* Last page */}
-                    {totalPages > 1 && (
-                      <PaginationItem>
-                        <PaginationLink
-                          href={`/?page=${totalPages}`}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            updateParams({ page: totalPages.toString() });
-                          }}
-                          isActive={currentPage === totalPages}
-                          className="hover:bg-gray-100 transition-colors"
-                        >
-                          {totalPages}
-                        </PaginationLink>
-                      </PaginationItem>
+                        )
                     )}
 
                     <PaginationItem>
@@ -620,10 +661,13 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                         }
                         onClick={(e) => {
                           e.preventDefault();
-                          if (currentPage < totalPages)
+                          if (currentPage < totalPages) {
+                            setIsFiltering(true);
                             updateParams({
                               page: (currentPage + 1).toString(),
                             });
+                            setTimeout(() => setIsFiltering(false), 300);
+                          }
                         }}
                         className={`hover:bg-gray-100 transition-colors ${
                           currentPage === totalPages
@@ -643,6 +687,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
             <JobFilters
               onFilterChange={handleFilterChange}
               initialFilters={initialFilters}
+              jobs={initialJobs}
             />
           </aside>
         </div>
