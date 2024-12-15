@@ -24,6 +24,13 @@ A modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. F
 - Dynamic jobs per page selection
 - Featured job posts with distinct styling
 - Similar jobs suggestions based on title and location
+- URL-based filter persistence for sharing and bookmarking
+- Comprehensive filtering system with multiple parameters
+  - Job type (Full-time, Part-time, Contract)
+  - Career level (18 standardized levels)
+  - Remote work preference
+  - Salary ranges
+  - Visa sponsorship status
 
 ## Quick Start
 
@@ -140,6 +147,26 @@ The job board supports a comprehensive salary structure:
 - Sort by newest, oldest, or highest salary
 - Maintains state in URL parameters
 - Elegant pagination UI with ellipsis for large page counts
+
+## URL Parameters
+
+The job board supports comprehensive URL parameters for sharing and bookmarking:
+
+- `page` - Current page number
+- `per_page` - Items per page (10, 25, 50, 100)
+- `sort` - Sort order (newest, oldest, salary)
+- `types` - Comma-separated job types (Full-time, Part-time, Contract)
+- `roles` - Comma-separated career levels
+- `remote` - Remote work filter (true)
+- `salary` - Comma-separated salary ranges
+- `visa` - Visa sponsorship filter (true)
+
+Example URLs:
+```
+/?types=Full-time,Contract&roles=Senior,Lead&remote=true
+/?salary=50K-100K,100K-200K&visa=true&page=2
+/?sort=salary&per_page=25
+```
 
 ## Customization
 

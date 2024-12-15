@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { JobCard } from "../../components/jobs/JobCard";
-import type { Job } from "@/lib/db/airtable";
+import type { Job, CareerLevel } from "@/lib/db/airtable";
 import { normalizeAnnualSalary } from "@/lib/db/airtable";
 import { Input } from "../../components/ui/input";
 import { Badge } from "../../components/ui/badge";
@@ -25,8 +25,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { JobFilters } from "@/components/ui/job-filters";
 
 type SortOption = "newest" | "oldest" | "salary";
+
+interface Filters {
+  types: string[];
+  roles: CareerLevel[];
+  remote: boolean;
+  salaryRanges: string[];
+  visa: boolean;
+}
+
+type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
+type FilterValue = string | boolean | CareerLevel;
 
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();
@@ -34,16 +46,37 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
 
+  // Parse initial filters from URL
+  const initialFilters = {
+    types: searchParams.get("types")?.split(",").filter(Boolean) || [],
+    roles: (searchParams.get("roles")?.split(",").filter(Boolean) ||
+      []) as CareerLevel[],
+    remote: searchParams.get("remote") === "true",
+    salaryRanges: searchParams.get("salary")?.split(",").filter(Boolean) || [],
+    visa: searchParams.get("visa") === "true",
+  };
+
+  const [filters, setFilters] = useState<Filters>(initialFilters);
+  const [pendingUrlUpdate, setPendingUrlUpdate] = useState<Record<
+    string,
+    string | null
+  > | null>(null);
+
   // Get current page and jobs per page from URL or defaults
   const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const jobsPerPage = parseInt(searchParams.get("per_page") || "10", 10);
 
   // Update URL with new parameters
-  const updateParams = useCallback(
-    (updates: Record<string, string | null>) => {
+  const updateParams = useCallback((updates: Record<string, string | null>) => {
+    setPendingUrlUpdate(updates);
+  }, []);
+
+  // Handle URL updates
+  useEffect(() => {
+    if (pendingUrlUpdate) {
       const params = new URLSearchParams(searchParams);
 
-      Object.entries(updates).forEach(([key, value]) => {
+      Object.entries(pendingUrlUpdate).forEach(([key, value]) => {
         if (value === null) {
           params.delete(key);
         } else {
@@ -52,8 +85,27 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
       });
 
       router.push(`/?${params.toString()}`);
+      setPendingUrlUpdate(null);
+    }
+  }, [pendingUrlUpdate, router, searchParams]);
+
+  // Update URL when filters change
+  const updateFilterParams = useCallback(
+    (newFilters: Filters) => {
+      const updates: Record<string, string | null> = {
+        types: newFilters.types.length ? newFilters.types.join(",") : null,
+        roles: newFilters.roles.length ? newFilters.roles.join(",") : null,
+        remote: newFilters.remote ? "true" : null,
+        salary: newFilters.salaryRanges.length
+          ? newFilters.salaryRanges.join(",")
+          : null,
+        visa: newFilters.visa ? "true" : null,
+        page: "1", // Reset to first page when filters change
+      };
+
+      updateParams(updates);
     },
-    [router, searchParams]
+    [updateParams]
   );
 
   // Handle jobs per page change
@@ -69,12 +121,12 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
 
   // Handle sort change
   const handleSortChange = useCallback(
-    (value: string) => {
+    (value: SortOption) => {
+      setSortBy(value);
       updateParams({
         sort: value === "newest" ? null : value,
         page: "1", // Reset to first page when changing sort
       });
-      setSortBy(value as SortOption);
     },
     [updateParams]
   );
@@ -86,6 +138,74 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     },
     [updateParams]
   );
+
+  const handleFilterChange = (filterType: FilterType, value: FilterValue) => {
+    if (filterType === "clear") {
+      const clearedFilters = {
+        types: [],
+        roles: [] as CareerLevel[],
+        remote: false,
+        salaryRanges: [],
+        visa: false,
+      };
+      setFilters(clearedFilters);
+      updateFilterParams(clearedFilters);
+      return;
+    }
+
+    setFilters((prev) => {
+      const newFilters = { ...prev };
+
+      switch (filterType) {
+        case "type":
+          if (typeof value === "string") {
+            const types = new Set(prev.types);
+            if (types.has(value)) {
+              types.delete(value);
+            } else {
+              types.add(value);
+            }
+            newFilters.types = Array.from(types);
+          }
+          break;
+        case "role":
+          if (typeof value === "string") {
+            const roles = new Set(prev.roles);
+            if (roles.has(value as CareerLevel)) {
+              roles.delete(value as CareerLevel);
+            } else {
+              roles.add(value as CareerLevel);
+            }
+            newFilters.roles = Array.from(roles) as CareerLevel[];
+          }
+          break;
+        case "remote":
+          if (typeof value === "boolean") {
+            newFilters.remote = value;
+          }
+          break;
+        case "salary":
+          if (typeof value === "string") {
+            const salaryRanges = new Set(prev.salaryRanges);
+            if (salaryRanges.has(value)) {
+              salaryRanges.delete(value);
+            } else {
+              salaryRanges.add(value);
+            }
+            newFilters.salaryRanges = Array.from(salaryRanges);
+          }
+          break;
+        case "visa":
+          if (typeof value === "boolean") {
+            newFilters.visa = value;
+          }
+          break;
+      }
+
+      updateFilterParams(newFilters);
+      return newFilters;
+    });
+  };
 
   // Sort and filter jobs
   const filteredJobs = useMemo(() => {
@@ -102,6 +222,52 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
       );
     }
 
+    // Apply job type filter
+    if (filters.types.length > 0) {
+      filtered = filtered.filter((job) => filters.types.includes(job.type));
+    }
+
+    // Apply career level filter
+    if (filters.roles.length > 0) {
+      filtered = filtered.filter((job) => {
+        if (!job.career_level) return false;
+        return filters.roles.some((role) => job.career_level.includes(role));
+      });
+    }
+
+    // Apply remote filter
+    if (filters.remote) {
+      filtered = filtered.filter((job) => job.remote_friendly === "Yes");
+    }
+
+    // Apply visa sponsorship filter
+    if (filters.visa) {
+      filtered = filtered.filter((job) => job.visa_sponsorship === "Yes");
+    }
+
+    // Apply salary range filter
+    if (filters.salaryRanges.length > 0) {
+      filtered = filtered.filter((job) => {
+        if (!job.salary) return false;
+        const annualSalary = normalizeAnnualSalary(job.salary);
+
+        return filters.salaryRanges.some((range) => {
+          switch (range) {
+            case "< $50K":
+              return annualSalary < 50000;
+            case "$50K - $100K":
+              return annualSalary >= 50000 && annualSalary <= 100000;
+            case "$100K - $200K":
+              return annualSalary > 100000 && annualSalary <= 200000;
+            case "> $200K":
+              return annualSalary > 200000;
+            default:
+              return false;
+          }
+        });
+      });
+    }
+
     // Apply sorting
     switch (sortBy) {
       case "oldest":
@@ -116,7 +282,6 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
           const salaryA = a.salary ? normalizeAnnualSalary(a.salary) : -1;
           const salaryB = b.salary ? normalizeAnnualSalary(b.salary) : -1;
 
-          // Sort by normalized annual salary (highest first)
           if (salaryA === -1 && salaryB === -1) return 0;
           if (salaryA === -1) return 1;
           if (salaryB === -1) return -1;
@@ -132,7 +297,7 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
     }
 
     return filtered;
-  }, [initialJobs, searchTerm, sortBy]);
+  }, [initialJobs, searchTerm, sortBy, filters]);
 
   // Sort jobs based on selected option and featured status
   const sortedJobs = useMemo(() => {
@@ -282,192 +447,205 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
 
       {/* Jobs Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col space-y-4">
-          <div className="flex justify-between items-end">
-            <div className="space-y-1">
-              <h2 className="text-xl font-semibold tracking-tight flex items-center gap-2">
-                Latest Opportunities
-                {currentPage > 1 && (
-                  <span className="text-gray-500 font-normal">
-                    Page {currentPage}
-                  </span>
-                )}
-              </h2>
-              <p className="text-sm text-muted-foreground">
-                Showing {paginatedJobs.length} of {sortedJobs.length} positions
-              </p>
-            </div>
-            <div className="flex items-center gap-3 pb-[1px]">
-              <Select
-                value={jobsPerPage.toString()}
-                onValueChange={handleJobsPerPageChange}
-              >
-                <SelectTrigger className="w-[130px] h-8 text-sm">
-                  <SelectValue placeholder="Show" />
-                </SelectTrigger>
-                <SelectContent
-                  className="bg-white min-w-[130px]"
-                  position="popper"
+        <div className="flex justify-between gap-8">
+          {/* Main Content */}
+          <div className="flex-1">
+            <div className="flex justify-between items-end mb-6">
+              <div className="space-y-1">
+                <h2 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+                  Latest Opportunities
+                  {currentPage > 1 && (
+                    <span className="text-gray-500 font-normal">
+                      Page {currentPage}
+                    </span>
+                  )}
+                </h2>
+                <p className="text-sm text-muted-foreground">
+                  Showing {paginatedJobs.length} of {sortedJobs.length}{" "}
+                  positions
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pb-[1px]">
+                <Select
+                  value={jobsPerPage.toString()}
+                  onValueChange={handleJobsPerPageChange}
                 >
-                  <SelectItem value="10" className="text-sm">
-                    10 per page
-                  </SelectItem>
-                  <SelectItem value="25" className="text-sm">
-                    25 per page
-                  </SelectItem>
-                  <SelectItem value="50" className="text-sm">
-                    50 per page
-                  </SelectItem>
-                  <SelectItem value="100" className="text-sm">
-                    100 per page
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={sortBy} onValueChange={handleSortChange}>
-                <SelectTrigger className="w-[140px] h-8 text-sm">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent className="bg-white" position="popper">
-                  <SelectItem value="newest" className="text-sm">
-                    Newest first
-                  </SelectItem>
-                  <SelectItem value="oldest" className="text-sm">
-                    Oldest first
-                  </SelectItem>
-                  <SelectItem value="salary" className="text-sm">
-                    Highest salary
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
-
-        <div className="space-y-4 mt-6">
-          {paginatedJobs.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-sm text-muted-foreground">
-                No positions found matching your search criteria. Try adjusting
-                your search terms.
-              </p>
-            </div>
-          ) : (
-            paginatedJobs.map((job) => <JobCard key={job.id} job={job} />)
-          )}
-        </div>
-
-        {/* Pagination */}
-        {sortedJobs.length > jobsPerPage && (
-          <div className="mt-8 flex justify-start">
-            <Pagination>
-              <PaginationContent className="flex gap-2">
-                <PaginationItem>
-                  <PaginationPrevious
-                    href={currentPage > 1 ? `/?page=${currentPage - 1}` : "#"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage > 1)
-                        updateParams({ page: (currentPage - 1).toString() });
-                    }}
-                    className={`hover:bg-gray-100 transition-colors ${
-                      currentPage === 1 ? "pointer-events-none opacity-50" : ""
-                    }`}
-                  />
-                </PaginationItem>
-
-                {/* First page */}
-                <PaginationItem>
-                  <PaginationLink
-                    href="/"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      updateParams({ page: null });
-                    }}
-                    isActive={currentPage === 1}
-                    className="hover:bg-gray-100 transition-colors"
+                  <SelectTrigger className="w-[130px] h-8 text-sm">
+                    <SelectValue placeholder="Show" />
+                  </SelectTrigger>
+                  <SelectContent
+                    className="bg-white min-w-[130px]"
+                    position="popper"
                   >
-                    1
-                  </PaginationLink>
-                </PaginationItem>
+                    <SelectItem value="10" className="text-sm">
+                      10 per page
+                    </SelectItem>
+                    <SelectItem value="25" className="text-sm">
+                      25 per page
+                    </SelectItem>
+                    <SelectItem value="50" className="text-sm">
+                      50 per page
+                    </SelectItem>
+                    <SelectItem value="100" className="text-sm">
+                      100 per page
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
 
-                {/* Show ellipsis if there are many pages */}
-                {currentPage > 3 && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
+                <Select value={sortBy} onValueChange={handleSortChange}>
+                  <SelectTrigger className="w-[140px] h-8 text-sm">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white" position="popper">
+                    <SelectItem value="newest" className="text-sm">
+                      Newest first
+                    </SelectItem>
+                    <SelectItem value="oldest" className="text-sm">
+                      Oldest first
+                    </SelectItem>
+                    <SelectItem value="salary" className="text-sm">
+                      Highest salary
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
 
-                {/* Current page and surrounding pages */}
-                {Array.from({ length: 3 }, (_, i) => {
-                  const pageNum = currentPage + i - 1;
-                  if (pageNum > 1 && pageNum < totalPages) {
-                    return (
-                      <PaginationItem key={pageNum}>
+            <div className="space-y-4">
+              {paginatedJobs.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-sm text-muted-foreground">
+                    No positions found matching your search criteria. Try
+                    adjusting your search terms.
+                  </p>
+                </div>
+              ) : (
+                paginatedJobs.map((job) => <JobCard key={job.id} job={job} />)
+              )}
+            </div>
+
+            {/* Pagination */}
+            {sortedJobs.length > jobsPerPage && (
+              <div className="mt-8 flex justify-start">
+                <Pagination>
+                  <PaginationContent className="flex gap-2">
+                    <PaginationItem>
+                      <PaginationPrevious
+                        href={
+                          currentPage > 1 ? `/?page=${currentPage - 1}` : "#"
+                        }
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage > 1)
+                            updateParams({
+                              page: (currentPage - 1).toString(),
+                            });
+                        }}
+                        className={`hover:bg-gray-100 transition-colors ${
+                          currentPage === 1
+                            ? "pointer-events-none opacity-50"
+                            : ""
+                        }`}
+                      />
+                    </PaginationItem>
+
+                    {/* First page */}
+                    <PaginationItem>
+                      <PaginationLink
+                        href="/"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          updateParams({ page: null });
+                        }}
+                        isActive={currentPage === 1}
+                        className="hover:bg-gray-100 transition-colors"
+                      >
+                        1
+                      </PaginationLink>
+                    </PaginationItem>
+
+                    {/* Current page and surrounding pages */}
+                    {Array.from({ length: 3 }, (_, i) => {
+                      const pageNum = currentPage - 1 + i;
+                      if (pageNum > 1 && pageNum < totalPages) {
+                        return (
+                          <PaginationItem key={pageNum}>
+                            <PaginationLink
+                              href={`/?page=${pageNum}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                updateParams({ page: pageNum.toString() });
+                              }}
+                              isActive={currentPage === pageNum}
+                              className="hover:bg-gray-100 transition-colors"
+                            >
+                              {pageNum}
+                            </PaginationLink>
+                          </PaginationItem>
+                        );
+                      }
+                      return null;
+                    })}
+
+                    {/* Show ellipsis if there are many pages remaining */}
+                    {currentPage < totalPages - 2 && (
+                      <PaginationItem>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )}
+
+                    {/* Last page */}
+                    {totalPages > 1 && (
+                      <PaginationItem>
                         <PaginationLink
-                          href={`/?page=${pageNum}`}
+                          href={`/?page=${totalPages}`}
                           onClick={(e) => {
                             e.preventDefault();
-                            updateParams({ page: pageNum.toString() });
+                            updateParams({ page: totalPages.toString() });
                           }}
-                          isActive={currentPage === pageNum}
+                          isActive={currentPage === totalPages}
                           className="hover:bg-gray-100 transition-colors"
                         >
-                          {pageNum}
+                          {totalPages}
                         </PaginationLink>
                       </PaginationItem>
-                    );
-                  }
-                  return null;
-                })}
+                    )}
 
-                {/* Show ellipsis if there are many pages */}
-                {currentPage < totalPages - 2 && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
-
-                {/* Last page */}
-                {totalPages > 1 && (
-                  <PaginationItem>
-                    <PaginationLink
-                      href={`/?page=${totalPages}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        updateParams({ page: totalPages.toString() });
-                      }}
-                      isActive={currentPage === totalPages}
-                      className="hover:bg-gray-100 transition-colors"
-                    >
-                      {totalPages}
-                    </PaginationLink>
-                  </PaginationItem>
-                )}
-
-                <PaginationItem>
-                  <PaginationNext
-                    href={
-                      currentPage < totalPages
-                        ? `/?page=${currentPage + 1}`
-                        : "#"
-                    }
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (currentPage < totalPages)
-                        updateParams({ page: (currentPage + 1).toString() });
-                    }}
-                    className={`hover:bg-gray-100 transition-colors ${
-                      currentPage === totalPages
-                        ? "pointer-events-none opacity-50"
-                        : ""
-                    }`}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
+                    <PaginationItem>
+                      <PaginationNext
+                        href={
+                          currentPage < totalPages
+                            ? `/?page=${currentPage + 1}`
+                            : "#"
+                        }
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (currentPage < totalPages)
+                            updateParams({
+                              page: (currentPage + 1).toString(),
+                            });
+                        }}
+                        className={`hover:bg-gray-100 transition-colors ${
+                          currentPage === totalPages
+                            ? "pointer-events-none opacity-50"
+                            : ""
+                        }`}
+                      />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
+              </div>
+            )}
           </div>
-        )}
+
+          {/* Sidebar */}
+          <aside className="w-[300px] shrink-0">
+            <JobFilters
+              onFilterChange={handleFilterChange}
+              initialFilters={initialFilters}
+            />
+          </aside>
+        </div>
       </div>
     </main>
   );

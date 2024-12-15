@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.18] - 2024-12-14
+
+### Added
+- Implemented URL-based filter persistence for sharing and bookmarking
+- Added support for multiple filter parameters in URL
+- Enhanced filter state management with URL synchronization
+
+### Changed
+- Improved career level filtering with consistent ordering
+- Fixed React state updates to prevent render cycle issues
+- Enhanced TypeScript type safety for filter values
+- Updated filter initialization to support URL parameters
+
 ## [0.0.17] - 2024-12-14
 
 ### Changed
