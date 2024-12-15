@@ -26,6 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { JobFilters } from "@/components/ui/job-filters";
+import { PostJobBanner } from "@/components/ui/post-job-banner";
 
 type SortOption = "newest" | "oldest" | "salary";
 
@@ -684,11 +685,14 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
 
           {/* Sidebar */}
           <aside className="w-[300px] shrink-0">
-            <JobFilters
-              onFilterChange={handleFilterChange}
-              initialFilters={initialFilters}
-              jobs={initialJobs}
-            />
+            <div className="space-y-6">
+              <JobFilters
+                onFilterChange={handleFilterChange}
+                initialFilters={initialFilters}
+                jobs={initialJobs}
+              />
+              <PostJobBanner />
+            </div>
           </aside>
         </div>
       </div>
