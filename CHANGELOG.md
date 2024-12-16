@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Simplified site customization with single configuration file
 - Updated navigation to use dynamic Lucide icons
 - Made navigation more compact with smaller logo and GitHub button
+- Reduced pagination component size for better aesthetics
 
 ## [0.0.19] - 2024-12-15
 
