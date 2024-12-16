@@ -539,40 +539,40 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
                   value={jobsPerPage.toString()}
                   onValueChange={handleJobsPerPageChange}
                 >
-                  <SelectTrigger className="w-[130px] h-8 text-sm">
+                  <SelectTrigger className="w-[130px] h-7 text-xs">
                     <SelectValue placeholder="Show" />
                   </SelectTrigger>
                   <SelectContent
                     className="bg-white min-w-[130px]"
                     position="popper"
                   >
-                    <SelectItem value="10" className="text-sm">
+                    <SelectItem value="10" className="text-xs">
                       10 per page
                     </SelectItem>
-                    <SelectItem value="25" className="text-sm">
+                    <SelectItem value="25" className="text-xs">
                       25 per page
                     </SelectItem>
-                    <SelectItem value="50" className="text-sm">
+                    <SelectItem value="50" className="text-xs">
                       50 per page
                     </SelectItem>
-                    <SelectItem value="100" className="text-sm">
+                    <SelectItem value="100" className="text-xs">
                       100 per page
                     </SelectItem>
                   </SelectContent>
                 </Select>
 
                 <Select value={sortBy} onValueChange={handleSortChange}>
-                  <SelectTrigger className="w-[140px] h-8 text-sm">
+                  <SelectTrigger className="w-[140px] h-7 text-xs">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent className="bg-white" position="popper">
-                    <SelectItem value="newest" className="text-sm">
+                    <SelectItem value="newest" className="text-xs">
                       Newest first
                     </SelectItem>
-                    <SelectItem value="oldest" className="text-sm">
+                    <SelectItem value="oldest" className="text-xs">
                       Oldest first
                     </SelectItem>
-                    <SelectItem value="salary" className="text-sm">
+                    <SelectItem value="salary" className="text-xs">
                       Highest salary
                     </SelectItem>
                   </SelectContent>

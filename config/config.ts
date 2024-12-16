@@ -6,10 +6,10 @@
 
 export const config = {
   // Marketing & SEO
-  badge: "The #1 Open Source Tech Job Board",
-  title: "Find Your Next Tech Role",
+  badge: "Open Source Next.js Job Board Starter Kit",
+  title: "Discover and Apply to Your Dream Jobs Today",
   description:
-    "Browse curated tech opportunities from leading companies. Updated daily with the latest positions.",
+    "Browse curated opportunities from leading companies. Updated daily with the latest positions.",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.NODE_ENV === "development"
