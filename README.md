@@ -89,6 +89,43 @@ npm run dev
 
 Visit `http://localhost:3000` to see your job board.
 
+## Configuration
+
+The job board can be easily customized through a single configuration file at `config/config.ts`:
+
+```typescript
+export const config = {
+  // Marketing & SEO
+  badge: "The #1 Open Source Tech Job Board",
+  title: "Find Your Next Tech Role",
+  description: "Browse curated tech opportunities...",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  
+  // Navigation
+  nav: {
+    title: "JobBoard",  // Navigation bar text
+    icon: "Briefcase",  // Lucide icon name
+    github: {
+      show: true,  // Show/hide GitHub button
+      url: "https://github.com/yourusername/yourrepo",
+    },
+  },
+}
+```
+
+### Environment-Aware URLs
+
+The site URL automatically adjusts based on the environment:
+1. Uses `NEXT_PUBLIC_SITE_URL` if provided
+2. Falls back to `localhost:3000` in development
+3. Uses production URL in production
+
+### Navigation Customization
+
+- **Icon**: Uses [Lucide icons](https://lucide.dev/icons) - choose any icon by name
+- **Title**: Customize the text shown in the navigation bar
+- **GitHub**: Toggle GitHub button visibility and set repository URL
+
 ## Environment Variables
 
 ⚠️ IMPORTANT: Never commit your API keys or sensitive credentials to the repository!

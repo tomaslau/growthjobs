@@ -2,7 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.19] - 2024-12-14
+## [0.0.20] - 2024-12-16
+
+### Added
+- Added centralized configuration system in `config.ts`
+- Added environment-aware site URL configuration
+- Added configurable navigation with customizable logo and GitHub button
+
+### Changed
+- Simplified site customization with single configuration file
+- Updated navigation to use dynamic Lucide icons
+- Made navigation more compact with smaller logo and GitHub button
+
+## [0.0.19] - 2024-12-15
 
 ### Added
 - Added loading states for filter changes with smooth transitions
@@ -238,4 +250,4 @@ All notable changes to this project will be documented in this file.
 - N/A (initial release)
 
 ### Fixed
-- N/A (initial release) 
+- N/A (initial release)

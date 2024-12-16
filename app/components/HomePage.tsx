@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { JobFilters } from "@/components/ui/job-filters";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
+import config from "@/config/config";
 
 type SortOption = "newest" | "oldest" | "salary";
 
@@ -444,14 +445,13 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
           <div className="max-w-[640px] space-y-6">
             <div className="space-y-4">
               <Badge variant="outline" className="mb-2">
-                The #1 Open Source Tech Job Board
+                {config.badge}
               </Badge>
               <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-                Find Your Next Tech Role
+                {config.title}
               </h1>
               <p className="text-sm text-muted-foreground md:text-base max-w-[540px]">
-                Browse curated tech opportunities from leading companies.
-                Updated daily with the latest positions.
+                {config.description}
               </p>
             </div>
 
