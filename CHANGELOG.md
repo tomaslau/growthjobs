@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.21] - 2024-12-17
+
+### Changed
+- Enhanced job cards with hover-activated Apply Now button
+- Standardized Apply button styling across all pages
+- Updated Apply buttons with consistent size and icon
+- Improved button positioning to avoid conflicts with featured badge
+
 ## [0.0.20] - 2024-12-16
 
 ### Added

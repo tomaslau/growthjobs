@@ -16,6 +16,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { ArrowUpRight } from "lucide-react";
 
 // Cache the getJob function
 const getCachedJob = unstable_cache(
@@ -115,15 +116,16 @@ export default async function JobPage({ params }: { params: { id: string } }) {
                 </div>
                 <Button
                   asChild
-                  size="sm"
-                  className="bg-zinc-900 text-white hover:bg-zinc-800 shrink-0"
+                  size="xs"
+                  className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs"
                 >
                   <a
                     href={job.apply_url}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Apply
+                    Apply Now
+                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
                   </a>
                 </Button>
               </div>
@@ -140,10 +142,12 @@ export default async function JobPage({ params }: { params: { id: string } }) {
           <div className="mt-8">
             <Button
               asChild
-              className="bg-zinc-900 text-white hover:bg-zinc-800"
+              size="xs"
+              className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs"
             >
               <a href={job.apply_url} target="_blank" rel="noopener noreferrer">
-                Apply
+                Apply Now
+                <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
               </a>
             </Button>
           </div>
