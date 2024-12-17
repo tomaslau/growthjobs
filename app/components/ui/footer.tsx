@@ -73,8 +73,8 @@ export function Footer() {
             </div>
           </div>
           <div className="text-xs text-gray-500 text-center md:text-left">
-            {copyrightYears} © Free MIT licensed open-source job board starter
-            template.
+            {copyrightYears} © Job Board Starter - An open-source Next.js
+            template under MIT license.
           </div>
         </div>
       </div>
