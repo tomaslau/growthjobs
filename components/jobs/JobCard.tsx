@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Job, formatSalary } from "@/lib/db/airtable";
 import { formatDate } from "@/lib/utils/formatDate";
+import { generateJobSlug } from "@/lib/utils/slugify";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -12,7 +13,7 @@ export function JobCard({ job }: { job: Job }) {
   return (
     <div className="group relative">
       <Link
-        href={`/jobs/${job.id}`}
+        href={`/jobs/${generateJobSlug(job.title, job.company)}`}
         className={`block p-5 border rounded-lg transition-all ${
           job.featured
             ? "bg-zinc-100 hover:bg-zinc-50"

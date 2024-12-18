@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.24] - 2024-12-18
+
+### Fixed
+- Fixed job pages not loading by switching to dynamic data fetching
+- Added user-friendly root-level 404 page with improved design
+- Added detailed logging for job route debugging
+- Improved error handling for job not found cases
+
+### Changed
+- Completed migration to SEO-friendly URLs using title-company slug format
+- Removed legacy ID-based routing completely
+
+## [0.0.23] - 2024-12-17
+
+### Changed
+- Enhanced job cards with hover-activated Apply Now button
+- Standardized Apply button styling across all pages
+- Updated Apply buttons with consistent size and icon
+- Improved button positioning to avoid conflicts with featured badge
+
+## [0.0.22] - 2024-12-17
+
+### Changed
+- Enhanced SEO with descriptive job post URLs
+- Updated URL structure to include job title and company name
+- Improved URL readability with proper slug formatting
+- Maintained backward compatibility with ID-based routing
+
 ## [0.0.21] - 2024-12-17
 
 ### Changed

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Job } from "@/lib/db/airtable";
+import { generateJobSlug } from "@/lib/utils/slugify";
 
 interface SimilarJobsProps {
   currentJob: Job;
@@ -34,7 +35,7 @@ export function SimilarJobs({ currentJob, allJobs }: SimilarJobsProps) {
         {similarJobs.map((job) => (
           <Link
             key={job.id}
-            href={`/jobs/${job.id}`}
+            href={`/jobs/${generateJobSlug(job.title, job.company)}`}
             className="block hover:text-gray-900"
           >
             <div className="text-sm">{job.title}</div>
