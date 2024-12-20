@@ -199,33 +199,31 @@ export default async function JobPage({
                   remarkPlugins={[remarkGfm, remarkBreaks]}
                   components={{
                     // Customize heading styles
-                    h1: ({ node, ...props }) => (
+                    h1: ({ ...props }) => (
                       <h1 className="text-2xl font-bold my-4" {...props} />
                     ),
-                    h2: ({ node, ...props }) => (
+                    h2: ({ ...props }) => (
                       <h2 className="text-xl font-bold my-3" {...props} />
                     ),
-                    h3: ({ node, ...props }) => (
+                    h3: ({ ...props }) => (
                       <h3 className="text-lg font-bold my-2" {...props} />
                     ),
                     // Style links
-                    a: ({ node, ...props }) => (
+                    a: ({ ...props }) => (
                       <a
                         className="text-blue-600 hover:text-blue-800"
                         {...props}
                       />
                     ),
                     // Style lists
-                    ul: ({ node, ...props }) => (
+                    ul: ({ ...props }) => (
                       <ul className="list-disc ml-4 my-2" {...props} />
                     ),
-                    ol: ({ node, ...props }) => (
+                    ol: ({ ...props }) => (
                       <ol className="list-decimal ml-4 my-2" {...props} />
                     ),
                     // Style paragraphs
-                    p: ({ node, ...props }) => (
-                      <p className="my-2" {...props} />
-                    ),
+                    p: ({ ...props }) => <p className="my-2" {...props} />,
                   }}
                 >
                   {job.description || ""}
