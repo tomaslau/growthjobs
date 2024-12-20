@@ -173,6 +173,60 @@ function normalizeRemoteFriendly(value: unknown): Job["remote_friendly"] {
   return "Not specified";
 }
 
+// Clean up Markdown formatting
+function cleanMarkdownFormatting(text: string): string {
+  if (!text) return "";
+
+  return (
+    text
+      // First, normalize line endings
+      .replace(/\r\n/g, "\n")
+      // Fix bold text with extra spaces before closing asterisks and ensure space after
+      .replace(/\*\*(.*?)\s*:\s*\*\*(\S)/g, "**$1:** $2")
+      // Ensure proper spacing around headers
+      .replace(/([^\n])\s*###/g, "$1\n\n###")
+      .replace(/###\s*(.*?)\n/g, "### $1\n\n")
+      // Fix headers with bold text
+      .replace(/###\s*\*\*(.*?)\*\*/g, "### **$1**")
+      // Fix bold headers that appear after list items or text
+      .replace(/([^\n]+?)\s*\*\*([\w\s,]+?):\*\*/g, "$1\n\n**$2:**")
+      // Fix any remaining bold headers
+      .replace(/\*\*([\w\s,]+?):\*\*/g, "**$1:**")
+      // Fix nested list indentation
+      .replace(/\n- ([^\n]+)\n {1,2}-/g, "\n- $1\n    -")
+      // Fix list items with bold text (but not headers)
+      .replace(/(\n- .*?[^:])\n\s*\*\*([^:]+?)\*\*/g, "$1 **$2**")
+      // Ensure consecutive bold sections are separated
+      .replace(/\*\*([^*]+?)\*\*\*\*([^*]+?)\*\*/g, "**$1**\n\n**$2**")
+      // Remove extra blank lines
+      .replace(/\n{3,}/g, "\n\n")
+      // Clean up extra spaces
+      .replace(/[ \t]+/g, " ")
+      // Process line by line
+      .split("\n")
+      .map((line) => {
+        const trimmedLine = line.trim();
+        // If line starts with a list marker and is not a bold text, preserve it
+        if (trimmedLine.startsWith("- ") || trimmedLine.match(/^\d+\./)) {
+          return line;
+        }
+        // For all other lines (including bold text), remove indentation
+        return trimmedLine;
+      })
+      .join("\n")
+      // Final pass to ensure bold headers are on their own lines
+      .replace(/([^\n]+)\s*(\*\*[\w\s,]+?:\*\*)/g, "$1\n\n$2")
+      // Final pass to ensure space after bold headers
+      .replace(/\*\*([\w\s,]+?):\*\*(\S)/g, "**$1:** $2")
+      // Ensure proper spacing around multi-line bold text
+      .replace(/\*\*([^*]+?)\*\*\n([^\n-])/g, "**$1**\n\n$2")
+      // Ensure proper spacing around final paragraphs
+      .replace(/\n\s*(\*\*[^*]+?\*\*)\s*\n/g, "\n\n$1\n\n")
+      .replace(/\n\s*([^-\n][^*\n]+?)\s*$/g, "\n\n$1")
+      .trim()
+  );
+}
+
 export async function getJobs(): Promise<Job[]> {
   try {
     if (!process.env.AIRTABLE_ACCESS_TOKEN || !process.env.AIRTABLE_BASE_ID) {
@@ -190,7 +244,37 @@ export async function getJobs(): Promise<Job[]> {
       })
       .all();
 
+    console.log("Airtable records fetched:", {
+      count: records.length,
+      firstRecordFields: records[0]?.fields
+        ? Object.keys(records[0].fields)
+        : [],
+      hasDescription: records.some((r) => r.fields.description),
+      descriptionTypes: records
+        .map((r) => typeof r.fields.description)
+        .filter((v, i, a) => a.indexOf(v) === i),
+    });
+
     return records.map((record) => {
+      // Log individual record processing
+      const description = record.fields.description;
+      const descriptionStr = typeof description === "string" ? description : "";
+      const cleanedDescription = cleanMarkdownFormatting(descriptionStr);
+
+      console.log("Processing record:", {
+        id: record.id,
+        title: record.fields.title,
+        descriptionInfo: {
+          type: typeof description,
+          length: cleanedDescription.length,
+          content: cleanedDescription,
+          isMarkdown:
+            cleanedDescription.includes("#") ||
+            cleanedDescription.includes("*") ||
+            cleanedDescription.includes("```"),
+        },
+      });
+
       // Parse salary data
       const hasSalaryData =
         record.fields.salary_min || record.fields.salary_max;
@@ -211,7 +295,7 @@ export async function getJobs(): Promise<Job[]> {
         location: record.fields.location as string,
         type: record.fields.type as Job["type"],
         salary,
-        description: record.fields.description as string,
+        description: cleanedDescription,
         apply_url: record.fields.apply_url as string,
         posted_date: record.fields.posted_date as string,
         status: record.fields.status as Job["status"],

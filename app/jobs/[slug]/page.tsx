@@ -2,6 +2,8 @@ import { getJobs, formatSalary } from "@/lib/db/airtable";
 import { formatDate } from "@/lib/utils/formatDate";
 import { generateJobSlug } from "@/lib/utils/slugify";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { JobDetailsSidebar } from "@/components/ui/job-details-sidebar";
 import { SimilarJobs } from "@/components/ui/similar-jobs";
@@ -32,6 +34,8 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const { slug } = params;
+  console.log("Generating metadata for slug:", slug);
+
   const allJobs = await getJobs();
   const job = allJobs.find((j) => generateJobSlug(j.title, j.company) === slug);
 
@@ -65,29 +69,25 @@ export default async function JobPage({
 }: {
   params: { slug: string };
 }) {
-  const { slug } = params;
-  console.log("Starting job page render for slug:", slug);
+  console.log("Starting job page render for slug:", params.slug);
 
   try {
     // Get all jobs to find the one matching the slug
     console.log("Fetching jobs from Airtable...");
     const allJobs = await getJobs();
     console.log("Fetched jobs count:", allJobs.length);
-    console.log("First job for reference:", allJobs[0]);
 
     // Find the job with matching slug
-    console.log("Looking for job with slug:", slug);
     const job = allJobs.find((j) => {
       const jobSlug = generateJobSlug(j.title, j.company);
-      console.log("Job:", j.title, "at", j.company);
-      console.log("Generated slug:", jobSlug);
-      console.log("Requested slug:", slug);
-      console.log("Match?", jobSlug === slug);
-      return jobSlug === slug;
+      console.log(
+        `Comparing slugs - Generated: ${jobSlug}, Requested: ${params.slug}`
+      );
+      return jobSlug === params.slug;
     });
 
     if (!job) {
-      console.log("No job found for slug:", slug);
+      console.log("No job found for slug:", params.slug);
       console.log(
         "Available slugs:",
         allJobs.map((j) => generateJobSlug(j.title, j.company))
@@ -95,7 +95,17 @@ export default async function JobPage({
       return null; // This will trigger the not-found page
     }
 
-    console.log("Found job:", job.id, job.title);
+    console.log("Found job:", {
+      id: job.id,
+      title: job.title,
+      description: {
+        length: job.description?.length || 0,
+        type: typeof job.description,
+        content: job.description,
+        firstLine: job.description?.split("\n")[0] || "",
+        hasHtmlTags: job.description?.includes("<") || false,
+      },
+    });
 
     const { fullDate, relativeTime } = formatDate(job.posted_date);
     const showSalary =
@@ -179,7 +189,47 @@ export default async function JobPage({
             <div className="prose prose-sm prose-gray max-w-none">
               <div className="h-px bg-gray-200 my-8" aria-hidden="true" />
               <div className="markdown-content [&_a]:text-zinc-900 [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-zinc-800 [&_a]:transition-colors">
-                <ReactMarkdown>{job.description}</ReactMarkdown>
+                {!job.description && (
+                  <p className="text-red-500">No description available</p>
+                )}
+                <div className="hidden">
+                  Raw description: {JSON.stringify(job.description)}
+                </div>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm, remarkBreaks]}
+                  components={{
+                    // Customize heading styles
+                    h1: ({ node, ...props }) => (
+                      <h1 className="text-2xl font-bold my-4" {...props} />
+                    ),
+                    h2: ({ node, ...props }) => (
+                      <h2 className="text-xl font-bold my-3" {...props} />
+                    ),
+                    h3: ({ node, ...props }) => (
+                      <h3 className="text-lg font-bold my-2" {...props} />
+                    ),
+                    // Style links
+                    a: ({ node, ...props }) => (
+                      <a
+                        className="text-blue-600 hover:text-blue-800"
+                        {...props}
+                      />
+                    ),
+                    // Style lists
+                    ul: ({ node, ...props }) => (
+                      <ul className="list-disc ml-4 my-2" {...props} />
+                    ),
+                    ol: ({ node, ...props }) => (
+                      <ol className="list-decimal ml-4 my-2" {...props} />
+                    ),
+                    // Style paragraphs
+                    p: ({ node, ...props }) => (
+                      <p className="my-2" {...props} />
+                    ),
+                  }}
+                >
+                  {job.description || ""}
+                </ReactMarkdown>
               </div>
             </div>
 

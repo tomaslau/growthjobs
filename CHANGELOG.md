@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.25] - 2024-12-20
+
+### Fixed
+- Fixed Markdown formatting issues in job descriptions
+- Fixed bold text headers rendering in list items
+- Fixed indentation issues with multi-line bold text
+- Fixed spacing around final paragraphs and sections
+
 ## [0.0.24] - 2024-12-18
 
 ### Fixed
