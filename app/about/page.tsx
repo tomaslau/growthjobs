@@ -41,8 +41,8 @@ export default function AboutPage() {
                 Our Mission
               </CardTitle>
               <CardDescription className="text-sm text-zinc-600">
-                We're dedicated to making job hunting simpler and more efficient
-                for both job seekers and employers.
+                We&apos;re dedicated to making job hunting simpler and more
+                efficient for both job seekers and employers.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -81,11 +81,11 @@ export default function AboutPage() {
             </h2>
             <div className="text-sm text-zinc-600">
               <p>
-                {config.title} is more than just a job board. We're a platform
-                that understands the evolving needs of the modern workplace. Our
-                platform helps companies find exceptional talent and enables
-                professionals to discover opportunities that align with their
-                skills and career goals.
+                {config.title} is more than just a job board. We&apos;re a
+                platform that understands the evolving needs of the modern
+                workplace. Our platform helps companies find exceptional talent
+                and enables professionals to discover opportunities that align
+                with their skills and career goals.
               </p>
             </div>
           </div>
@@ -130,10 +130,10 @@ export default function AboutPage() {
             </h2>
             <div className="text-sm text-zinc-600">
               <p>
-                Whether you're exploring your next career move or searching for
-                top talent, {config.title} is here to help. Browse our latest
-                opportunities or post a position to reach our community of
-                qualified professionals.
+                Whether you&apos;re exploring your next career move or searching
+                for top talent, {config.title} is here to help. Browse our
+                latest opportunities or post a position to reach our community
+                of qualified professionals.
               </p>
             </div>
           </div>
