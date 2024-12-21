@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.26] - 2024-12-21
+
+### Added
+- Added About page with responsive design and consistent styling
+- Implemented card-based feature highlights with subtle iconography
+- Created content sections for mission statement and key features
+
+### Changed
+- Enhanced typography with standardized zinc color palette
+- Refined card components with minimal shadow and border styling
+- Optimized spacing and layout for better readability
+
 ## [0.0.25] - 2024-12-20
 
 ### Fixed
