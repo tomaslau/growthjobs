@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.27] - 2024-12-22
+
+### Added
+- Added SEO metadata optimization across key pages
+- Added canonical URLs to prevent duplicate content
+- Added OpenGraph and Twitter card metadata
+- Added dynamic meta descriptions and titles
+
+### Changed
+- Enhanced home page metadata with config-based values
+- Improved about page SEO with targeted keywords
+- Updated changelog page with comprehensive meta tags
+- Standardized metadata structure across pages
+
 ## [0.0.26] - 2024-12-21
 
 ### Added

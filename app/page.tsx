@@ -1,6 +1,28 @@
 import { getJobs } from "@/lib/db/airtable";
 import { HomePage } from "./components/HomePage";
 import { unstable_cache } from "next/cache";
+import { Metadata } from "next";
+import config from "@/config/config";
+
+// Add metadata for SEO
+export const metadata: Metadata = {
+  title: config.title,
+  description: config.description,
+  openGraph: {
+    title: config.title,
+    description: config.description,
+    type: "website",
+    url: config.url,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: config.title,
+    description: config.description,
+  },
+  alternates: {
+    canonical: config.url,
+  },
+};
 
 // Cache the getJobs function with a 5-minute revalidation period
 const getCachedJobs = unstable_cache(
