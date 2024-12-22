@@ -38,7 +38,7 @@ export default function AboutPage() {
             <CardHeader className="p-0 space-y-2">
               <Building2 className="h-5 w-5 mb-2 text-zinc-500" />
               <CardTitle className="text-base font-semibold text-zinc-900">
-                Our Mission
+                Mission
               </CardTitle>
               <CardDescription className="text-sm text-zinc-600">
                 We&apos;re dedicated to making job hunting simpler and more
@@ -81,18 +81,18 @@ export default function AboutPage() {
             </h2>
             <div className="text-sm text-zinc-600">
               <p>
-                {config.title} is more than just a job board. We&apos;re a
-                platform that understands the evolving needs of the modern
-                workplace. Our platform helps companies find exceptional talent
-                and enables professionals to discover opportunities that align
-                with their skills and career goals.
+                We&apos;re more than just a job board. We&apos;re a platform
+                that understands the evolving needs of the modern workplace. Our
+                platform helps companies find exceptional talent and enables
+                professionals to discover opportunities that align with their
+                skills and career goals.
               </p>
             </div>
           </div>
 
           <div>
             <h2 className="text-xl font-semibold mb-4 text-zinc-900">
-              Our Features
+              Features
             </h2>
             <ul className="space-y-4 text-sm text-zinc-600">
               <li className="flex items-start">
@@ -131,9 +131,9 @@ export default function AboutPage() {
             <div className="text-sm text-zinc-600">
               <p>
                 Whether you&apos;re exploring your next career move or searching
-                for top talent, {config.title} is here to help. Browse our
-                latest opportunities or post a position to reach our community
-                of qualified professionals.
+                for top talent, we&apos;re here to help. Browse latest
+                opportunities or post a position to reach our community of
+                qualified professionals.
               </p>
             </div>
           </div>
