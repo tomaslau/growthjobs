@@ -5,8 +5,29 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import config from "@/config/config";
 import { Building2, Users2, Globe2 } from "lucide-react";
+import { Metadata } from "next";
+
+// Add metadata for SEO
+export const metadata: Metadata = {
+  title: "About Us | Connect with Career Opportunities",
+  description:
+    "Learn about our mission to connect talented professionals with exciting career opportunities. We provide a platform for job seekers and employers to find their perfect match.",
+  keywords:
+    "job board, career opportunities, recruitment platform, job search, hiring platform",
+  openGraph: {
+    title: "About Us | Connect with Career Opportunities",
+    description:
+      "Learn about our mission to connect talented professionals with exciting career opportunities. We provide a platform for job seekers and employers to find their perfect match.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | Connect with Career Opportunities",
+    description:
+      "Learn about our mission to connect talented professionals with exciting career opportunities. We provide a platform for job seekers and employers to find their perfect match.",
+  },
+};
 
 export default function AboutPage() {
   return (
