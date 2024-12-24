@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback, useEffect, Suspense } from "react";
 import { JobCard } from "@/components/jobs/JobCard";
 import type { Job, CareerLevel } from "@/lib/db/airtable";
 import { normalizeAnnualSalary } from "@/lib/db/airtable";
@@ -42,7 +42,7 @@ interface Filters {
 type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
 type FilterValue = string[] | boolean | CareerLevel[] | true;
 
-export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
+function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState("");
@@ -684,5 +684,13 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
         </div>
       </div>
     </main>
+  );
+}
+
+export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <HomePageContent initialJobs={initialJobs} />
+    </Suspense>
   );
 }
