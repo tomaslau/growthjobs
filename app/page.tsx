@@ -1,5 +1,5 @@
 import { getJobs } from "@/lib/db/airtable";
-import { HomePage } from "./components/HomePage";
+import { HomePage } from "@/components/home/HomePage";
 import { unstable_cache } from "next/cache";
 import { Metadata } from "next";
 import config from "@/config/config";

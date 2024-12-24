@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.28] - 2024-12-24
+
+### Changed
+- Enhanced footer with expanded sections for resources and legal information
+- Added brand description and post job CTA in footer
+- Improved footer layout with responsive grid design
+- Reorganized component structure by moving all components to root directory
+- Consolidated UI components from app/components to components/ui
+- Moved HomePage component to components/home
+- Updated import paths to use @ alias consistently
+
 ## [0.0.27] - 2024-12-22
 
 ### Added

@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { JobCard } from "../../components/jobs/JobCard";
+import { JobCard } from "@/components/jobs/JobCard";
 import type { Job, CareerLevel } from "@/lib/db/airtable";
 import { normalizeAnnualSalary } from "@/lib/db/airtable";
-import { Input } from "../../components/ui/input";
-import { Badge } from "../../components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
 import { formatDistanceToNow, isToday } from "date-fns";
 import {
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { JobFilters } from "@/components/ui/job-filters";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
+import { HeroSection } from "@/components/ui/hero-section";
 import config from "@/config/config";
 
 type SortOption = "newest" | "oldest" | "salary";
@@ -439,80 +440,67 @@ export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
         }
       `}</style>
 
-      {/* Hero Section */}
-      <div className="border-b">
-        <div className="container mx-auto px-4 py-12 md:py-16">
-          <div className="max-w-[640px] space-y-6">
-            <div className="space-y-4">
-              <Badge variant="outline" className="mb-2">
-                {config.badge}
-              </Badge>
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">
-                {config.title}
-              </h1>
-              <p className="text-sm text-muted-foreground md:text-base max-w-[540px]">
-                {config.description}
-              </p>
-            </div>
+      <HeroSection
+        badge={config.badge}
+        title={config.title}
+        description={config.description}
+      >
+        {/* Search Bar */}
+        <div className="max-w-[480px]">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search by role, company, or location..."
+              className="pl-9 h-10"
+              value={searchTerm}
+              onChange={handleSearch}
+              onKeyDown={handleSearchKeyDown}
+              aria-label="Search jobs"
+            />
+            {searchTerm && (
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  updateParams({ page: null });
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                aria-label="Clear search"
+              >
+                ×
+              </button>
+            )}
+          </div>
+        </div>
 
-            {/* Search Bar */}
-            <div className="max-w-[480px]">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search by role, company, or location..."
-                  className="pl-9 h-10"
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  onKeyDown={handleSearchKeyDown}
-                  aria-label="Search jobs"
-                />
-                {searchTerm && (
-                  <button
-                    onClick={() => {
-                      setSearchTerm("");
-                      updateParams({ page: null });
-                    }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    aria-label="Clear search"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
+        {/* Quick Stats */}
+        <div className="grid grid-cols-3 gap-4 text-xs text-muted-foreground max-w-[480px]">
+          <div>
+            <div className="font-medium text-foreground">Open Jobs</div>
+            <div className="flex items-center">
+              {jobsAddedToday > 0 && (
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 pulse-dot"></span>
+              )}
+              {initialJobs.length}
+              {jobsAddedToday > 0 && (
+                <span className="ml-1">({jobsAddedToday} added today)</span>
+              )}
             </div>
-
-            {/* Quick Stats */}
-            <div className="grid grid-cols-3 gap-4 text-xs text-muted-foreground max-w-[480px]">
-              <div>
-                <div className="font-medium text-foreground">Open Jobs</div>
-                <div className="flex items-center">
-                  {jobsAddedToday > 0 && (
-                    <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 mr-1.5 pulse-dot"></span>
-                  )}
-                  {initialJobs.length}
-                  {jobsAddedToday > 0 && (
-                    <span className="ml-1">({jobsAddedToday} added today)</span>
-                  )}
-                </div>
-              </div>
-              <div>
-                <div className="font-medium text-foreground">Last Updated</div>
-                <div>{lastUpdated}</div>
-              </div>
-              <div>
-                <div className="font-medium text-foreground">Trending</div>
-                <div>
-                  {Array.from(new Set(initialJobs.map((job) => job.company)))
-                    .slice(0, 3)
-                    .join(", ")}
-                </div>
-              </div>
+          </div>
+          <div>
+            <div className="font-medium text-foreground">Last Updated</div>
+            <div>{lastUpdated}</div>
+          </div>
+          <div>
+            <div className="font-medium text-foreground">Trending</div>
+            <div>
+              {Array.from(new Set(initialJobs.map((job) => job.company)))
+                .slice(0, 3)
+                .join(", ")}
             </div>
           </div>
         </div>
-      </div>
+      </HeroSection>
 
       {/* Jobs Section */}
       <div className="container mx-auto px-4 py-8">

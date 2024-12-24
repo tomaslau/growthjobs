@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardHeader,
@@ -7,6 +6,7 @@ import {
 } from "@/components/ui/card";
 import { Building2, Users2, Globe2 } from "lucide-react";
 import { Metadata } from "next";
+import { HeroSection } from "@/components/ui/hero-section";
 import config from "@/config/config";
 
 // Add metadata for SEO
@@ -37,25 +37,11 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="border-b border-zinc-200 bg-white">
-        <div className="container mx-auto px-4 py-12 md:py-16">
-          <div className="max-w-[640px] space-y-6">
-            <div className="space-y-4">
-              <Badge variant="outline" className="mb-2">
-                About Us
-              </Badge>
-              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-zinc-900">
-                Connecting Talent with Opportunity
-              </h1>
-              <p className="text-sm text-zinc-600 md:text-base max-w-[540px]">
-                Learn more about our mission to connect talented professionals
-                with exciting career opportunities across various industries.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <HeroSection
+        badge="About Us"
+        title="Connecting Talent with Opportunity"
+        description="Learn more about our mission to connect talented professionals with exciting career opportunities across various industries."
+      />
 
       {/* Content Section */}
       <div className="container mx-auto px-4 py-12">
