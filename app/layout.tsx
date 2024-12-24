@@ -5,9 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import { Nav } from "@/components/ui/nav";
 import { Footer } from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
-import { PersistentToast } from "@/components/ui/persistent-toast";
 import config from "@/config/config";
-import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: `${config.title} | ${config.nav.title}`,
@@ -26,9 +24,6 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <Toaster />
-        <Suspense>
-          <PersistentToast />
-        </Suspense>
       </body>
     </html>
   );
