@@ -5,7 +5,6 @@ import { JobCard } from "@/components/jobs/JobCard";
 import type { Job, CareerLevel } from "@/lib/db/airtable";
 import { normalizeAnnualSalary } from "@/lib/db/airtable";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { Search } from "lucide-react";
 import { formatDistanceToNow, isToday } from "date-fns";
 import {
