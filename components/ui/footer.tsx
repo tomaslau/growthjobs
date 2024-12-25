@@ -35,9 +35,9 @@ export function Footer() {
               <h3 className="text-sm font-semibold text-zinc-900">Resources</h3>
               <ul className="space-y-2">
                 {[
-                  { href: "/jobs", label: "Browse Jobs" },
+                  { href: "/jobs", label: "Jobs" },
                   { href: "/alerts", label: "Job Alerts" },
-                  { href: "/about", label: "About Us" },
+                  { href: "/about", label: "About" },
                   { href: "/changelog", label: "Changelog" },
                 ].map(({ href, label }) => (
                   <li key={href}>
