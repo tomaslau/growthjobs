@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.30] - 2024-12-27
+
+### Changed
+- Enhanced workplace type handling with improved default values
+- Updated job location display to handle missing information gracefully
+- Improved job post header layout by removing date for better readability
+- Standardized "Not specified" badge styling across components
+- Updated search functionality to use new workplace location fields
+
 ## [0.0.29] - 2024-12-26
 
 ### Changed

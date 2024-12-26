@@ -221,7 +221,7 @@ export function JobFilters({
   }, [jobs]);
 
   const remoteCount = useMemo(() => {
-    return jobs.filter((job) => job.remote_friendly === "Yes").length;
+    return jobs.filter((job) => job.workplace_type === "Remote").length;
   }, [jobs]);
 
   const visaCount = useMemo(() => {

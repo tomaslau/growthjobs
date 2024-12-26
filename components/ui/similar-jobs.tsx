@@ -21,12 +21,16 @@ export function SimilarJobs({ currentJob, allJobs }: SimilarJobsProps) {
         (word) => word.length > 3 && jobTitleLower.includes(word)
       );
 
-      // Compare both city and country
+      // Compare workplace location
       const isSameLocation =
-        (job.city && currentJob.city && job.city === currentJob.city) ||
-        (job.country &&
-          currentJob.country &&
-          job.country === currentJob.country);
+        (job.workplace_type === "Remote" &&
+          currentJob.workplace_type === "Remote") ||
+        (job.workplace_city &&
+          currentJob.workplace_city &&
+          job.workplace_city === currentJob.workplace_city) ||
+        (job.workplace_country &&
+          currentJob.workplace_country &&
+          job.workplace_country === currentJob.workplace_country);
 
       return isSimilarTitle || isSameLocation;
     })
@@ -39,8 +43,23 @@ export function SimilarJobs({ currentJob, allJobs }: SimilarJobsProps) {
       <h2 className="text-lg font-semibold mb-3">Similar Jobs</h2>
       <div className="space-y-3">
         {similarJobs.map((job) => {
-          // Format location
-          const location = [job.city, job.country].filter(Boolean).join(", ");
+          // Format location based on workplace type
+          const location =
+            job.workplace_type === "Remote"
+              ? job.remote_region
+                ? `Remote (${job.remote_region})`
+                : null
+              : job.workplace_type === "Hybrid"
+              ? [
+                  job.workplace_city,
+                  job.workplace_country,
+                  job.remote_region ? `Hybrid (${job.remote_region})` : null,
+                ]
+                  .filter(Boolean)
+                  .join(", ") || null
+              : [job.workplace_city, job.workplace_country]
+                  .filter(Boolean)
+                  .join(", ") || null;
 
           return (
             <Link

@@ -1,5 +1,10 @@
 import { CareerLevel, Salary, formatSalary } from "@/lib/db/airtable";
 import {
+  WorkplaceType,
+  RemoteRegion,
+  getRemoteFriendlyStatus,
+} from "@/lib/constants/workplace";
+import {
   Calendar,
   MapPin,
   Laptop,
@@ -14,14 +19,15 @@ import {
 interface JobDetailsSidebarProps {
   fullDate: string;
   relativeTime: string;
-  city: string | null;
-  country: string | null;
-  remote_friendly: string;
+  workplace_type: WorkplaceType;
+  remote_region: RemoteRegion;
+  timezone_requirements: string | null;
+  workplace_city: string | null;
+  workplace_country: string | null;
   salary: Salary | null;
   career_level: CareerLevel[];
   apply_url: string;
   visa_sponsorship: string;
-  job_timezone: string;
 }
 
 function formatCareerLevel(level: CareerLevel): string {
@@ -53,14 +59,15 @@ function formatCareerLevel(level: CareerLevel): string {
 export function JobDetailsSidebar({
   fullDate,
   relativeTime,
-  city,
-  country,
-  remote_friendly,
+  workplace_type,
+  remote_region,
+  timezone_requirements,
+  workplace_city,
+  workplace_country,
   salary,
   career_level,
   apply_url,
   visa_sponsorship,
-  job_timezone,
 }: JobDetailsSidebarProps) {
   const showSalary = salary && (salary.min !== null || salary.max !== null);
   const careerLevels = Array.from(
@@ -68,7 +75,20 @@ export function JobDetailsSidebar({
   );
 
   // Format location
-  const location = [city, country].filter(Boolean).join(", ");
+  const location = [workplace_city, workplace_country]
+    .filter(Boolean)
+    .join(", ");
+
+  // Get remote friendly status
+  const remoteFriendly = getRemoteFriendlyStatus({ workplace_type });
+
+  // Format workplace info
+  const workplaceInfo =
+    workplace_type === "Remote" && remote_region
+      ? `${remoteFriendly} (${remote_region})`
+      : workplace_type === "Not specified"
+      ? "Not specified"
+      : remoteFriendly;
 
   return (
     <div className="p-5 border rounded-lg space-y-4 bg-gray-50">
@@ -95,26 +115,44 @@ export function JobDetailsSidebar({
           <MapPin className="h-4 w-4 text-gray-500 shrink-0" />
           <h2 className="text-sm font-medium">Job Location</h2>
         </div>
-        <p className="text-sm text-gray-600 ml-6">
-          {location || "Not specified"}
-        </p>
+        {workplace_type === "Remote" ? (
+          <>
+            <span className="text-sm text-gray-600 ml-6">
+              Remote ({remote_region || "Worldwide"})
+            </span>
+          </>
+        ) : workplace_type === "Hybrid" ? (
+          <>
+            <span className="text-sm text-gray-600 ml-6">
+              {[location, `Hybrid (${remote_region})`]
+                .filter(Boolean)
+                .join(", ")}
+            </span>
+          </>
+        ) : (
+          <p className="text-sm text-gray-600 ml-6">
+            {location || "Not specified"}
+          </p>
+        )}
       </div>
 
       <div>
         <div className="flex items-center gap-2 mb-1">
           <Laptop className="h-4 w-4 text-gray-500 shrink-0" />
-          <h2 className="text-sm font-medium">Remote-Friendly</h2>
+          <h2 className="text-sm font-medium">Workplace Type</h2>
         </div>
         <span
           className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
-            remote_friendly === "Yes"
+            workplace_type === "Remote"
               ? "bg-green-50 border-green-100 border text-green-700"
-              : remote_friendly === "No"
+              : workplace_type === "On-site"
               ? "bg-red-50 border-red-100 border text-red-700"
+              : workplace_type === "Hybrid"
+              ? "bg-blue-50 border-blue-100 border text-blue-700"
               : "bg-white border text-gray-700"
           }`}
         >
-          {remote_friendly}
+          {workplace_type}
         </span>
       </div>
 
@@ -185,7 +223,9 @@ export function JobDetailsSidebar({
           <Clock className="h-4 w-4 text-gray-500 shrink-0" />
           <h2 className="text-sm font-medium">Job Timezones</h2>
         </div>
-        <p className="text-sm text-gray-600 ml-6">{job_timezone}</p>
+        <p className="text-sm text-gray-600 ml-6">
+          {timezone_requirements || "Not specified"}
+        </p>
       </div>
     </div>
   );

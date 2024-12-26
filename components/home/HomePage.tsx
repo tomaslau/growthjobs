@@ -242,8 +242,8 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
         (job) =>
           job.title.toLowerCase().includes(searchLower) ||
           job.company.toLowerCase().includes(searchLower) ||
-          (job.city?.toLowerCase() || "").includes(searchLower) ||
-          (job.country?.toLowerCase() || "").includes(searchLower)
+          (job.workplace_city?.toLowerCase() || "").includes(searchLower) ||
+          (job.workplace_country?.toLowerCase() || "").includes(searchLower)
       );
     }
 
@@ -262,7 +262,7 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
 
     // Apply remote filter
     if (filters.remote) {
-      filtered = filtered.filter((job) => job.remote_friendly === "Yes");
+      filtered = filtered.filter((job) => job.workplace_type === "Remote");
     }
 
     // Apply visa sponsorship filter

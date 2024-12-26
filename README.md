@@ -53,8 +53,6 @@ npm install
   ```
   title: Single line text
   company: Single line text
-  city: Single line text
-  country: Single select (from ISO 3166 country list)
   type: Single select (Full-time, Part-time, Contract)
   salary_min: Number
   salary_max: Number
@@ -64,10 +62,13 @@ npm install
   apply_url: URL
   posted_date: Date
   status: Single select (active, inactive)
-  remote_friendly: Single select (Yes, No, Not specified)
+  workplace_type: Single select (On-site, Hybrid, Remote, Not specified)
+  remote_region: Single select (Worldwide, Americas Only, Europe Only, Asia-Pacific Only, US Only, EU Only, UK/EU Only, US/Canada Only)
+  timezone_requirements: Single line text
+  workplace_city: Single line text
+  workplace_country: Single select (from ISO 3166 country list)
   career_level: Multiple select (Internship, Entry Level, Associate, Junior, Mid Level, Senior, Staff, Principal, Lead, Manager, Senior Manager, Director, Senior Director, VP, SVP, EVP, C-Level, Founder, Not Specified)
   visa_sponsorship: Single select (Yes, No, Not specified)
-  job_timezone: Single line text
   featured: Checkbox
   ```
 - Create a Personal Access Token at https://airtable.com/create/tokens

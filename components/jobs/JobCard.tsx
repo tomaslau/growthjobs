@@ -10,8 +10,23 @@ export function JobCard({ job }: { job: Job }) {
   const showSalary =
     job.salary && (job.salary.min !== null || job.salary.max !== null);
 
-  // Format location from city and country
-  const location = [job.city, job.country].filter(Boolean).join(", ");
+  // Format location based on workplace type
+  const location =
+    job.workplace_type === "Remote"
+      ? job.remote_region
+        ? `Remote (${job.remote_region})`
+        : null
+      : job.workplace_type === "Hybrid"
+      ? [
+          job.workplace_city,
+          job.workplace_country,
+          job.remote_region ? `Hybrid (${job.remote_region})` : null,
+        ]
+          .filter(Boolean)
+          .join(", ") || null
+      : [job.workplace_city, job.workplace_country]
+          .filter(Boolean)
+          .join(", ") || null;
 
   return (
     <div className="group relative">
@@ -42,8 +57,12 @@ export function JobCard({ job }: { job: Job }) {
                 <span>{formatSalary(job.salary)}</span>
               </>
             )}
-            {(showSalary || job.type) && <span>•</span>}
-            {location && <span>{location}</span>}
+            {location && (
+              <>
+                <span>•</span>
+                <span>{location}</span>
+              </>
+            )}
             <span>•</span>
             <time dateTime={job.posted_date}>
               {fullDate} ({relativeTime})

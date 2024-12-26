@@ -1,4 +1,5 @@
 import Airtable from "airtable";
+import { WorkplaceType, RemoteRegion } from "@/lib/constants/workplace";
 
 // Initialize Airtable with Personal Access Token
 const base = new Airtable({
@@ -41,19 +42,20 @@ export interface Job {
   id: string;
   title: string;
   company: string;
-  city: string | null;
-  country: string | null;
   type: "Full-time" | "Part-time" | "Contract";
   salary: Salary | null;
   description: string;
   apply_url: string;
   posted_date: string;
   status: "active" | "inactive";
-  remote_friendly: "Yes" | "No" | "Not specified";
   career_level: CareerLevel[];
   visa_sponsorship: "Yes" | "No" | "Not specified";
-  job_timezone: string;
   featured: boolean;
+  workplace_type: WorkplaceType;
+  remote_region: RemoteRegion;
+  timezone_requirements: string | null;
+  workplace_city: string | null;
+  workplace_country: string | null;
 }
 
 // Format salary for display
@@ -157,23 +159,6 @@ function normalizeCareerLevel(value: unknown): CareerLevel[] {
   return [normalized as CareerLevel];
 }
 
-// Convert remote friendly value to Yes/No/Not specified
-function normalizeRemoteFriendly(value: unknown): Job["remote_friendly"] {
-  console.log("Raw remote_friendly value:", value);
-
-  // Handle string values from Airtable single select
-  if (typeof value === "string") {
-    if (value === "Yes" || value === "No") return value;
-    return "Not specified";
-  }
-
-  // Handle legacy boolean values
-  if (value === true) return "Yes";
-  if (value === false) return "No";
-
-  return "Not specified";
-}
-
 // Clean up Markdown formatting
 function cleanMarkdownFormatting(text: string): string {
   if (!text) return "";
@@ -228,6 +213,35 @@ function cleanMarkdownFormatting(text: string): string {
   );
 }
 
+function normalizeWorkplaceType(value: unknown): WorkplaceType {
+  if (
+    typeof value === "string" &&
+    ["On-site", "Hybrid", "Remote"].includes(value)
+  ) {
+    return value as WorkplaceType;
+  }
+  return "Not specified"; // default value
+}
+
+function normalizeRemoteRegion(value: unknown): RemoteRegion {
+  if (typeof value === "string") {
+    const validRegions = [
+      "Worldwide",
+      "Americas Only",
+      "Europe Only",
+      "Asia-Pacific Only",
+      "US Only",
+      "EU Only",
+      "UK/EU Only",
+      "US/Canada Only",
+    ];
+    if (validRegions.includes(value)) {
+      return value as RemoteRegion;
+    }
+  }
+  return null;
+}
+
 export async function getJobs(): Promise<Job[]> {
   try {
     if (!process.env.AIRTABLE_ACCESS_TOKEN || !process.env.AIRTABLE_BASE_ID) {
@@ -256,58 +270,33 @@ export async function getJobs(): Promise<Job[]> {
         .filter((v, i, a) => a.indexOf(v) === i),
     });
 
-    return records.map((record) => {
-      // Log individual record processing
-      const description = record.fields.description;
-      const descriptionStr = typeof description === "string" ? description : "";
-      const cleanedDescription = cleanMarkdownFormatting(descriptionStr);
-
-      console.log("Processing record:", {
-        id: record.id,
-        title: record.fields.title,
-        descriptionInfo: {
-          type: typeof description,
-          length: cleanedDescription.length,
-          content: cleanedDescription,
-          isMarkdown:
-            cleanedDescription.includes("#") ||
-            cleanedDescription.includes("*") ||
-            cleanedDescription.includes("```"),
-        },
-      });
-
-      // Parse salary data
-      const hasSalaryData =
-        record.fields.salary_min || record.fields.salary_max;
-      const salary = hasSalaryData
-        ? {
-            min: (record.fields.salary_min as number) || null,
-            max: (record.fields.salary_max as number) || null,
-            currency:
-              (record.fields.salary_currency as SalaryCurrency) || "USD",
-            unit: (record.fields.salary_unit as SalaryUnit) || "year",
-          }
-        : null;
-
+    return records.map((record): Job => {
+      const fields = record.fields;
       return {
         id: record.id,
-        title: record.fields.title as string,
-        company: record.fields.company as string,
-        city: (record.fields.city as string) || null,
-        country: (record.fields.country as string) || null,
-        type: record.fields.type as Job["type"],
-        salary,
-        description: cleanedDescription,
-        apply_url: record.fields.apply_url as string,
-        posted_date: record.fields.posted_date as string,
-        status: record.fields.status as Job["status"],
-        remote_friendly: normalizeRemoteFriendly(record.fields.remote_friendly),
-        career_level: normalizeCareerLevel(record.fields.career_level),
+        title: fields.title as string,
+        company: fields.company as string,
+        type: fields.type as Job["type"],
+        salary: {
+          min: (fields.salary_min as number) || null,
+          max: (fields.salary_max as number) || null,
+          currency: (fields.salary_currency as SalaryCurrency) || "USD",
+          unit: (fields.salary_unit as SalaryUnit) || "year",
+        },
+        description: cleanMarkdownFormatting(fields.description as string),
+        apply_url: fields.apply_url as string,
+        posted_date: fields.posted_date as string,
+        status: fields.status as Job["status"],
+        career_level: normalizeCareerLevel(fields.career_level),
         visa_sponsorship:
-          (record.fields.visa_sponsorship as Job["visa_sponsorship"]) ||
+          (fields.visa_sponsorship as Job["visa_sponsorship"]) ||
           "Not specified",
-        job_timezone: (record.fields.job_timezone as string) || "Not specified",
-        featured: record.fields.featured === true,
+        featured: fields.featured === true,
+        workplace_type: normalizeWorkplaceType(fields.workplace_type),
+        remote_region: normalizeRemoteRegion(fields.remote_region),
+        timezone_requirements: (fields.timezone_requirements as string) || null,
+        workplace_city: (fields.workplace_city as string) || null,
+        workplace_country: (fields.workplace_country as string) || null,
       };
     });
   } catch (error) {
@@ -350,17 +339,11 @@ export async function getJob(id: string): Promise<Job | null> {
 
     console.log(`Fetching single job ${id}:`, record.fields.title);
     console.log("Career level from Airtable:", record.fields.career_level);
-    console.log(
-      "Remote friendly from Airtable:",
-      record.fields.remote_friendly
-    );
 
     const job = {
       id: record.id,
       title: record.fields.title as string,
       company: record.fields.company as string,
-      city: (record.fields.city as string) || null,
-      country: (record.fields.country as string) || null,
       type: record.fields.type as Job["type"],
       salary: {
         min: (record.fields.salary_min as number) || null,
@@ -372,17 +355,19 @@ export async function getJob(id: string): Promise<Job | null> {
       apply_url: record.fields.apply_url as string,
       posted_date: record.fields.posted_date as string,
       status: record.fields.status as Job["status"],
-      remote_friendly: normalizeRemoteFriendly(record.fields.remote_friendly),
       career_level: normalizeCareerLevel(record.fields.career_level),
       visa_sponsorship:
         (record.fields.visa_sponsorship as Job["visa_sponsorship"]) ||
         "Not specified",
-      job_timezone: (record.fields.job_timezone as string) || "Not specified",
       featured: record.fields.featured === true,
+      workplace_type: normalizeWorkplaceType(record.fields.workplace_type),
+      remote_region: normalizeRemoteRegion(record.fields.remote_region),
+      timezone_requirements:
+        (record.fields.timezone_requirements as string) || null,
+      workplace_city: (record.fields.workplace_city as string) || null,
+      workplace_country: (record.fields.workplace_country as string) || null,
     };
 
-    console.log("Normalized remote friendly:", job.remote_friendly);
-    console.log("Normalized career levels:", job.career_level);
     return job;
   } catch (error) {
     console.error("Error fetching job:", {
