@@ -399,7 +399,7 @@ export function JobFilters({
                 : "bg-zinc-100 text-zinc-500"
             }`}
           >
-            {remoteCount}
+            {remoteCount} of {jobs.length}
           </span>
         </div>
       </div>

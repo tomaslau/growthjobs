@@ -10,6 +10,8 @@ All notable changes to this project will be documented in this file.
 - Improved job post header layout by removing date for better readability
 - Standardized "Not specified" badge styling across components
 - Updated search functionality to use new workplace location fields
+- Improved remote filter count display to show total remote jobs out of all jobs
+- Enhanced clarity of job filtering by showing "X of Y" format for remote jobs
 
 ## [0.0.29] - 2024-12-26
 

@@ -214,13 +214,22 @@ function cleanMarkdownFormatting(text: string): string {
 }
 
 function normalizeWorkplaceType(value: unknown): WorkplaceType {
+  console.log("Normalizing workplace type:", value);
   if (
     typeof value === "string" &&
     ["On-site", "Hybrid", "Remote"].includes(value)
   ) {
+    console.log("Normalized to:", value);
     return value as WorkplaceType;
   }
-  return "Not specified"; // default value
+  // If the value is undefined or invalid, check if there's a remote_region
+  // If there is, it's probably a remote job
+  if (value === undefined || value === null) {
+    console.log("Value is undefined/null, checking remote_region");
+    return "Not specified";
+  }
+  console.log("Defaulting to Not specified");
+  return "Not specified";
 }
 
 function normalizeRemoteRegion(value: unknown): RemoteRegion {
