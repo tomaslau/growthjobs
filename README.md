@@ -53,7 +53,8 @@ npm install
   ```
   title: Single line text
   company: Single line text
-  location: Single line text
+  city: Single line text
+  country: Single select (from ISO 3166 country list)
   type: Single select (Full-time, Part-time, Contract)
   salary_min: Number
   salary_max: Number

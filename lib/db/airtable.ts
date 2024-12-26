@@ -41,7 +41,8 @@ export interface Job {
   id: string;
   title: string;
   company: string;
-  location: string;
+  city: string | null;
+  country: string | null;
   type: "Full-time" | "Part-time" | "Contract";
   salary: Salary | null;
   description: string;
@@ -292,7 +293,8 @@ export async function getJobs(): Promise<Job[]> {
         id: record.id,
         title: record.fields.title as string,
         company: record.fields.company as string,
-        location: record.fields.location as string,
+        city: (record.fields.city as string) || null,
+        country: (record.fields.country as string) || null,
         type: record.fields.type as Job["type"],
         salary,
         description: cleanedDescription,
@@ -330,7 +332,6 @@ export async function getJob(id: string): Promise<Job | null> {
     const requiredFields = [
       "title",
       "company",
-      "location",
       "type",
       "description",
       "apply_url",
@@ -358,7 +359,8 @@ export async function getJob(id: string): Promise<Job | null> {
       id: record.id,
       title: record.fields.title as string,
       company: record.fields.company as string,
-      location: record.fields.location as string,
+      city: (record.fields.city as string) || null,
+      country: (record.fields.country as string) || null,
       type: record.fields.type as Job["type"],
       salary: {
         min: (record.fields.salary_min as number) || null,

@@ -47,15 +47,18 @@ export async function generateMetadata({
     };
   }
 
+  // Format location for metadata
+  const metaLocation = [job.city, job.country].filter(Boolean).join(", ");
+
   return {
     title: `${job.title} at ${job.company}`,
-    description: `${job.type} position at ${job.company}. Location: ${
-      job.location
+    description: `${job.type} position at ${job.company}${
+      metaLocation ? `. Location: ${metaLocation}` : ""
     }${job.salary ? `. Salary: ${formatSalary(job.salary)}` : ""}.`,
     openGraph: {
       title: `${job.title} at ${job.company}`,
-      description: `${job.type} position at ${job.company}. Location: ${
-        job.location
+      description: `${job.type} position at ${job.company}${
+        metaLocation ? `. Location: ${metaLocation}` : ""
       }${job.salary ? `. Salary: ${formatSalary(job.salary)}` : ""}.`,
     },
   };
@@ -111,6 +114,9 @@ export default async function JobPage({
     const showSalary =
       job.salary && (job.salary.min !== null || job.salary.max !== null);
 
+    // Format location
+    const location = [job.city, job.country].filter(Boolean).join(", ");
+
     return (
       <main className="container py-6">
         <div className="flex justify-between gap-16">
@@ -159,7 +165,7 @@ export default async function JobPage({
                       </>
                     )}
                     {(showSalary || job.type) && <span>•</span>}
-                    <span>{job.location}</span>
+                    {location && <span>{location}</span>}
                     <span>•</span>
                     <time dateTime={job.posted_date}>
                       {fullDate} ({relativeTime})
@@ -255,7 +261,8 @@ export default async function JobPage({
               <JobDetailsSidebar
                 fullDate={fullDate}
                 relativeTime={relativeTime}
-                location={job.location}
+                city={job.city}
+                country={job.country}
                 remote_friendly={job.remote_friendly}
                 salary={job.salary}
                 career_level={job.career_level}

@@ -40,7 +40,8 @@ npm install --save-dev @types/react @types/react-dom @types/node
   id: string
   title: string
   company: string
-  location: string
+  city: string | null
+  country: string | null
   type: single select (Full-time, Part-time, Contract)
   salary_range: string
   description: long text (markdown)

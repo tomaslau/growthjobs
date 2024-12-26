@@ -10,6 +10,9 @@ export function JobCard({ job }: { job: Job }) {
   const showSalary =
     job.salary && (job.salary.min !== null || job.salary.max !== null);
 
+  // Format location from city and country
+  const location = [job.city, job.country].filter(Boolean).join(", ");
+
   return (
     <div className="group relative">
       <Link
@@ -40,7 +43,7 @@ export function JobCard({ job }: { job: Job }) {
               </>
             )}
             {(showSalary || job.type) && <span>•</span>}
-            <span>{job.location}</span>
+            {location && <span>{location}</span>}
             <span>•</span>
             <time dateTime={job.posted_date}>
               {fullDate} ({relativeTime})

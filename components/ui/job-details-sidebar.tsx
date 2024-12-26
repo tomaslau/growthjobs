@@ -14,7 +14,8 @@ import {
 interface JobDetailsSidebarProps {
   fullDate: string;
   relativeTime: string;
-  location: string;
+  city: string | null;
+  country: string | null;
   remote_friendly: string;
   salary: Salary | null;
   career_level: CareerLevel[];
@@ -52,7 +53,8 @@ function formatCareerLevel(level: CareerLevel): string {
 export function JobDetailsSidebar({
   fullDate,
   relativeTime,
-  location,
+  city,
+  country,
   remote_friendly,
   salary,
   career_level,
@@ -64,6 +66,9 @@ export function JobDetailsSidebar({
   const careerLevels = Array.from(
     new Set(Array.isArray(career_level) ? career_level : [career_level])
   );
+
+  // Format location
+  const location = [city, country].filter(Boolean).join(", ");
 
   return (
     <div className="p-5 border rounded-lg space-y-4 bg-gray-50">
@@ -90,7 +95,9 @@ export function JobDetailsSidebar({
           <MapPin className="h-4 w-4 text-gray-500 shrink-0" />
           <h2 className="text-sm font-medium">Job Location</h2>
         </div>
-        <p className="text-sm text-gray-600 ml-6">{location}</p>
+        <p className="text-sm text-gray-600 ml-6">
+          {location || "Not specified"}
+        </p>
       </div>
 
       <div>

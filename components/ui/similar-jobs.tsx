@@ -20,7 +20,13 @@ export function SimilarJobs({ currentJob, allJobs }: SimilarJobsProps) {
       const isSimilarTitle = titleWords.some(
         (word) => word.length > 3 && jobTitleLower.includes(word)
       );
-      const isSameLocation = job.location === currentJob.location;
+
+      // Compare both city and country
+      const isSameLocation =
+        (job.city && currentJob.city && job.city === currentJob.city) ||
+        (job.country &&
+          currentJob.country &&
+          job.country === currentJob.country);
 
       return isSimilarTitle || isSameLocation;
     })
@@ -32,22 +38,31 @@ export function SimilarJobs({ currentJob, allJobs }: SimilarJobsProps) {
     <div>
       <h2 className="text-lg font-semibold mb-3">Similar Jobs</h2>
       <div className="space-y-3">
-        {similarJobs.map((job) => (
-          <Link
-            key={job.id}
-            href={`/jobs/${generateJobSlug(job.title, job.company)}`}
-            className="block hover:text-gray-900"
-          >
-            <div className="text-sm">{job.title}</div>
-            <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
-              <span>{job.company}</span>
-              <span>•</span>
-              <span>{job.type}</span>
-              <span>•</span>
-              <span>{job.location}</span>
-            </div>
-          </Link>
-        ))}
+        {similarJobs.map((job) => {
+          // Format location
+          const location = [job.city, job.country].filter(Boolean).join(", ");
+
+          return (
+            <Link
+              key={job.id}
+              href={`/jobs/${generateJobSlug(job.title, job.company)}`}
+              className="block hover:text-gray-900"
+            >
+              <div className="text-sm">{job.title}</div>
+              <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                <span>{job.company}</span>
+                <span>•</span>
+                <span>{job.type}</span>
+                {location && (
+                  <>
+                    <span>•</span>
+                    <span>{location}</span>
+                  </>
+                )}
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

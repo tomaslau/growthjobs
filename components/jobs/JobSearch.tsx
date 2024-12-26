@@ -20,7 +20,8 @@ export function JobSearch({
       (job) =>
         job.title.toLowerCase().includes(value.toLowerCase()) ||
         job.company.toLowerCase().includes(value.toLowerCase()) ||
-        job.location.toLowerCase().includes(value.toLowerCase())
+        (job.city?.toLowerCase() || "").includes(value.toLowerCase()) ||
+        (job.country?.toLowerCase() || "").includes(value.toLowerCase())
     );
 
     onSearch(filtered);

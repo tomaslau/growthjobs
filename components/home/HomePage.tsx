@@ -242,7 +242,8 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
         (job) =>
           job.title.toLowerCase().includes(searchLower) ||
           job.company.toLowerCase().includes(searchLower) ||
-          job.location.toLowerCase().includes(searchLower)
+          (job.city?.toLowerCase() || "").includes(searchLower) ||
+          (job.country?.toLowerCase() || "").includes(searchLower)
       );
     }
 

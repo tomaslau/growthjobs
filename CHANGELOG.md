@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.29] - 2024-12-26
+
+### Changed
+- Replaced location field with separate city and country fields
+- Added ISO 3166 country list as a constant
+- Updated job search to handle city and country fields
+- Updated documentation to reflect new location structure
+
 ## [0.0.28] - 2024-12-24
 
 ### Changed
