@@ -82,14 +82,6 @@ export function JobDetailsSidebar({
   // Get remote friendly status
   const remoteFriendly = getRemoteFriendlyStatus({ workplace_type });
 
-  // Format workplace info
-  const workplaceInfo =
-    workplace_type === "Remote" && remote_region
-      ? `${remoteFriendly} (${remote_region})`
-      : workplace_type === "Not specified"
-      ? "Not specified"
-      : remoteFriendly;
-
   return (
     <div className="p-5 border rounded-lg space-y-4 bg-gray-50">
       <div className="flex justify-between items-center mb-2">
