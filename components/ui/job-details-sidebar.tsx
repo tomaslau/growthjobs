@@ -1,9 +1,5 @@
 import { CareerLevel, Salary, formatSalary } from "@/lib/db/airtable";
-import {
-  WorkplaceType,
-  RemoteRegion,
-  getRemoteFriendlyStatus,
-} from "@/lib/constants/workplace";
+import { WorkplaceType, RemoteRegion } from "@/lib/constants/workplace";
 import {
   Calendar,
   MapPin,
@@ -78,9 +74,6 @@ export function JobDetailsSidebar({
   const location = [workplace_city, workplace_country]
     .filter(Boolean)
     .join(", ");
-
-  // Get remote friendly status
-  const remoteFriendly = getRemoteFriendlyStatus({ workplace_type });
 
   return (
     <div className="p-5 border rounded-lg space-y-4 bg-gray-50">
