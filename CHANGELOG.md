@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.31] - 2024-12-27
+
+### Added
+- Added social media icons (GitHub, LinkedIn, X, Bluesky) to navbar and footer
+- Enhanced navigation with consistent icon spacing and hover states
+- Improved accessibility with proper ARIA labels for social links
+
 ## [0.0.30] - 2024-12-27
 
 ### Changed
