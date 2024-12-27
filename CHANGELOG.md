@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.32] - 2024-12-27
+
+### Changed
+- Reorganized footer structure for better content organization
+
 ## [0.0.31] - 2024-12-27
 
 ### Added

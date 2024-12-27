@@ -14,15 +14,15 @@ export const config = {
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://jobboardstarter.vercel.app"),
+      : "https://demo.bordful.com"),
 
   // Navigation
   nav: {
-    title: "Job Board Starter", // The text shown in the navigation bar
+    title: "Bordful", // The text shown in the navigation bar
     icon: "BriefcaseBusiness", // Lucide icon name (see https://lucide.dev/icons)
     github: {
       show: true, // Whether to show the GitHub button
-      url: "https://github.com/tomaslau/jobboardstarter", // Your GitHub repository URL
+      url: "https://github.com/tomaslau/bordful", // Your GitHub repository URL
     },
   },
 } as const;
