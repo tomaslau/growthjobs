@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.33] - 2025-01-21
+
+### Changed
+- Updated GitHub repo URL
+
 ## [0.0.32] - 2024-12-27
 
 ### Changed
