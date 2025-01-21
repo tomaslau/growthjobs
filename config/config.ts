@@ -22,7 +22,7 @@ export const config = {
     icon: "BriefcaseBusiness", // Lucide icon name (see https://lucide.dev/icons)
     github: {
       show: true, // Whether to show the GitHub button
-      url: "https://github.com/tomaslau/bordful", // Your GitHub repository URL
+      url: "https://github.com/craftled/bordful", // Your GitHub repository URL
     },
   },
 } as const;

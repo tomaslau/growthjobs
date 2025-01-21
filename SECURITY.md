@@ -11,7 +11,7 @@
 If you discover a security vulnerability, please follow these steps:
 
 1. **Do Not** open a public issue
-2. Email security details to hello@tomaslau.com
+2. Email security details to support@bordful.com
 3. Include:
    - Description of the vulnerability
    - Steps to reproduce

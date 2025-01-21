@@ -30,7 +30,7 @@ export function Footer() {
               </p>
               <div className="flex items-center space-x-3 pt-2">
                 <Link
-                  href="https://github.com/tomaslau/bordful"
+                  href="https://github.com/craftled/bordful"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-600 hover:text-zinc-900 transition-colors"
@@ -149,7 +149,7 @@ export function Footer() {
                   { href: "/terms", label: "Terms of Service" },
                   { href: "/cookies", label: "Cookie Policy" },
                   {
-                    href: "https://github.com/tomaslau/jobboardstarter/blob/main/LICENSE",
+                    href: "https://github.com/craftled/bordful/blob/main/LICENSE",
                     label: "License",
                   },
                 ].map(({ href, label }) => (

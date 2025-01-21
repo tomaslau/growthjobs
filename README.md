@@ -42,8 +42,8 @@ Bordful is a modern, minimal job board built with Next.js 15, Tailwind CSS, and 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/tomaslau/jobboardstarter
-cd jobboardstarter
+git clone https://github.com/craftled/bordful
+cd bordful
 npm install
 ```
 
@@ -248,4 +248,4 @@ If you find this helpful, please ⭐️ this repository!
 
 ## Credits
 
-Built by [Tomas Laurinavicius](https://github.com/tomaslau)
+Built by [Craftled](https://craftled.com)

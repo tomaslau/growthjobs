@@ -58,7 +58,7 @@ export function Nav() {
             <div className="flex items-center space-x-6" aria-label="Actions">
               <div className="flex items-center space-x-3">
                 <Link
-                  href="https://github.com/tomaslau/bordful"
+                  href="https://github.com/craftled/bordful"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-zinc-600 hover:text-zinc-900 transition-colors"
