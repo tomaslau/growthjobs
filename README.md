@@ -1,12 +1,12 @@
 # Bordful: Job Board Starter
 
-Bordful is a modern, minimal job board built with Next.js 15, Tailwind CSS, and Airtable. Features static generation, client-side search, and a clean UI with Geist font.
+Bordful is a modern, minimal job board built with Next.js, Tailwind CSS, and Airtable. Features static generation, client-side search, and a clean UI with Geist font.
 
 ![Job Board Starter Screenshot](public/screenshot.png)
 
 ## Features
 
-- Built with Next.js 15
+- Built with Next.js
 - Styled with Tailwind CSS
 - Airtable as the backend
 - Client-side search with memoization

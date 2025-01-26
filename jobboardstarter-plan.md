@@ -1,23 +1,23 @@
 # Job Board Starter Kit
 
-A modern, open-source job board built with Next.js 14, Tailwind CSS, and Airtable. Features static generation for maximum performance and easy deployment.
+A modern, open-source job board built with Next.js, Tailwind CSS, and Airtable. Features static generation for maximum performance and easy deployment.
 
 ## Features
 
-- 🚀 Built with Next.js 14 (App Router)
-- 🎨 Styled with Tailwind CSS and shadcn/ui
-- 📊 Airtable as the initial data source
-- ⚡️ Static generation for optimal performance
-- 🔍 Client-side search and filtering
-- 📱 Fully responsive design
-- 🎯 SEO optimized
-- ✨ Clean, minimal UI inspired by Vercel's design
+- Built with Next.js
+- Styled with Tailwind CSS and shadcn/ui
+- Airtable as the initial data source
+- Static generation for optimal performance
+- Client-side search and filtering
+- Fully responsive design
+- SEO friendly
 
 ## Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 22+ and npm
 - Airtable account
-- Git
+- GitHub account
+- Vercel account
 
 ## Quick Start
 
