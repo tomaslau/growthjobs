@@ -710,9 +710,5 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
 }
 
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <HomePageContent initialJobs={initialJobs} />
-    </Suspense>
-  );
+  return <HomePageContent initialJobs={initialJobs} />;
 }

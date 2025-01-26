@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - Removed redundant `postcss.config.js`
 - Optimized font loading by removing unused font files from app/fonts directory
 - Removed unused TestFeatures component
+- Improved performance by removing unnecessary loading states and Suspense boundaries
+- Optimized navigation icon loading for better UX
 
 ## [0.0.33] - 2025-01-21
 
