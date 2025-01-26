@@ -1,7 +1,7 @@
 import Link from "next/link";
 import config from "@/config/config";
 import dynamic from "next/dynamic";
-import { Briefcase, PlusCircle } from "lucide-react";
+import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 // Preload the icon for better performance

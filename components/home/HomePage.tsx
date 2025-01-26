@@ -710,5 +710,9 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
 }
 
 export function HomePage({ initialJobs }: { initialJobs: Job[] }) {
-  return <HomePageContent initialJobs={initialJobs} />;
+  return (
+    <Suspense>
+      <HomePageContent initialJobs={initialJobs} />
+    </Suspense>
+  );
 }
