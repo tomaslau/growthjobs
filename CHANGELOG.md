@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.34] - 2025-01-26
+
+### Changed
+- Migrated Next.js configuration from JavaScript to TypeScript for better type safety and consistency
+- Removed `next.config.js` in favor of `next.config.ts`
+- Consolidated PostCSS configuration into `postcss.config.mjs` with proper TypeScript types
+- Removed redundant `postcss.config.js`
+
 ## [0.0.33] - 2025-01-21
 
 ### Changed
