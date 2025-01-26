@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file.
 - Removed `next.config.js` in favor of `next.config.ts`
 - Consolidated PostCSS configuration into `postcss.config.mjs` with proper TypeScript types
 - Removed redundant `postcss.config.js`
+- Optimized font loading by removing unused font files from app/fonts directory
+- Removed unused TestFeatures component
 
 ## [0.0.33] - 2025-01-21
 
