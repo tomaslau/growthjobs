@@ -12,12 +12,15 @@ export function Footer() {
   );
 
   useEffect(() => {
-    const currentYear = new Date().getFullYear();
-    setCopyrightYears(
-      currentYear === config.footer.copyright.startYear
-        ? config.footer.copyright.startYear.toString()
-        : `${config.footer.copyright.startYear}-${currentYear}`
-    );
+    // Only update the years if we're in the client
+    if (typeof window !== "undefined") {
+      const currentYear = new Date().getFullYear();
+      if (currentYear !== config.footer.copyright.startYear) {
+        setCopyrightYears(
+          `${config.footer.copyright.startYear}-${currentYear}`
+        );
+      }
+    }
   }, []);
 
   return (

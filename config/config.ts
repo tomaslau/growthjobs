@@ -76,9 +76,16 @@ export const config = {
       show: true,
       title: "Legal",
       links: [
-        { label: "Privacy Policy", link: "/privacy", external: false },
-        { label: "Terms of Service", link: "/terms", external: false },
-        { label: "Cookie Policy", link: "/cookies", external: false },
+        {
+          label: "Privacy & Cookies",
+          link: "/privacy",
+          external: false,
+        },
+        {
+          label: "Terms of Service",
+          link: "/terms",
+          external: false,
+        },
         {
           label: "License",
           link: "https://github.com/craftled/bordful/blob/main/LICENSE",

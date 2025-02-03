@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.37] - 2025-02-03
+
+### Changed
+- Updated Privacy & Terms pages layout and styling:
+  - Centered content layout for better readability
+  - Consistent styling with job post pages
+  - Improved typography and spacing
+  - Enhanced markdown content formatting
+  - Combined Cookie Policy into Privacy Policy page
+  - Updated footer links to reflect merged pages
+
 ## [0.0.36] - 2025-02-03
 
 ### Changed
