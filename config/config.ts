@@ -48,6 +48,73 @@ export const config = {
       { label: "Changelog", link: "/changelog" },
     ],
   },
+
+  // Footer
+  footer: {
+    // Brand section (reuses nav social links)
+    brand: {
+      show: true,
+      description:
+        "Browse curated opportunities from leading companies. Updated daily with the latest positions.",
+    },
+
+    // Resources section
+    resources: {
+      show: true,
+      title: "Resources",
+      links: [
+        { label: "Home", link: "/" },
+        { label: "Jobs", link: "/jobs" },
+        { label: "Job Alerts", link: "/alerts" },
+        { label: "About", link: "/about" },
+        { label: "Changelog", link: "/changelog" },
+      ],
+    },
+
+    // Legal section
+    legal: {
+      show: true,
+      title: "Legal",
+      links: [
+        { label: "Privacy Policy", link: "/privacy", external: false },
+        { label: "Terms of Service", link: "/terms", external: false },
+        { label: "Cookie Policy", link: "/cookies", external: false },
+        {
+          label: "License",
+          link: "https://github.com/craftled/bordful/blob/main/LICENSE",
+          external: true,
+        },
+      ],
+    },
+
+    // Post Job section
+    postJob: {
+      show: true,
+      title: "Post a Job",
+      description:
+        "Reach our community of talented professionals. Get quality applications fast.",
+      button: {
+        label: "Post a Job",
+        link: "/post",
+      },
+    },
+
+    // Copyright section
+    copyright: {
+      show: true,
+      startYear: 2024,
+      text: "Bordful - An open-source Next.js job board template. Standing on the shoulders of giants.",
+    },
+
+    // Built By section
+    builtBy: {
+      show: true,
+      text: "Built by",
+      name: "Craftled",
+      link: "https://craftled.com/",
+      showLogo: true,
+    },
+  },
 } as const;
 
 export type Config = typeof config;

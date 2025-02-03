@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.36] - 2025-02-03
+
+### Changed
+- Enhanced footer configuration with centralized controls
+- Added configuration options for all footer sections (brand, resources, legal, post job)
+- Added customizable copyright section with dynamic year range
+- Added configurable "Built By" section with optional logo
+- Improved code maintainability with configuration-driven footer
+- Added show/hide toggles for all footer sections
+- Added external link support for legal links
+
 ## [0.0.35] - 2025-02-03
 
 ### Changed
