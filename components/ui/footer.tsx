@@ -12,7 +12,6 @@ export function Footer() {
   );
 
   useEffect(() => {
-    // Only update the years if we're in the client
     if (typeof window !== "undefined") {
       const currentYear = new Date().getFullYear();
       if (currentYear !== config.footer.copyright.startYear) {
@@ -25,11 +24,9 @@ export function Footer() {
 
   return (
     <footer className="border-t mt-24">
-      <div className="container py-8">
+      <div className="container mx-auto py-8 px-4">
         <div className="flex flex-col gap-8">
-          {/* Additional Sections */}
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 pb-8 border-b">
-            {/* Brand */}
             {config.footer.brand.show && (
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-zinc-900">
@@ -136,7 +133,6 @@ export function Footer() {
               </div>
             )}
 
-            {/* Resources */}
             {config.footer.resources.show && (
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-zinc-900">
@@ -157,7 +153,6 @@ export function Footer() {
               </div>
             )}
 
-            {/* Legal */}
             {config.footer.legal.show && (
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-zinc-900">
@@ -183,7 +178,6 @@ export function Footer() {
               </div>
             )}
 
-            {/* Post a Job */}
             {config.footer.postJob.show && (
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-zinc-900">
@@ -206,8 +200,7 @@ export function Footer() {
             )}
           </div>
 
-          {/* Copyright and Built By */}
-          <div className="flex justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {config.footer.copyright.show && (
               <div className="text-xs text-gray-500">
                 {copyrightYears} © {config.footer.copyright.text}
