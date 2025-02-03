@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.39] - 2025-02-03
+
+### Changed
+- Enhanced homepage responsive layout:
+  - Optimized layout breakpoints for better space utilization
+  - Adjusted sidebar to start at medium screens (768px) instead of large screens
+  - Refined sidebar widths (240px to 260px) for better content balance
+  - Improved main content and sidebar proportions
+  - Enhanced layout flexibility on medium-sized screens
+
 ## [0.0.38] - 2025-02-03
 
 ### Changed
