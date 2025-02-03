@@ -111,6 +111,29 @@ export const config = {
       show: true,  // Show/hide GitHub button
       url: "https://github.com/yourusername/yourrepo",
     },
+    linkedin: {
+      show: true,  // Show/hide LinkedIn button
+      url: "https://linkedin.com/company/yourcompany",
+    },
+    twitter: {
+      show: true,  // Show/hide Twitter/X button
+      url: "https://x.com/yourhandle",
+    },
+    bluesky: {
+      show: true,  // Show/hide Bluesky button
+      url: "https://bsky.app/profile/yourdomain.com",
+    },
+    postJob: {
+      show: true,  // Show/hide Post Job button
+      label: "Post a Job",  // Button text
+      link: "/post",  // Button URL
+    },
+    topMenu: [  // Navigation menu items
+      { label: "Home", link: "/" },
+      { label: "Jobs", link: "/jobs" },
+      { label: "About", link: "/about" },
+      { label: "Changelog", link: "/changelog" },
+    ],
   },
 }
 ```
@@ -126,7 +149,19 @@ The site URL automatically adjusts based on the environment:
 
 - **Icon**: Uses [Lucide icons](https://lucide.dev/icons) - choose any icon by name
 - **Title**: Customize the text shown in the navigation bar
-- **GitHub**: Toggle GitHub button visibility and set repository URL
+- **Social Media**: Toggle visibility and set URLs for:
+  - GitHub repository
+  - LinkedIn company page
+  - Twitter/X profile
+  - Bluesky profile
+- **Post Job Button**: Customize the job posting button:
+  - Toggle visibility
+  - Change button text
+  - Set custom URL
+- **Top Menu**: Define navigation menu items with labels and links
+  - Each item has a label and link
+  - Order items as needed
+  - Add or remove menu items easily
 
 ## Environment Variables
 

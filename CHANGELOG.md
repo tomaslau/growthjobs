@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.35] - 2025-01-27
+
+### Changed
+- Enhanced navigation configuration with centralized social media controls
+- Added configuration options for LinkedIn, Twitter, and Bluesky social links
+- Added customizable "Post Job" button with show/hide, label, and link options
+- Moved all navigation menu items to config file for single source of truth
+- Updated navigation component to use dynamic configuration values
+- Improved code maintainability with configuration-driven navigation
+
 ## [0.0.34] - 2025-01-26
 
 ### Changed
