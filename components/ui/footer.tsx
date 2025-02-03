@@ -200,7 +200,7 @@ export function Footer() {
             )}
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             {config.footer.copyright.show && (
               <div className="text-xs text-gray-500">
                 {copyrightYears} © {config.footer.copyright.text}
