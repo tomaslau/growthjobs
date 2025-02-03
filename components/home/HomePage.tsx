@@ -525,12 +525,12 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
 
       {/* Jobs Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="flex justify-between gap-8">
+        <div className="flex flex-col md:flex-row justify-between gap-4 md:gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="flex-1">
-            <div className="flex justify-between items-end mb-6">
-              <div className="space-y-1">
-                <h2 className="text-xl font-semibold tracking-tight flex items-center gap-2">
+          <div className="flex-[3] order-2 md:order-1">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-4 sm:gap-0">
+              <div className="space-y-1 w-full sm:w-auto">
+                <h2 className="text-xl font-semibold tracking-tight flex items-center gap-2 flex-wrap">
                   Latest Opportunities
                   {currentPage > 1 && (
                     <span className="text-gray-500 font-normal">
@@ -543,12 +543,12 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
                   positions
                 </p>
               </div>
-              <div className="flex items-center gap-3 pb-[1px]">
+              <div className="flex items-center gap-3 pb-[1px] w-full sm:w-auto">
                 <Select
                   value={jobsPerPage.toString()}
                   onValueChange={handleJobsPerPageChange}
                 >
-                  <SelectTrigger className="w-[130px] h-7 text-xs">
+                  <SelectTrigger className="w-full sm:w-[130px] h-7 text-xs">
                     <SelectValue placeholder="Show" />
                   </SelectTrigger>
                   <SelectContent
@@ -571,7 +571,7 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
                 </Select>
 
                 <Select value={sortBy} onValueChange={handleSortChange}>
-                  <SelectTrigger className="w-[140px] h-7 text-xs">
+                  <SelectTrigger className="w-full sm:w-[140px] h-7 text-xs">
                     <SelectValue placeholder="Sort by" />
                   </SelectTrigger>
                   <SelectContent className="bg-white" position="popper">
@@ -611,7 +611,7 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
 
             {/* Pagination with optimized range */}
             {sortedJobs.length > jobsPerPage && (
-              <div className="mt-8 flex justify-start">
+              <div className="mt-8 flex justify-center sm:justify-start">
                 <Pagination>
                   <PaginationContent className="flex gap-2">
                     <PaginationItem>
@@ -693,7 +693,7 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
           </div>
 
           {/* Sidebar */}
-          <aside className="w-[300px] shrink-0">
+          <aside className="w-full md:w-[240px] lg:w-[250px] xl:w-[260px] order-1 md:order-2">
             <div className="space-y-6">
               <JobFilters
                 onFilterChange={handleFilterChange}
