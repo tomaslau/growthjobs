@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.35] - 2025-01-27
+## [0.0.35] - 2025-02-03
 
 ### Changed
 - Enhanced navigation configuration with centralized social media controls
