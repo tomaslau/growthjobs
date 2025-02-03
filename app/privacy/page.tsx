@@ -95,8 +95,9 @@ export default function PrivacyPage() {
             <h3>Managing Cookies</h3>
             <p>
               Most web browsers allow you to control cookies through their
-              settings. You can usually find these settings in the "options" or
-              "preferences" menu of your browser. You can choose to:
+              settings. You can usually find these settings in the
+              &ldquo;options&rdquo; or &ldquo;preferences&rdquo; menu of your
+              browser. You can choose to:
             </p>
             <ul>
               <li>Accept or decline cookies when you first visit our site</li>
@@ -123,8 +124,8 @@ export default function PrivacyPage() {
             <h2>Contact Us</h2>
             <p>
               If you have any questions about this Privacy Policy or our data
-              practices, please contact us. We're here to help you understand
-              and exercise your privacy rights.
+              practices, please contact us. We&apos;re here to help you
+              understand and exercise your privacy rights.
             </p>
           </div>
         </div>

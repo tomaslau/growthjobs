@@ -71,12 +71,13 @@ export default function TermsPage() {
 
             <h2>Disclaimer</h2>
             <p>
-              The materials on our job board platform are provided on an 'as is'
-              basis. We make no warranties, expressed or implied, and hereby
-              disclaim and negate all other warranties including, without
-              limitation, implied warranties or conditions of merchantability,
-              fitness for a particular purpose, or non-infringement of
-              intellectual property or other violation of rights.
+              The materials on our job board platform are provided on an
+              &apos;as is&apos; basis. We make no warranties, expressed or
+              implied, and hereby disclaim and negate all other warranties
+              including, without limitation, implied warranties or conditions of
+              merchantability, fitness for a particular purpose, or
+              non-infringement of intellectual property or other violation of
+              rights.
             </p>
 
             <h2>Limitations</h2>
@@ -101,7 +102,8 @@ export default function TermsPage() {
               We have not reviewed all of the sites linked to our platform and
               are not responsible for the contents of any such linked site. The
               inclusion of any link does not imply endorsement by us of the
-              site. Use of any such linked website is at the user's own risk.
+              site. Use of any such linked website is at the user&apos;s own
+              risk.
             </p>
 
             <h2>Modifications</h2>
@@ -114,7 +116,7 @@ export default function TermsPage() {
             <h2>Contact Information</h2>
             <p>
               If you have any questions about these Terms of Service, please
-              contact us. We're here to help you understand your rights and
+              contact us. We&apos;re here to help you understand your rights and
               obligations under these terms.
             </p>
           </div>
