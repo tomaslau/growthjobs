@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.38] - 2025-02-03
+
+### Changed
+- Improved navigation responsiveness and styling:
+  - Adjusted mobile menu breakpoint for better usability
+  - Enhanced active link styling with subtle background
+  - Updated X (Twitter) icon to match footer design
+  - Optimized spacing between navigation items
+  - Consistent hover effects across desktop and mobile
+  - Reduced icon sizes in collapsed menu
+
 ## [0.0.37] - 2025-02-03
 
 ### Changed
