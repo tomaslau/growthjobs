@@ -209,13 +209,13 @@ export function Footer() {
           {/* Copyright and Built By */}
           <div className="flex justify-between items-center">
             {config.footer.copyright.show && (
-              <div className="text-sm text-gray-500">
+              <div className="text-xs text-gray-500">
                 {copyrightYears} © {config.footer.copyright.text}
               </div>
             )}
             {config.footer.builtBy.show && (
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-500">
+                <span className="text-xs text-gray-500">
                   {config.footer.builtBy.text}
                 </span>
                 <div className="flex items-center gap-1">
@@ -239,7 +239,7 @@ export function Footer() {
                     href={config.footer.builtBy.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-sm font-medium text-gray-900 hover:text-gray-700"
+                    className="text-xs font-medium text-gray-900 hover:text-gray-700"
                   >
                     {config.footer.builtBy.name}
                   </Link>
