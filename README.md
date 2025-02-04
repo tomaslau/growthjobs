@@ -41,6 +41,7 @@ Bordful is a modern, minimal job board built with Next.js, Tailwind CSS, and Air
 ## Quick Start
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/craftled/bordful
 cd bordful
@@ -48,8 +49,9 @@ npm install
 ```
 
 2. Set up Airtable:
+
 - Create a new base in Airtable
-- Create a table named "Jobs" with these fields:
+- Create a table named "Jobs" (it's very important to have this name) with these fields:
   ```
   title: Single line text
   company: Single line text
@@ -78,13 +80,15 @@ npm install
 - Add your base to the token's access list
 
 3. Environment Setup:
-Create a `.env` file:
+   Create a `.env` file:
+
 ```env
 AIRTABLE_ACCESS_TOKEN=your_token_here
 AIRTABLE_BASE_ID=your_base_id_here
 ```
 
 4. Development:
+
 ```bash
 npm run dev
 ```
@@ -102,45 +106,47 @@ export const config = {
   title: "Find Your Next Tech Role",
   description: "Browse curated tech opportunities...",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-  
+
   // Navigation
   nav: {
-    title: "JobBoard",  // Navigation bar text
-    icon: "Briefcase",  // Lucide icon name
+    title: "JobBoard", // Navigation bar text
+    icon: "Briefcase", // Lucide icon name
     github: {
-      show: true,  // Show/hide GitHub button
+      show: true, // Show/hide GitHub button
       url: "https://github.com/yourusername/yourrepo",
     },
     linkedin: {
-      show: true,  // Show/hide LinkedIn button
+      show: true, // Show/hide LinkedIn button
       url: "https://linkedin.com/company/yourcompany",
     },
     twitter: {
-      show: true,  // Show/hide Twitter/X button
+      show: true, // Show/hide Twitter/X button
       url: "https://x.com/yourhandle",
     },
     bluesky: {
-      show: true,  // Show/hide Bluesky button
+      show: true, // Show/hide Bluesky button
       url: "https://bsky.app/profile/yourdomain.com",
     },
     postJob: {
-      show: true,  // Show/hide Post Job button
-      label: "Post a Job",  // Button text
-      link: "/post",  // Button URL
+      show: true, // Show/hide Post Job button
+      label: "Post a Job", // Button text
+      link: "/post", // Button URL
     },
-    topMenu: [  // Navigation menu items
+    topMenu: [
+      // Navigation menu items
       { label: "Home", link: "/" },
       { label: "Jobs", link: "/jobs" },
       { label: "About", link: "/about" },
       { label: "Changelog", link: "/changelog" },
     ],
   },
-}
+};
 ```
 
 ### Environment-Aware URLs
 
 The site URL automatically adjusts based on the environment:
+
 1. Uses `NEXT_PUBLIC_SITE_URL` if provided
 2. Falls back to `localhost:3000` in development
 3. Uses production URL in production
@@ -168,6 +174,7 @@ The site URL automatically adjusts based on the environment:
 ⚠️ IMPORTANT: Never commit your API keys or sensitive credentials to the repository!
 
 Required environment variables:
+
 - AIRTABLE_ACCESS_TOKEN=your_token_here
 - AIRTABLE_BASE_ID=your_base_id_here
 
@@ -176,6 +183,7 @@ Create a `.env` file in your project root and add these variables there.
 ## Data Revalidation
 
 The job board uses Next.js Incremental Static Regeneration (ISR) and server-side caching to keep data fresh:
+
 - Pages automatically revalidate every 5 minutes
 - Server-side caching with unstable_cache
 - Content-specific loading states
@@ -184,6 +192,7 @@ The job board uses Next.js Incremental Static Regeneration (ISR) and server-side
 - Zero downtime updates
 
 You can adjust the revalidation interval in:
+
 - `app/page.tsx` (job listing page)
 - `app/jobs/[id]/page.tsx` (individual job pages)
 
@@ -214,6 +223,7 @@ components/
 ## Salary Structure
 
 The job board supports a comprehensive salary structure:
+
 - Minimum and maximum salary ranges
 - Multiple currencies (USD, EUR, GBP)
 - Various time units (hour, day, week, month, year, project)
@@ -242,6 +252,7 @@ The job board supports comprehensive URL parameters for sharing and bookmarking:
 - `visa` - Visa sponsorship filter (true)
 
 Example URLs:
+
 ```
 /?types=Full-time,Contract&roles=Senior,Lead&remote=true
 /?salary=50K-100K,100K-200K&visa=true&page=2
@@ -251,13 +262,17 @@ Example URLs:
 ## Customization
 
 ### Styling
+
 The project uses Tailwind CSS for styling. Main configuration files:
+
 - `tailwind.config.ts`: Theme configuration
 - `app/globals.css`: Global styles
 - `components/*`: Individual component styles
 
 ### Data Source
+
 Current implementation uses Airtable. To use a different data source:
+
 1. Modify `lib/db/airtable.ts`
 2. Implement the same interface for job data
 
