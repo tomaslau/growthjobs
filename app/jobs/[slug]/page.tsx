@@ -137,9 +137,9 @@ export default async function JobPage({
 
     return (
       <main className="container py-6">
-        <div className="flex justify-between gap-16">
+        <div className="flex flex-col md:flex-row gap-4 lg:gap-8">
           {/* Main content */}
-          <article className="flex-1 max-w-[640px]">
+          <article className="flex-[3] order-1">
             <div className="mb-4">
               <Breadcrumb>
                 <BreadcrumbList className="gap-1 text-xs">
@@ -173,8 +173,8 @@ export default async function JobPage({
               <div className="space-y-2">
                 <h1 className="text-2xl font-semibold">{job.title}</h1>
                 <div className="text-base text-gray-600">{job.company}</div>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
                     <span>{job.type}</span>
                     {showSalary && (
                       <>
@@ -192,7 +192,7 @@ export default async function JobPage({
                   <Button
                     asChild
                     size="xs"
-                    className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs"
+                    className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs w-full sm:w-auto"
                   >
                     <a
                       href={job.apply_url}
@@ -259,7 +259,7 @@ export default async function JobPage({
               <Button
                 asChild
                 size="xs"
-                className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs"
+                className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs w-full sm:w-auto"
               >
                 <a
                   href={job.apply_url}
@@ -274,23 +274,28 @@ export default async function JobPage({
           </article>
 
           {/* Sidebar */}
-          <aside className="w-[300px] shrink-0">
-            <div className="space-y-6">
-              <JobDetailsSidebar
-                fullDate={fullDate}
-                relativeTime={relativeTime}
-                workplace_type={job.workplace_type}
-                remote_region={job.remote_region}
-                timezone_requirements={job.timezone_requirements}
-                workplace_city={job.workplace_city}
-                workplace_country={job.workplace_country}
-                salary={job.salary}
-                career_level={job.career_level}
-                apply_url={job.apply_url}
-                visa_sponsorship={job.visa_sponsorship}
-              />
-              <PostJobBanner />
+          <aside className="w-full md:w-[240px] lg:w-[250px] xl:w-[260px] flex flex-col gap-6 order-2">
+            {/* Job Details - Always show first in sidebar */}
+            <JobDetailsSidebar
+              fullDate={fullDate}
+              relativeTime={relativeTime}
+              workplace_type={job.workplace_type}
+              remote_region={job.remote_region}
+              timezone_requirements={job.timezone_requirements}
+              workplace_city={job.workplace_city}
+              workplace_country={job.workplace_country}
+              salary={job.salary}
+              career_level={job.career_level}
+              apply_url={job.apply_url}
+              visa_sponsorship={job.visa_sponsorship}
+            />
+
+            {/* On mobile, Similar Jobs appear before Post Job Banner */}
+            <div className="md:order-3">
               <SimilarJobs currentJob={job} allJobs={allJobs} />
+            </div>
+            <div className="md:order-2">
+              <PostJobBanner />
             </div>
           </aside>
         </div>

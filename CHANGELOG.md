@@ -2,15 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.39] - 2025-02-03
+## [0.0.39] - 2025-02-04
 
 ### Changed
-- Enhanced homepage responsive layout:
+- Enhanced homepage and job post page responsive layouts:
   - Optimized layout breakpoints for better space utilization
   - Adjusted sidebar to start at medium screens (768px) instead of large screens
   - Refined sidebar widths (240px to 260px) for better content balance
   - Improved main content and sidebar proportions
   - Enhanced layout flexibility on medium-sized screens
+  - Unified layout structure between homepage and job post pages
+  - Standardized content width and spacing across both pages
+  - Improved mobile UX by prioritizing job content and reordering sidebar sections
+  - Optimized content flow on mobile with job details followed by similar jobs
 
 ## [0.0.38] - 2025-02-03
 
