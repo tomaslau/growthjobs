@@ -15,10 +15,9 @@ package-lock.json
 # debug
 npm-debug.log*
 
-# local env files
-.env*.local
-.env
+# env files
 .env*
+!.env.example
 
 # vercel
 .vercel

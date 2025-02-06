@@ -50,6 +50,14 @@ npm install
 
 2. Set up Airtable:
 
+**Option A** - Quick Setup with Template:
+
+- Visit the demo base template: https://airtable.com/appLx3b8wF3cyfoMd/shrWo1VUVq7mJS6CB
+- Click "Use this data" in the top right corner, make sure you rename the table to "Jobs"
+- The base includes demo data and all required fields properly configured
+
+**Option B** - Manual Setup:
+
 - Create a new base in Airtable
 - Create a table named "Jobs" (it's very important to have this name) with these fields:
   ```
@@ -73,6 +81,9 @@ npm install
   visa_sponsorship: Single select (Yes, No, Not specified)
   featured: Checkbox
   ```
+
+For both options:
+
 - Create a Personal Access Token at https://airtable.com/create/tokens
 - Add these scopes to your token:
   - data.records:read
@@ -80,12 +91,21 @@ npm install
 - Add your base to the token's access list
 
 3. Environment Setup:
-   Create a `.env` file:
 
-```env
-AIRTABLE_ACCESS_TOKEN=your_token_here
-AIRTABLE_BASE_ID=your_base_id_here
-```
+   - Copy the `.env.example` file to `.env` (keep the example file for reference):
+
+   ```bash
+   cp .env.example .env  # or copy manually if you're on Windows
+   ```
+
+   - Fill in your Airtable credentials in the `.env` file:
+
+   ```env
+   AIRTABLE_ACCESS_TOKEN=your_token_here
+   AIRTABLE_BASE_ID=your_base_id_here
+   ```
+
+   > Note: Keep the `.env.example` file intact. If you need to start fresh or share the project, you'll have a reference for the required environment variables.
 
 4. Development:
 
