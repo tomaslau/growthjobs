@@ -1,11 +1,5 @@
 import { getJobs } from "@/lib/db/airtable";
-import {
-  Briefcase,
-  Building2,
-  Globe2,
-  GraduationCap,
-  ArrowUpRight,
-} from "lucide-react";
+import { Briefcase, Globe2, GraduationCap, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
 import { config } from "@/config/config";
 import type { CareerLevel } from "@/lib/db/airtable";
