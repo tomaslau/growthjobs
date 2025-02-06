@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { CareerLevel, Job, normalizeAnnualSalary } from "@/lib/db/airtable";
+import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
 
 type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
 type FilterValue = string[] | boolean | CareerLevel[] | true;
@@ -62,28 +63,6 @@ export function JobFilters({
     "CLevel",
     "Founder",
   ];
-
-  const levelDisplayNames: Record<CareerLevel, string> = {
-    Internship: "Internship",
-    EntryLevel: "Entry Level",
-    Associate: "Associate",
-    Junior: "Junior",
-    MidLevel: "Mid Level",
-    Senior: "Senior",
-    Staff: "Staff",
-    Principal: "Principal",
-    Lead: "Lead",
-    Manager: "Manager",
-    SeniorManager: "Senior Manager",
-    Director: "Director",
-    SeniorDirector: "Senior Director",
-    VP: "VP",
-    SVP: "SVP",
-    EVP: "EVP",
-    CLevel: "C-Level",
-    Founder: "Founder",
-    NotSpecified: "Not Specified",
-  };
 
   const visibleLevels = showAllLevels
     ? [...initialLevels, ...additionalLevels]
@@ -352,7 +331,7 @@ export function JobFilters({
                   htmlFor={level.toLowerCase().replace(" ", "-")}
                   className="text-sm font-normal"
                 >
-                  {levelDisplayNames[level]}
+                  {CAREER_LEVEL_DISPLAY_NAMES[level]}
                 </Label>
               </div>
               <span

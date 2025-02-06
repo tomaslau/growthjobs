@@ -2,7 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.40] - 2025-02-06s
+## [0.0.42] - 2025-02-06
+
+### Added
+
+- Added `/jobs` page with category browsing:
+  - Job types, locations, and career levels
+  - Dynamic data aggregation
+  - Centralized constants for career levels and locations
+  - Accessible UI components
+
+## [0.0.41] - 2025-02-06
+
+### Added
+
+- Added `/jobs` page:
+  - Added ARIA labels and landmarks for accessibility
+  - Improved semantic HTML structure
+  - Optimized category cards
+  - Added dynamic data revalidation (5 min)
+  - Enhanced mobile responsiveness
+
+## [0.0.40] - 2025-02-06
 
 ### Added
 
