@@ -168,7 +168,12 @@ export function Nav() {
                   size="xs"
                   className="bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-xs"
                 >
-                  <Link href={config.nav.postJob.link}>
+                  <Link
+                    href={config.nav.postJob.link}
+                    {...(config.nav.postJob.external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                  >
                     <PlusCircle className="h-3.5 w-3.5" aria-hidden="true" />
                     {config.nav.postJob.label}
                   </Link>
@@ -297,7 +302,12 @@ export function Nav() {
                     size="sm"
                     className="w-full bg-zinc-900 text-white hover:bg-zinc-800 gap-1.5 text-sm"
                   >
-                    <Link href={config.nav.postJob.link}>
+                    <Link
+                      href={config.nav.postJob.link}
+                      {...(config.nav.postJob.external
+                        ? { target: "_blank", rel: "noopener noreferrer" }
+                        : {})}
+                    >
                       <PlusCircle className="h-3.5 w-3.5" aria-hidden="true" />
                       {config.nav.postJob.label}
                     </Link>

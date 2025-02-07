@@ -40,6 +40,7 @@ export const config = {
       show: true, // Whether to show the Post Job button
       label: "Post a Job", // Button text
       link: "https://stripe.com", // Button link
+      external: true, // Indicates the link is external (opens in a new tab)
     },
     topMenu: [
       { label: "Home", link: "/" },
@@ -102,6 +103,7 @@ export const config = {
       button: {
         label: "Post a Job",
         link: "https://stripe.com",
+        external: true, // Indicates the footer link should open externally
       },
     },
 

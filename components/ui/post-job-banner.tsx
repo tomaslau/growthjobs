@@ -34,9 +34,11 @@ export function PostJobBanner() {
           Trusted by top companies
         </span>
       </div>
-      <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800">
-        Post a Job ($59)
-      </Button>
+      <a href="https://stripe.com" target="_blank" rel="noopener noreferrer">
+        <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800">
+          Post a Job ($59)
+        </Button>
+      </a>
       <p className="text-xs text-center mt-4 text-muted-foreground">
         30-day money-back guarantee
       </p>

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.45] - 2025-02-07
+
+### Changed
+- Added external link handling for "Post a Job" buttons
+
 ## [0.0.44] - 2025-02-07
 
 ### Changed
