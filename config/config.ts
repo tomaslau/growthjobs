@@ -65,7 +65,6 @@ export const config = {
       links: [
         { label: "Home", link: "/" },
         { label: "Jobs", link: "/jobs" },
-        { label: "Job Alerts", link: "/alerts" },
         { label: "About", link: "/about" },
         { label: "Changelog", link: "/changelog" },
       ],
