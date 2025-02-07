@@ -101,7 +101,7 @@ export const config = {
         "Reach our community of talented professionals. Get quality applications fast.",
       button: {
         label: "Post a Job",
-        link: "/post",
+        link: "https://stripe.com",
       },
     },
 
