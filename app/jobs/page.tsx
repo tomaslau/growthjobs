@@ -8,7 +8,11 @@ import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
-import type { LocationCounts } from "@/lib/constants/locations";
+import type { Country } from "@/lib/constants/countries";
+import {
+  formatLocationTitle,
+  createLocationSlug,
+} from "@/lib/constants/locations";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -23,7 +27,11 @@ export const revalidate = 300;
 interface JobCounts {
   types: Record<string, number>;
   careerLevels: Record<CareerLevel, number>;
-  locations: LocationCounts;
+  locations: {
+    countries: Partial<Record<Country, number>>;
+    cities: Record<string, number>;
+    remote: number;
+  };
 }
 
 interface CategoryCardProps {
@@ -85,8 +93,9 @@ export default async function JobsDirectoryPage() {
 
       // Count by location
       if (job.workplace_country) {
-        acc.locations.countries[job.workplace_country] =
-          (acc.locations.countries[job.workplace_country] || 0) + 1;
+        const country = job.workplace_country as Country;
+        acc.locations.countries[country] =
+          (acc.locations.countries[country] || 0) + 1;
       }
       if (job.workplace_city) {
         acc.locations.cities[job.workplace_city] =
@@ -160,6 +169,19 @@ export default async function JobsDirectoryPage() {
                   />
                 ))}
               </div>
+              <Button
+                variant="outline"
+                className="w-full text-xs sm:text-sm py-2 sm:py-2.5 mt-4"
+                asChild
+              >
+                <Link href="/jobs/types" aria-label="View all job types">
+                  View All Job Types
+                  <ArrowUpRight
+                    className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </Button>
             </section>
 
             {/* Locations Section */}
@@ -196,30 +218,28 @@ export default async function JobsDirectoryPage() {
                   .map(([country, count]) => (
                     <CategoryCard
                       key={country}
-                      href={`/jobs/location/${country.toLowerCase()}`}
-                      title={country}
+                      href={`/jobs/location/${createLocationSlug(country)}`}
+                      title={formatLocationTitle(country)}
                       count={count}
                     />
                   ))}
               </div>
-              {Object.keys(jobCounts.locations.countries).length > 5 && (
-                <Button
-                  variant="outline"
-                  className="w-full text-xs sm:text-sm py-2 sm:py-2.5"
-                  asChild
+              <Button
+                variant="outline"
+                className="w-full text-xs sm:text-sm py-2 sm:py-2.5 mt-4"
+                asChild
+              >
+                <Link
+                  href="/jobs/locations"
+                  aria-label="View all available locations"
                 >
-                  <Link
-                    href="/jobs/locations"
-                    aria-label="View all available locations"
-                  >
-                    View All Locations
-                    <ArrowUpRight
-                      className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
-                      aria-hidden="true"
-                    />
-                  </Link>
-                </Button>
-              )}
+                  View All Locations
+                  <ArrowUpRight
+                    className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </Button>
             </section>
 
             {/* Career Levels Section */}
@@ -249,21 +269,19 @@ export default async function JobsDirectoryPage() {
                   />
                 ))}
               </div>
-              {sortedCareerLevels.length > 6 && (
-                <Button
-                  variant="outline"
-                  className="w-full text-xs sm:text-sm py-2 sm:py-2.5"
-                  asChild
-                >
-                  <Link href="/jobs/levels" aria-label="View all career levels">
-                    View All Career Levels
-                    <ArrowUpRight
-                      className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
-                      aria-hidden="true"
-                    />
-                  </Link>
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                className="w-full text-xs sm:text-sm py-2 sm:py-2.5 mt-4"
+                asChild
+              >
+                <Link href="/jobs/levels" aria-label="View all career levels">
+                  View All Career Levels
+                  <ArrowUpRight
+                    className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </Button>
             </section>
           </div>
 

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.44] - 2025-02-07
+
+### Changed
+
+- Enhanced job directory pages:
+  - Added consistent "View All" buttons for job types, locations, and career levels
+  - Improved type safety for location handling
+  - Standardized layout and navigation across directory pages
+  - Fixed unused imports and variables
+
 ## [0.0.43] - 2025-02-07
 
 ### Changed
@@ -11,6 +21,14 @@ All notable changes to this project will be documented in this file.
   - Consistent URL parameters (per_page, sort)
   - Enhanced responsive layout and styling
   - Improved loading states and empty results handling
+
+### Added
+
+- Added location-based job browsing:
+  - New /jobs/locations page with comprehensive location directory
+  - Individual location pages with filtered job listings
+  - Support for remote and country-specific job searches
+  - Consistent layout and functionality with other job pages
 
 ## [0.0.42] - 2025-02-06
 

@@ -29,13 +29,6 @@ interface JobsLayoutProps {
 
 type SortOption = "newest" | "oldest" | "salary";
 
-const JOBS_PER_PAGE = 20;
-const SORT_OPTIONS = [
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
-  { value: "salary", label: "Highest Salary" },
-];
-
 export function JobsLayout({ filteredJobs }: JobsLayoutProps) {
   const router = useRouter();
   const searchParams = useSearchParams();

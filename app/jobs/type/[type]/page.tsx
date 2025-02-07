@@ -4,6 +4,11 @@ import { config } from "@/config/config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JobsLayout } from "@/components/jobs/JobsLayout";
+import {
+  JobType,
+  JOB_TYPE_DISPLAY_NAMES,
+  JOB_TYPE_DESCRIPTIONS,
+} from "@/lib/constants/job-types";
 
 // Revalidate page every 5 minutes
 export const revalidate = 300;
@@ -14,45 +19,62 @@ interface Props {
   };
 }
 
+/**
+ * Convert URL slug to job type
+ */
+function getJobTypeFromSlug(slug: string): JobType | null {
+  const normalized = slug.toLowerCase();
+  const match = Object.entries(JOB_TYPE_DISPLAY_NAMES).find(
+    ([key]) => key.toLowerCase() === normalized
+  );
+  return match ? (match[0] as JobType) : null;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const type = decodeURIComponent(params.type);
-  const formattedType = type.charAt(0).toUpperCase() + type.slice(1);
+  const typeSlug = decodeURIComponent(params.type).toLowerCase();
+  const jobType = getJobTypeFromSlug(typeSlug);
+
+  if (!jobType) {
+    return notFound();
+  }
+
+  const displayName = JOB_TYPE_DISPLAY_NAMES[jobType];
+  const description = JOB_TYPE_DESCRIPTIONS[jobType];
 
   return {
-    title: `${formattedType} Jobs | ${config.title}`,
-    description: `Browse ${formattedType.toLowerCase()} positions. Find the perfect ${formattedType.toLowerCase()} role that matches your skills and preferences.`,
+    title: `${displayName} Jobs | ${config.title}`,
+    description: `Browse ${displayName.toLowerCase()} positions. ${description}. Find the perfect role that matches your preferences.`,
     alternates: {
-      canonical: `/jobs/type/${type}`,
+      canonical: `/jobs/type/${typeSlug}`,
     },
   };
 }
 
 export default async function JobTypePage({ params }: Props) {
   const jobs = await getJobs();
-  const type = decodeURIComponent(params.type);
-  const formattedType = type.charAt(0).toUpperCase() + type.slice(1);
+  const typeSlug = decodeURIComponent(params.type).toLowerCase();
+  const jobType = getJobTypeFromSlug(typeSlug);
 
-  // Filter jobs by type, handling undefined cases
-  const filteredJobs = jobs.filter((job) => {
-    if (!job.type) return false;
-    return job.type.toLowerCase() === type.toLowerCase();
-  });
-
-  // If no jobs found or invalid type, return 404
-  if (filteredJobs.length === 0) {
-    notFound();
+  if (!jobType) {
+    return notFound();
   }
+
+  const displayName = JOB_TYPE_DISPLAY_NAMES[jobType];
+  const description = JOB_TYPE_DESCRIPTIONS[jobType];
+
+  const filteredJobs = jobs.filter((job) => job.type === jobType);
+
+  if (filteredJobs.length === 0) return notFound();
 
   return (
     <>
       <HeroSection
-        badge={formattedType}
-        title={`${formattedType} Jobs`}
-        description={`Browse ${
-          filteredJobs.length
-        } ${formattedType.toLowerCase()} positions. Find the perfect role that matches your skills and preferences.`}
+        badge={displayName}
+        title={`${displayName} Jobs`}
+        description={`Browse ${filteredJobs.length} ${
+          filteredJobs.length === 1 ? "position" : "positions"
+        } for ${displayName.toLowerCase()} roles. ${description}`}
       />
-
       <JobsLayout allJobs={jobs} filteredJobs={filteredJobs} />
     </>
   );
