@@ -39,7 +39,7 @@ export const config = {
     postJob: {
       show: true, // Whether to show the Post Job button
       label: "Post a Job", // Button text
-      link: "/post", // Button link
+      link: "https://stripe.com", // Button link
     },
     topMenu: [
       { label: "Home", link: "/" },
