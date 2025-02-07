@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.43] - 2025-02-07
+
+### Changed
+
+- Standardized job listing pages:
+  - Unified sorting and pagination across all job pages
+  - Consistent URL parameters (per_page, sort)
+  - Enhanced responsive layout and styling
+  - Improved loading states and empty results handling
+
 ## [0.0.42] - 2025-02-06
 
 ### Added
