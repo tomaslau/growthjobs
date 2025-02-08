@@ -26,11 +26,11 @@ export const config = {
     },
     linkedin: {
       show: true,
-      url: "https://www.linkedin.com/company/bordful/",
+      url: "https://www.linkedin.com/company/growthjobs/",
     },
     twitter: {
       show: true,
-      url: "https://x.com/bordful",
+      url: "https://x.com/craftled_",
     },
     bluesky: {
       show: true,
