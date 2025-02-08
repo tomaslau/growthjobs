@@ -6,22 +6,22 @@
 
 export const config = {
   // Marketing & SEO
-  badge: "Open Source Next.js Job Board Starter Kit",
-  title: "Discover and Apply to Your Dream Jobs Today",
+  badge: "Job Board for Growth Professionals",
+  title: "Discover Growth Marketing Jobs at Fast-Growing Companies",
   description:
-    "Browse curated opportunities from leading companies. Updated daily with the latest positions.",
+    "Curated growth jobs in marketing, business development, and startup roles. Join fast-growing companies and drive your career forward.",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://demo.bordful.com"),
+      : "https://growthjobs.org"),
 
   // Navigation
   nav: {
-    title: "Bordful", // The text shown in the navigation bar
-    icon: "BriefcaseBusiness", // Lucide icon name (see https://lucide.dev/icons)
+    title: "Growth Jobs", // The text shown in the navigation bar
+    icon: "ChartLine", // Lucide icon name (see https://lucide.dev/icons)
     github: {
-      show: true, // Whether to show the GitHub button
+      show: false, // Whether to show the GitHub button
       url: "https://github.com/craftled/bordful", // Your GitHub repository URL
     },
     linkedin: {
@@ -56,7 +56,7 @@ export const config = {
     brand: {
       show: true,
       description:
-        "Browse curated opportunities from leading companies. Updated daily with the latest positions.",
+        "Growth Jobs is a niche job board connecting growth-driven professionals with scaling companies. Updated daily.",
     },
 
     // Resources section
@@ -99,7 +99,7 @@ export const config = {
       show: true,
       title: "Post a Job",
       description:
-        "Reach our community of talented professionals. Get quality applications fast.",
+        "Reach our community of growth professionals. Get quality applications fast.",
       button: {
         label: "Post a Job",
         link: "https://stripe.com",
@@ -110,8 +110,8 @@ export const config = {
     // Copyright section
     copyright: {
       show: true,
-      startYear: 2024,
-      text: "Bordful - An open-source Next.js job board template. Standing on the shoulders of giants.",
+      startYear: 2025,
+      text: "Growth Jobs - A niche job board for growth professionals. Empowering businesses to scale and professionals to thrive.",
     },
 
     // Built By section
