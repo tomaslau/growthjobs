@@ -53,13 +53,14 @@ npm install
 **Option A** - Quick Setup with Template:
 
 - Visit the demo base template: https://airtable.com/appLx3b8wF3cyfoMd/shrWo1VUVq7mJS6CB
-- Click "Use this data" in the top right corner, make sure you rename the table to "Jobs"
+- Click "Use this data" in the top right corner
+- Make sure to note the name of your table (default is "Jobs") - you'll need this for the AIRTABLE_TABLE_NAME environment variable
 - The base includes demo data and all required fields properly configured
 
 **Option B** - Manual Setup:
 
 - Create a new base in Airtable
-- Create a table named "Jobs" (it's very important to have this name) with these fields:
+- Create a table with your desired name (default is "Jobs") with these fields:
   ```
   title: Single line text
   company: Single line text
@@ -103,6 +104,7 @@ For both options:
    ```env
    AIRTABLE_ACCESS_TOKEN=your_token_here
    AIRTABLE_BASE_ID=your_base_id_here
+   AIRTABLE_TABLE_NAME=your_table_name_here (defaults to "Jobs" if not specified)
    ```
 
    > Note: Keep the `.env.example` file intact. If you need to start fresh or share the project, you'll have a reference for the required environment variables.
@@ -197,6 +199,7 @@ Required environment variables:
 
 - AIRTABLE_ACCESS_TOKEN=your_token_here
 - AIRTABLE_BASE_ID=your_base_id_here
+- AIRTABLE_TABLE_NAME=your_table_name_here (defaults to "Jobs" if not specified)
 
 Create a `.env` file in your project root and add these variables there.
 

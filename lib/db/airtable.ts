@@ -7,6 +7,9 @@ const base = new Airtable({
   endpointUrl: "https://api.airtable.com",
 }).base(process.env.AIRTABLE_BASE_ID || "");
 
+// Get table name from environment variables with fallback
+const TABLE_NAME = process.env.AIRTABLE_TABLE_NAME || "Jobs";
+
 export type CareerLevel =
   | "Internship"
   | "EntryLevel"
@@ -261,7 +264,7 @@ export async function getJobs(): Promise<Job[]> {
       throw new Error("Airtable credentials are not configured");
     }
 
-    const records = await base("Jobs")
+    const records = await base(TABLE_NAME)
       .select({
         filterByFormula: "{status} = 'active'",
         sort: [{ field: "posted_date", direction: "desc" }],
@@ -320,7 +323,7 @@ export async function getJob(id: string): Promise<Job | null> {
       throw new Error("Airtable credentials are not configured");
     }
 
-    const record = await base("Jobs").find(id);
+    const record = await base(TABLE_NAME).find(id);
 
     if (!record || !record.fields) {
       return null;
@@ -390,8 +393,8 @@ export async function getJob(id: string): Promise<Job | null> {
 
 export async function testConnection() {
   try {
-    // Try to list records from the Jobs table
-    const records = await base("Jobs")
+    // Try to list records from the table
+    const records = await base(TABLE_NAME)
       .select({
         maxRecords: 1, // Just get one record to test
       })
@@ -399,7 +402,7 @@ export async function testConnection() {
 
     console.log(
       "Connected to Airtable successfully.",
-      `Found ${records.length} records in Jobs table.`
+      `Found ${records.length} records in ${TABLE_NAME} table.`
     );
     return true;
   } catch (error) {

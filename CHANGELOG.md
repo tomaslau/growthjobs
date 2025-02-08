@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.47] - 2025-02-08
+
+### Changed
+- Added configurable Airtable table name via `AIRTABLE_TABLE_NAME` environment variable
+
 ## [0.0.46] - 2025-02-08
 
 ### Added
