@@ -63,7 +63,7 @@ npm install
   ```
   title: Single line text
   company: Single line text
-  type: Single select (Full-time, Part-time, Contract)
+  type: Single select (Full-time, Part-time, Contract, Freelance)
   salary_min: Number
   salary_max: Number
   salary_currency: Single select (USD, EUR, GBP)

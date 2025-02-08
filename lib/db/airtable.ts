@@ -42,7 +42,7 @@ export interface Job {
   id: string;
   title: string;
   company: string;
-  type: "Full-time" | "Part-time" | "Contract";
+  type: "Full-time" | "Part-time" | "Contract" | "Freelance";
   salary: Salary | null;
   description: string;
   apply_url: string;

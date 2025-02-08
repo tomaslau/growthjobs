@@ -35,14 +35,14 @@ npm install --save-dev @types/react @types/react-dom @types/node
 
 3. Set up Airtable:
 - Create a new base in Airtable
-- Create a table named "Jobs" with the following fields:
+- Create a table named "Jobs" with these fields:
   ```
   id: string
   title: string
   company: string
   city: string | null
   country: string | null
-  type: single select (Full-time, Part-time, Contract)
+  type: single select (Full-time, Part-time, Contract, Freelance)
   salary_range: string
   description: long text (markdown)
   apply_url: string

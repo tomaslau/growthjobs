@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.46] - 2025-02-08
+
+### Added
+- Added "Freelance" as a new job type option:
+  - Updated Job interface to include Freelance type
+  - Added Freelance to job type constants with descriptions
+  - Updated Airtable setup documentation
+  - Enhanced job filtering to support Freelance positions
+
 ## [0.0.45] - 2025-02-07
 
 ### Changed
