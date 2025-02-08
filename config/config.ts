@@ -34,7 +34,7 @@ export const config = {
     },
     bluesky: {
       show: true,
-      url: "https://bsky.app/profile/bordful.com",
+      url: "https://bsky.app/profile/growthjobs.org",
     },
     postJob: {
       show: true, // Whether to show the Post Job button
