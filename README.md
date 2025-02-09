@@ -129,6 +129,12 @@ export const config = {
   description: "Browse curated tech opportunities...",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 
+  // Scripts Configuration (analytics, tracking, etc.)
+  scripts: {
+    head: [], // Scripts to load in <head>
+    body: [], // Scripts to load at end of <body>
+  },
+
   // Navigation
   nav: {
     title: "JobBoard", // Navigation bar text
@@ -331,3 +337,92 @@ If you find this helpful, please ⭐️ this repository!
 ## Credits
 
 Built by [Craftled](https://craftled.com)
+
+### Script Management
+
+The job board provides a flexible system for adding analytics, tracking, or any third-party scripts using Next.js's built-in Script component. Scripts can be easily configured in `config/config.ts`:
+
+```typescript
+scripts: {
+  head: [
+    // Scripts to be loaded in <head>
+    {
+      src: "https://analytics.com/script.js",
+      strategy: "afterInteractive",
+      attributes: {
+        "data-website-id": "xxx",
+        defer: "true"
+      }
+    }
+  ],
+  body: [
+    // Scripts to be loaded at end of <body>
+    {
+      src: "https://widget.com/embed.js",
+      strategy: "lazyOnload",
+      attributes: {
+        async: "true"
+      }
+    }
+  ]
+}
+```
+
+#### Loading Strategies
+
+Next.js provides three loading strategies for scripts:
+
+- `beforeInteractive`: Loads and executes before the page becomes interactive
+  - Use for critical scripts that need to load first
+  - Example: Polyfills, critical functionality
+
+- `afterInteractive` (default): Loads after the page becomes interactive
+  - Best for analytics and tracking scripts
+  - Example: Google Analytics, Umami, Plausible
+
+- `lazyOnload`: Loads during idle time
+  - Use for non-critical scripts
+  - Example: Chat widgets, social media embeds
+
+#### Example: Adding Analytics
+
+To add Umami Analytics:
+
+```typescript
+scripts: {
+  head: [
+    {
+      src: "https://analytics.example.com/script.js",
+      strategy: "afterInteractive",
+      attributes: {
+        "data-website-id": "your-website-id",
+        defer: "true"
+      }
+    }
+  ]
+}
+```
+
+#### Script Attributes
+
+You can add any HTML script attributes using the `attributes` object:
+
+```typescript
+attributes: {
+  defer: "true",
+  async: "true",
+  "data-id": "xxx",
+  id: "my-script",
+  crossorigin: "anonymous"
+  // ... any valid script attribute
+}
+```
+
+This implementation:
+- Uses Next.js best practices for script loading
+- Provides type safety with TypeScript
+- Allows easy configuration in one place
+- Supports any third-party script
+- Optimizes performance with proper loading strategies
+
+### Environment Variables
