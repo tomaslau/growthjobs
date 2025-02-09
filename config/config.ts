@@ -6,38 +6,47 @@
 
 export const config = {
   // Marketing & SEO
-  badge: "Job Board for Growth Professionals",
-  title: "Discover Growth Marketing Jobs at Fast-Growing Companies",
+  badge: "Open Source Next.js Job Board Starter Kit",
+  title: "Discover and Apply to Your Dream Jobs Today",
   description:
-    "Curated growth jobs in marketing, business development, and startup roles. Join fast-growing companies and drive your career forward.",
+    "Browse curated opportunities from leading companies. Updated daily with the latest positions.",
   url:
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
-      : "https://growthjobs.org"),
+      : "https://demo.bordful.com"),
 
   // Navigation
   nav: {
+    title: "Bordful", // The text shown in the navigation bar
+    icon: "BriefcaseBusiness", // Lucide icon name (see https://lucide.dev/icons)
+    logo: {
+      enabled: false, // Set to true to use a custom logo instead of icon + text
+      src: "/bordful.svg", // Path to your logo image (place it in the public directory)
+      width: 67, // Width of the logo in pixels
+      height: 20, // Height of the logo in pixels
+      alt: "Bordful", // Alt text for the logo
+    },
     github: {
-      show: false, // Whether to show the GitHub button
+      show: true, // Whether to show the GitHub button
       url: "https://github.com/craftled/bordful", // Your GitHub repository URL
     },
     linkedin: {
       show: true,
-      url: "https://www.linkedin.com/company/growthjobs/",
+      url: "https://www.linkedin.com/company/bordful/",
     },
     twitter: {
       show: true,
-      url: "https://x.com/craftled_",
+      url: "https://x.com/bordful",
     },
     bluesky: {
       show: true,
-      url: "https://bsky.app/profile/growthjobs.org",
+      url: "https://bsky.app/profile/bordful.com",
     },
     postJob: {
       show: true, // Whether to show the Post Job button
       label: "Post a Job", // Button text
-      link: "https://buy.stripe.com/fZeg1n8eg07m0lGfZn", // Button link
+      link: "https://stripe.com", // Button link
       external: true, // Indicates the link is external (opens in a new tab)
     },
     topMenu: [
@@ -54,7 +63,7 @@ export const config = {
     brand: {
       show: true,
       description:
-        "Growth Jobs is a niche job board connecting growth-driven professionals with scaling companies. Updated daily.",
+        "Browse curated opportunities from leading companies. Updated daily with the latest positions.",
     },
 
     // Resources section
@@ -97,10 +106,10 @@ export const config = {
       show: true,
       title: "Post a Job",
       description:
-        "Reach our community of growth professionals. Get quality applications fast.",
+        "Reach our community of talented professionals. Get quality applications fast.",
       button: {
         label: "Post a Job",
-        link: "https://buy.stripe.com/fZeg1n8eg07m0lGfZn",
+        link: "https://stripe.com",
         external: true, // Indicates the footer link should open externally
       },
     },
@@ -108,8 +117,8 @@ export const config = {
     // Copyright section
     copyright: {
       show: true,
-      startYear: 2025,
-      text: "Growth Jobs - A niche job board for growth professionals. Empowering businesses to scale and professionals to thrive.",
+      startYear: 2024,
+      text: "Bordful - An open-source Next.js job board template. Standing on the shoulders of giants.",
     },
 
     // Built By section
