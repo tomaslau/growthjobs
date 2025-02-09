@@ -33,7 +33,7 @@ export const config = {
         strategy: "afterInteractive",
         attributes: {
           "data-website-id": "aeabdbe7-e5a6-4403-8af5-9a036d36eaf4",
-          defer: "true",
+          defer: "",
         },
       },
     ] as CustomScript[],
