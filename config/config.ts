@@ -4,6 +4,14 @@
  * Customize your job board by editing this file.
  */
 
+import type { ScriptProps } from "next/script";
+
+interface CustomScript {
+  src: string;
+  strategy: ScriptProps["strategy"];
+  attributes?: Record<string, string>;
+}
+
 export const config = {
   // Marketing & SEO
   badge: "Open Source Next.js Job Board Starter Kit",
@@ -15,6 +23,22 @@ export const config = {
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : "https://demo.bordful.com"),
+
+  // Scripts Configuration (analytics, tracking, etc.)
+  scripts: {
+    head: [
+      // Example: Umami Analytics (loads early but non-blocking)
+      {
+        src: "https://umami.craftled.com/script.js",
+        strategy: "afterInteractive",
+        attributes: {
+          "data-website-id": "b93ebd4d-b4fd-49f3-9507-c32245ac447f",
+          defer: "true",
+        },
+      },
+    ] as CustomScript[],
+    body: [] as CustomScript[], // Scripts to load at the end of body
+  },
 
   // Navigation
   nav: {

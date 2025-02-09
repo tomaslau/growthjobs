@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.49] - 2025-02-09
+
+### Added
+- Added flexible script management system:
+  - Support for head and body script injection
+  - Next.js Script component integration with loading strategies
+  - TypeScript-safe configuration
+  - Documentation for script management in README
+
 ## [0.0.48] - 2025-02-09
 
 ### Added
