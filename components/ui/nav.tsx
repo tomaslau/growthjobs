@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import config from "@/config/config";
 import dynamic from "next/dynamic";
 import { PlusCircle, Menu, X } from "lucide-react";
@@ -34,8 +35,21 @@ export function Nav() {
             className="flex items-center space-x-1.5 text-zinc-900 hover:text-zinc-800 transition-colors"
             aria-label="Home"
           >
-            <DynamicIcon className="h-4 w-4" aria-hidden="true" />
-            <span className="text-sm font-medium">{config.nav.title}</span>
+            {config.nav.logo.enabled ? (
+              <Image
+                src={config.nav.logo.src}
+                alt={config.nav.logo.alt}
+                width={config.nav.logo.width}
+                height={config.nav.logo.height}
+                className="object-contain"
+                priority
+              />
+            ) : (
+              <>
+                <DynamicIcon className="h-4 w-4" aria-hidden="true" />
+                <span className="text-sm font-medium">{config.nav.title}</span>
+              </>
+            )}
           </Link>
 
           {/* Mobile menu button */}

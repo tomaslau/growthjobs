@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.48] - 2025-02-09
+
+### Added
+- Added custom logo support in navigation:
+  - Option to replace default icon+text with custom logo image
+  - Configurable logo dimensions and alt text
+  - SVG support for crisp display
+
 ## [0.0.47] - 2025-02-08
 
 ### Changed

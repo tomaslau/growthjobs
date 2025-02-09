@@ -133,6 +133,13 @@ export const config = {
   nav: {
     title: "JobBoard", // Navigation bar text
     icon: "Briefcase", // Lucide icon name
+    logo: {
+      enabled: false, // Set to true to use a custom logo instead of icon + text
+      src: "/your-logo.svg", // Path to your logo image (place it in the public directory)
+      width: 120, // Width of the logo in pixels
+      height: 32, // Height of the logo in pixels
+      alt: "Your Company Logo", // Alt text for the logo
+    },
     github: {
       show: true, // Show/hide GitHub button
       url: "https://github.com/yourusername/yourrepo",
@@ -175,8 +182,10 @@ The site URL automatically adjusts based on the environment:
 
 ### Navigation Customization
 
-- **Icon**: Uses [Lucide icons](https://lucide.dev/icons) - choose any icon by name
-- **Title**: Customize the text shown in the navigation bar
+- **Icon & Logo**: Choose between:
+  - Default mode: Uses [Lucide icons](https://lucide.dev/icons) with text
+  - Custom logo: Enable custom logo mode and specify your logo image
+- **Title**: Customize the text shown in the navigation bar (when not using custom logo)
 - **Social Media**: Toggle visibility and set URLs for:
   - GitHub repository
   - LinkedIn company page
