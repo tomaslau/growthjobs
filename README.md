@@ -38,6 +38,50 @@ Bordful is a modern, minimal job board built with Next.js, Tailwind CSS, and Air
   - No page jumps during filtering
   - Accessible UI with ARIA labels
 
+## Script Management & Analytics
+
+Bordful uses Next.js's built-in Script component for optimal script loading and performance. Scripts can be configured in `config/config.ts`:
+
+```typescript
+scripts: {
+  head: [
+    // Scripts to load in the <head> section
+    {
+      src: "your-script-url",
+      strategy: "afterInteractive", // or "beforeInteractive", "lazyOnload"
+      attributes: {
+        // Additional script attributes
+        "data-custom": "value",
+        defer: "", // Boolean attributes should use empty string
+      },
+    },
+  ],
+  body: [
+    // Scripts to load at the end of <body>
+  ],
+}
+```
+
+### Script Loading Strategies
+
+- **beforeInteractive**: Use for critical scripts that must load before page becomes interactive
+- **afterInteractive**: Best for analytics and non-critical tracking (default)
+- **lazyOnload**: For low-priority scripts that can load last
+
+### Analytics Integration
+
+The starter comes pre-configured for Umami Analytics:
+1. Scripts are loaded using Next.js's optimized Script component
+2. Analytics code runs after the page becomes interactive
+3. Proper boolean attribute handling for script tags
+4. Non-blocking script loading for optimal performance
+
+To add your own analytics or third-party scripts:
+1. Add your script configuration to `config/config.ts`
+2. Scripts in `head` array load in `<head>`, scripts in `body` array load at end of `<body>`
+3. Choose appropriate loading strategy based on script priority
+4. Use empty string (`""`) for boolean attributes like `defer` or `async`
+
 ## Quick Start
 
 1. Clone the repository:
@@ -131,8 +175,27 @@ export const config = {
 
   // Scripts Configuration (analytics, tracking, etc.)
   scripts: {
-    head: [], // Scripts to load in <head>
-    body: [], // Scripts to load at end of <body>
+    head: [
+      // Scripts to be loaded in <head>
+      {
+        src: "https://analytics.com/script.js",
+        strategy: "afterInteractive",
+        attributes: {
+          "data-website-id": "xxx",
+          defer: ""  // Boolean attributes should use empty string
+        }
+      }
+    ],
+    body: [
+      // Scripts to be loaded at end of <body>
+      {
+        src: "https://widget.com/embed.js",
+        strategy: "lazyOnload",
+        attributes: {
+          async: ""  // Boolean attributes should use empty string
+        }
+      }
+    ]
   },
 
   // Navigation
@@ -351,7 +414,7 @@ scripts: {
       strategy: "afterInteractive",
       attributes: {
         "data-website-id": "xxx",
-        defer: "true"
+        defer: ""  // Boolean attributes should use empty string
       }
     }
   ],
@@ -361,7 +424,7 @@ scripts: {
       src: "https://widget.com/embed.js",
       strategy: "lazyOnload",
       attributes: {
-        async: "true"
+        async: ""  // Boolean attributes should use empty string
       }
     }
   ]
@@ -373,16 +436,19 @@ scripts: {
 Next.js provides three loading strategies for scripts:
 
 - `beforeInteractive`: Loads and executes before the page becomes interactive
-  - Use for critical scripts that need to load first
-  - Example: Polyfills, critical functionality
+  - Use for critical scripts that must load first
+  - Example: Polyfills, core functionality that's needed immediately
+  - Note: This blocks page interactivity, so use sparingly
 
-- `afterInteractive` (default): Loads after the page becomes interactive
+- `afterInteractive` (recommended for analytics): Loads after the page becomes interactive
   - Best for analytics and tracking scripts
   - Example: Google Analytics, Umami, Plausible
+  - Doesn't block page loading but still loads early enough to track user behavior
 
 - `lazyOnload`: Loads during idle time
   - Use for non-critical scripts
   - Example: Chat widgets, social media embeds
+  - Loads last to prioritize page performance
 
 #### Example: Adding Analytics
 
@@ -393,10 +459,10 @@ scripts: {
   head: [
     {
       src: "https://analytics.example.com/script.js",
-      strategy: "afterInteractive",
+      strategy: "afterInteractive",  // Best for analytics
       attributes: {
         "data-website-id": "your-website-id",
-        defer: "true"
+        defer: ""  // Boolean attributes should use empty string
       }
     }
   ]
@@ -409,9 +475,9 @@ You can add any HTML script attributes using the `attributes` object:
 
 ```typescript
 attributes: {
-  defer: "true",
-  async: "true",
-  "data-id": "xxx",
+  defer: "",     // Boolean attributes use empty string
+  async: "",     // Boolean attributes use empty string
+  "data-id": "xxx",  // Regular attributes use values
   id: "my-script",
   crossorigin: "anonymous"
   // ... any valid script attribute
