@@ -22,7 +22,13 @@ export default function RootLayout({
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <head>
         {config.scripts.head.map((script, index) => (
-          <Script key={index} {...script} />
+          <Script
+            key={index}
+            id={`head-script-${index}`}
+            src={script.src}
+            strategy={script.strategy}
+            {...script.attributes}
+          />
         ))}
       </head>
       <body className={`${GeistSans.className} flex min-h-screen flex-col`}>
@@ -31,7 +37,13 @@ export default function RootLayout({
         <Footer />
         <Toaster />
         {config.scripts.body.map((script, index) => (
-          <Script key={index} {...script} />
+          <Script
+            key={index}
+            id={`body-script-${index}`}
+            src={script.src}
+            strategy={script.strategy}
+            {...script.attributes}
+          />
         ))}
       </body>
     </html>
