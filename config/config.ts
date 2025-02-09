@@ -18,6 +18,15 @@ export const config = {
 
   // Navigation
   nav: {
+    title: "Growth Jobs", // The text shown in the navigation bar
+    icon: "ChartLine", // Lucide icon name (see https://lucide.dev/icons)
+    logo: {
+      enabled: true, // Set to true to use a custom logo instead of icon + text
+      src: "/growthjobs.svg", // Path to your logo image (place it in the public directory)
+      width: 133, // Width of the logo in pixels
+      height: 16, // Height of the logo in pixels
+      alt: "Growth Jobs", // Alt text for the logo
+    },
     github: {
       show: false, // Whether to show the GitHub button
       url: "https://github.com/craftled/bordful", // Your GitHub repository URL
