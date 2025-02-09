@@ -130,7 +130,7 @@ export const config = {
       show: true,
       title: "Post a Job",
       description:
-        "Reach our community of talented growthprofessionals. Get quality applications fast.",
+        "Reach our community of talented growth professionals. Get quality applications fast.",
       button: {
         label: "Post a Job",
         link: "https://buy.stripe.com/fZeg1n8eg07m0lGfZn",
