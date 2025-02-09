@@ -34,7 +34,11 @@ export function PostJobBanner() {
           Trusted by top companies
         </span>
       </div>
-      <a href="https://stripe.com" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://buy.stripe.com/fZeg1n8eg07m0lGfZn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Button className="w-full bg-zinc-900 text-white hover:bg-zinc-800">
           Post a Job ($59)
         </Button>
