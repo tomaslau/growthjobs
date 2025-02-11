@@ -13,7 +13,12 @@ Bordful is a modern, minimal job board built with Next.js, Tailwind CSS, and Air
 - Server-side caching with 5-minute revalidation
 - Content-specific loading states
 - Fully responsive
-- Fast and SEO friendly
+- Comprehensive SEO features:
+  - Automatic XML sitemap generation with ISR updates
+  - SEO-friendly URLs with descriptive job slugs
+  - Prioritized URLs (1.0 for homepage, 0.9 for featured jobs)
+  - Dynamic sitemap updates every 5 minutes
+  - Complete coverage of all job listings and category pages
 - Modern UI with Geist font, Tailwind CSS, and Shadcn UI
 - Incremental Static Regeneration (ISR) for real-time updates
 - Rich text support for job descriptions
@@ -359,6 +364,64 @@ Example URLs:
 /?salary=50K-100K,100K-200K&visa=true&page=2
 /?sort=salary&per_page=25
 ```
+
+## Sitemap Generation
+
+The job board automatically generates a comprehensive XML sitemap at `/sitemap.xml` that includes:
+
+### Structure
+- Homepage and static pages
+- Individual job listings with descriptive URLs
+- Job category pages (types, levels, locations)
+- All with proper priorities and change frequencies
+
+### Features
+- **SEO-Friendly URLs**: Uses descriptive slugs (e.g., `senior-developer-at-company`)
+- **Dynamic Updates**: Automatically includes new jobs through ISR
+- **Priority Levels**:
+  - Homepage: 1.0
+  - Featured Jobs: 0.9
+  - Regular Jobs: 0.7
+  - Category Pages: 0.6
+- **Change Frequencies**:
+  - Job Listings: Daily
+  - Static Pages: Weekly/Monthly
+  - Category Pages: Daily
+
+### Implementation
+The sitemap is generated using Next.js's built-in Metadata API in `app/sitemap.ts`:
+
+```typescript
+// Example sitemap entry
+{
+  url: 'https://yourdomain.com/jobs/senior-developer-at-company',
+  lastModified: new Date(),
+  changeFrequency: 'daily',
+  priority: 0.7
+}
+```
+
+### Configuration
+1. Set your production URL in `.env`:
+```env
+NEXT_PUBLIC_APP_URL=https://yourdomain.com
+```
+
+2. The sitemap will be available at:
+```
+https://yourdomain.com/sitemap.xml
+```
+
+3. Submit your sitemap to search engines:
+- Google Search Console
+- Bing Webmaster Tools
+- Other search engines as needed
+
+### Automatic Updates
+- Sitemap updates automatically with new jobs
+- Uses Incremental Static Regeneration (ISR)
+- No manual rebuilds required
+- 5-minute revalidation period
 
 ## Customization
 
