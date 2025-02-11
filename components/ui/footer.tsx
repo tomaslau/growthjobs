@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import config from "@/config/config";
-import Image from "next/image";
 
 export function Footer() {
   const [copyrightYears, setCopyrightYears] = useState(
