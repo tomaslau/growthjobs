@@ -42,6 +42,13 @@ Bordful is a modern, minimal job board built with Next.js, Tailwind CSS, and Air
   - Smart pagination with dynamic range
   - No page jumps during filtering
   - Accessible UI with ARIA labels
+- Social Links
+  - GitHub
+  - LinkedIn
+  - Twitter (X)
+  - Bluesky
+  - Reddit
+  - Each social link can be individually enabled/disabled and configured with custom URLs
 
 ## Script Management & Analytics
 

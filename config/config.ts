@@ -67,6 +67,10 @@ export const config = {
       show: true,
       url: "https://bsky.app/profile/bordful.com",
     },
+    reddit: {
+      show: true,
+      url: "https://reddit.com/r/bordful",
+    },
     postJob: {
       show: true, // Whether to show the Post Job button
       label: "Post a Job", // Button text
