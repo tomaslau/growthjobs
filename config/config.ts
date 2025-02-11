@@ -69,7 +69,7 @@ export const config = {
     },
     reddit: {
       show: true,
-      url: "https://reddit.com/r/bordful",
+      url: "https://reddit.com/r/growthjobs",
     },
     postJob: {
       show: true, // Whether to show the Post Job button
