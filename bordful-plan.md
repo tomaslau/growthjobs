@@ -10,7 +10,12 @@ A modern, open-source job board built with Next.js, Tailwind CSS, and Airtable. 
 - Static generation for optimal performance
 - Client-side search and filtering
 - Fully responsive design
-- SEO friendly
+- Advanced SEO features:
+  - Automatic XML sitemap generation
+  - SEO-friendly URLs with descriptive slugs
+  - Dynamic updates through ISR
+  - Prioritized URLs for better crawling
+  - Comprehensive coverage of all pages
 
 ## Prerequisites
 

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.50] - 2025-02-11
+
+### Added
+- Added automatic XML sitemap generation:
+  - SEO-friendly URLs with descriptive job slugs
+  - Dynamic updates through ISR (5-minute revalidation)
+  - Prioritized URLs (1.0 for homepage, 0.9 for featured jobs)
+  - Comprehensive coverage of all job listings and category pages
+
 ## [0.0.49] - 2025-02-09
 
 ### Added
