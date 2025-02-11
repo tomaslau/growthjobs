@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.51] - 2025-02-11
+
+### Added
+- Reddit social icon in navigation and footer
+- Support for Reddit social link in configuration
+
 ## [0.0.50] - 2025-02-11
 
 ### Added
