@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.53] - 2025-02-19
+
+### Changed
+- Improved caching consistency across pages:
+  - Removed double-caching on homepage to match subpage behavior
+  - Standardized 5-minute revalidation across all job pages
+  - Fixed issue with stale data persisting on homepage
+
 ## [0.0.52] - 2025-02-19
 
 ### Added
