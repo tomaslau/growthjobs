@@ -1,7 +1,7 @@
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
-import { useState, useMemo, useCallback, useEffect } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { CareerLevel, Job, normalizeAnnualSalary } from "@/lib/db/airtable";
 import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
 import { Language, LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
@@ -212,7 +212,7 @@ export function JobFilters({
   const languageEntries = useMemo(() => {
     const entries = Object.entries(counts.languages)
       .sort((a, b) => b[1] - a[1])
-      .filter(([_, count]) => count > 0);
+      .filter(([, count]) => count > 0);
     return {
       initial: entries.slice(0, 5),
       additional: entries.slice(5),
