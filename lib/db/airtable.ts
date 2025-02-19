@@ -1,5 +1,6 @@
 import Airtable from "airtable";
 import { WorkplaceType, RemoteRegion } from "@/lib/constants/workplace";
+import { Language } from "@/lib/constants/languages";
 
 // Initialize Airtable with Personal Access Token
 const base = new Airtable({
@@ -59,6 +60,7 @@ export interface Job {
   timezone_requirements: string | null;
   workplace_city: string | null;
   workplace_country: string | null;
+  languages: Language[];
 }
 
 // Format salary for display
@@ -309,6 +311,7 @@ export async function getJobs(): Promise<Job[]> {
         timezone_requirements: (fields.timezone_requirements as string) || null,
         workplace_city: (fields.workplace_city as string) || null,
         workplace_country: (fields.workplace_country as string) || null,
+        languages: fields.languages as Language[],
       };
     });
   } catch (error) {
@@ -378,6 +381,7 @@ export async function getJob(id: string): Promise<Job | null> {
         (record.fields.timezone_requirements as string) || null,
       workplace_city: (record.fields.workplace_city as string) || null,
       workplace_country: (record.fields.workplace_country as string) || null,
+      languages: record.fields.languages as Language[],
     };
 
     return job;

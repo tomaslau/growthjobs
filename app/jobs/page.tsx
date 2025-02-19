@@ -1,5 +1,11 @@
 import { getJobs } from "@/lib/db/airtable";
-import { Briefcase, Globe2, GraduationCap, ArrowUpRight } from "lucide-react";
+import {
+  Briefcase,
+  Globe2,
+  GraduationCap,
+  Languages,
+  ArrowUpRight,
+} from "lucide-react";
 import type { Metadata } from "next";
 import { config } from "@/config/config";
 import type { CareerLevel } from "@/lib/db/airtable";
@@ -9,6 +15,8 @@ import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
 import type { Country } from "@/lib/constants/countries";
+import type { Language } from "@/lib/constants/languages";
+import { LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
 import {
   formatLocationTitle,
   createLocationSlug,
@@ -32,6 +40,7 @@ interface JobCounts {
     cities: Record<string, number>;
     remote: number;
   };
+  languages: Record<Language, number>;
 }
 
 interface CategoryCardProps {
@@ -105,6 +114,13 @@ export default async function JobsDirectoryPage() {
         acc.locations.remote += 1;
       }
 
+      // Count by language
+      if (job.languages) {
+        job.languages.forEach((lang) => {
+          acc.languages[lang] = (acc.languages[lang] || 0) + 1;
+        });
+      }
+
       return acc;
     },
     {
@@ -115,6 +131,7 @@ export default async function JobsDirectoryPage() {
         cities: {},
         remote: 0,
       },
+      languages: {} as Record<Language, number>,
     }
   );
 
@@ -129,6 +146,11 @@ export default async function JobsDirectoryPage() {
   const sortedCareerLevels = Object.entries(jobCounts.careerLevels)
     .filter(([level]) => level !== "NotSpecified")
     .sort((a, b) => b[1] - a[1]); // Sort by count
+
+  // Sort languages by count
+  const sortedLanguages = Object.entries(jobCounts.languages)
+    .sort((a, b) => b[1] - a[1]) // Sort by count
+    .slice(0, 6); // Show top 6 languages
 
   return (
     <>
@@ -276,6 +298,48 @@ export default async function JobsDirectoryPage() {
               >
                 <Link href="/jobs/levels" aria-label="View all career levels">
                   View All Career Levels
+                  <ArrowUpRight
+                    className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </Button>
+            </section>
+
+            {/* Languages Section */}
+            <section
+              className="space-y-4 sm:space-y-6"
+              aria-labelledby="languages-heading"
+            >
+              <div className="flex items-center gap-2">
+                <Languages
+                  className="w-4 sm:w-5 h-4 sm:h-5 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <h2
+                  id="languages-heading"
+                  className="text-lg sm:text-xl font-semibold"
+                >
+                  Languages
+                </h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                {sortedLanguages.map(([lang, count]) => (
+                  <CategoryCard
+                    key={lang}
+                    href={`/jobs/language/${lang.toLowerCase()}`}
+                    title={LANGUAGE_DISPLAY_NAMES[lang as Language]}
+                    count={count}
+                  />
+                ))}
+              </div>
+              <Button
+                variant="outline"
+                className="w-full text-xs sm:text-sm py-2 sm:py-2.5 mt-4"
+                asChild
+              >
+                <Link href="/jobs/languages" aria-label="View all languages">
+                  View All Languages
                   <ArrowUpRight
                     className="w-3.5 sm:w-4 h-3.5 sm:h-4 ml-1.5 sm:ml-2"
                     aria-hidden="true"

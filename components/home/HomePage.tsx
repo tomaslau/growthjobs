@@ -28,6 +28,7 @@ import { JobFilters } from "@/components/ui/job-filters";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { HeroSection } from "@/components/ui/hero-section";
 import config from "@/config/config";
+import { Language } from "@/lib/constants/languages";
 
 type SortOption = "newest" | "oldest" | "salary";
 
@@ -37,10 +38,18 @@ interface Filters {
   remote: boolean;
   salaryRanges: string[];
   visa: boolean;
+  languages: Language[];
 }
 
-type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
-type FilterValue = string[] | boolean | CareerLevel[] | true;
+type FilterType =
+  | "type"
+  | "role"
+  | "remote"
+  | "salary"
+  | "visa"
+  | "language"
+  | "clear";
+type FilterValue = string[] | boolean | CareerLevel[] | Language[] | true;
 
 function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();
@@ -57,6 +66,8 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
     remote: searchParams.get("remote") === "true",
     salaryRanges: searchParams.get("salary")?.split(",").filter(Boolean) || [],
     visa: searchParams.get("visa") === "true",
+    languages: (searchParams.get("languages")?.split(",").filter(Boolean) ||
+      []) as Language[],
   };
 
   const [filters, setFilters] = useState<Filters>(initialFilters);
@@ -103,6 +114,9 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
           ? newFilters.salaryRanges.join(",")
           : null,
         visa: newFilters.visa ? "true" : null,
+        languages: newFilters.languages.length
+          ? newFilters.languages.join(",")
+          : null,
         page: "1", // Reset to first page when filters change
       };
 
@@ -168,6 +182,7 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
           remote: false,
           salaryRanges: [],
           visa: false,
+          languages: [],
         };
         setFilters(clearedFilters);
         updateFilterParams(clearedFilters);
@@ -218,6 +233,16 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
           case "visa":
             if (typeof value === "boolean" && value !== prev.visa) {
               newFilters.visa = value;
+            } else {
+              return prev;
+            }
+            break;
+          case "language":
+            if (
+              Array.isArray(value) &&
+              JSON.stringify(value) !== JSON.stringify(prev.languages)
+            ) {
+              newFilters.languages = value as Language[];
             } else {
               return prev;
             }
@@ -311,6 +336,14 @@ function HomePageContent({ initialJobs }: { initialJobs: Job[] }) {
               return false;
           }
         });
+      });
+    }
+
+    // Apply language filter
+    if (filters.languages.length > 0) {
+      filtered = filtered.filter((job) => {
+        if (!job.languages || job.languages.length === 0) return false;
+        return filters.languages.some((lang) => job.languages.includes(lang));
       });
     }
 

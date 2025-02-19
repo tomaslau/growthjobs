@@ -4,9 +4,17 @@ import { Switch } from "@/components/ui/switch";
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { CareerLevel, Job, normalizeAnnualSalary } from "@/lib/db/airtable";
 import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
+import { Language, LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
 
-type FilterType = "type" | "role" | "remote" | "salary" | "visa" | "clear";
-type FilterValue = string[] | boolean | CareerLevel[] | true;
+type FilterType =
+  | "type"
+  | "role"
+  | "remote"
+  | "salary"
+  | "visa"
+  | "language"
+  | "clear";
+type FilterValue = string[] | boolean | CareerLevel[] | Language[] | true;
 
 interface JobFiltersProps {
   onFilterChange: (filterType: FilterType, value: FilterValue) => void;
@@ -16,8 +24,60 @@ interface JobFiltersProps {
     remote: boolean;
     salaryRanges: string[];
     visa: boolean;
+    languages: Language[];
   };
   jobs: Job[];
+}
+
+// Generic handler for array-based filters
+function useArrayFilter<T>(
+  initialValue: T[],
+  filterType: FilterType,
+  onFilterChange: (type: FilterType, value: T[]) => void
+) {
+  const [selected, setSelected] = useState<T[]>(initialValue);
+
+  const handleChange = useCallback(
+    (checked: boolean, value: T) => {
+      const newArray = checked
+        ? [...selected, value]
+        : selected.filter((item) => item !== value);
+      setSelected(newArray);
+      onFilterChange(filterType, newArray);
+    },
+    [filterType, onFilterChange, selected]
+  );
+
+  // Reset function
+  const reset = useCallback(() => {
+    setSelected([]);
+  }, []);
+
+  return [selected, handleChange, reset] as const;
+}
+
+// Generic handler for boolean filters
+function useBooleanFilter(
+  initialValue: boolean,
+  filterType: FilterType,
+  onFilterChange: (type: FilterType, value: boolean) => void
+) {
+  const [value, setValue] = useState(initialValue);
+
+  const handleChange = useCallback(
+    (checked: boolean) => {
+      setValue(checked);
+      onFilterChange(filterType, checked);
+    },
+    [filterType, onFilterChange]
+  );
+
+  // Reset function
+  const reset = useCallback(() => {
+    setValue(false);
+  }, []);
+
+  return [value, handleChange, reset] as const;
 }
 
 export function JobFilters({
@@ -25,21 +85,39 @@ export function JobFilters({
   initialFilters,
   jobs,
 }: JobFiltersProps) {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(
-    initialFilters.types
+  // Use generic array filter hooks
+  const [selectedTypes, handleTypeChange, resetTypes] = useArrayFilter(
+    initialFilters.types,
+    "type",
+    onFilterChange
   );
-  const [selectedLevels, setSelectedLevels] = useState<CareerLevel[]>(
-    initialFilters.roles
+  const [selectedLevels, handleLevelChange, resetLevels] = useArrayFilter(
+    initialFilters.roles,
+    "role",
+    onFilterChange
   );
-  const [isRemoteOnly, setIsRemoteOnly] = useState(initialFilters.remote);
-  const [isVisaSponsorship, setIsVisaSponsorship] = useState(
-    initialFilters.visa
-  );
-  const [selectedSalaryRanges, setSelectedSalaryRanges] = useState<string[]>(
-    initialFilters.salaryRanges
-  );
-  const [showAllLevels, setShowAllLevels] = useState(false);
+  const [selectedSalaryRanges, handleSalaryChange, resetSalary] =
+    useArrayFilter(initialFilters.salaryRanges, "salary", onFilterChange);
+  const [selectedLanguages, handleLanguageChange, resetLanguages] =
+    useArrayFilter(initialFilters.languages, "language", onFilterChange);
 
+  // Use generic boolean filter hooks
+  const [isRemoteOnly, handleRemoteChange, resetRemote] = useBooleanFilter(
+    initialFilters.remote,
+    "remote",
+    onFilterChange
+  );
+  const [isVisaSponsorship, handleVisaChange, resetVisa] = useBooleanFilter(
+    initialFilters.visa,
+    "visa",
+    onFilterChange
+  );
+
+  // Toggle states for expandable sections
+  const [showAllLevels, setShowAllLevels] = useState(false);
+  const [showAllLanguages, setShowAllLanguages] = useState(false);
+
+  // Predefined lists
   const initialLevels: CareerLevel[] = [
     "Internship",
     "EntryLevel",
@@ -64,166 +142,88 @@ export function JobFilters({
     "Founder",
   ];
 
+  // Handle clearing all filters
+  const handleClearFilters = useCallback(() => {
+    resetTypes();
+    resetLevels();
+    resetSalary();
+    resetLanguages();
+    resetRemote();
+    resetVisa();
+    onFilterChange("clear", true);
+  }, [
+    onFilterChange,
+    resetTypes,
+    resetLevels,
+    resetSalary,
+    resetLanguages,
+    resetRemote,
+    resetVisa,
+  ]);
+
+  // Memoized counts and calculations
+  const counts = useMemo(
+    () => ({
+      types: jobs.reduce((acc, job) => {
+        if (job.type) acc[job.type] = (acc[job.type] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>),
+
+      roles: jobs.reduce((acc, job) => {
+        job.career_level.forEach((level) => {
+          if (level !== "NotSpecified") acc[level] = (acc[level] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<CareerLevel, number>),
+
+      remote: jobs.filter((job) => job.workplace_type === "Remote").length,
+
+      visa: jobs.filter((job) => job.visa_sponsorship === "Yes").length,
+
+      salary: jobs.reduce(
+        (acc, job) => {
+          if (!job.salary) return acc;
+          const annualSalary = normalizeAnnualSalary(job.salary);
+          if (annualSalary < 50000) acc["< $50K"]++;
+          else if (annualSalary <= 100000) acc["$50K - $100K"]++;
+          else if (annualSalary <= 200000) acc["$100K - $200K"]++;
+          else acc["> $200K"]++;
+          return acc;
+        },
+        {
+          "< $50K": 0,
+          "$50K - $100K": 0,
+          "$100K - $200K": 0,
+          "> $200K": 0,
+        }
+      ),
+
+      languages: jobs.reduce((acc, job) => {
+        job.languages?.forEach((lang) => {
+          acc[lang] = (acc[lang] || 0) + 1;
+        });
+        return acc;
+      }, {} as Record<Language, number>),
+    }),
+    [jobs]
+  );
+
+  // Sort and filter languages
+  const languageEntries = useMemo(() => {
+    const entries = Object.entries(counts.languages)
+      .sort((a, b) => b[1] - a[1])
+      .filter(([_, count]) => count > 0);
+    return {
+      initial: entries.slice(0, 5),
+      additional: entries.slice(5),
+      visible: showAllLanguages ? entries : entries.slice(0, 5),
+    };
+  }, [counts.languages, showAllLanguages]);
+
+  // Visible levels based on toggle
   const visibleLevels = showAllLevels
     ? [...initialLevels, ...additionalLevels]
     : initialLevels;
-
-  useEffect(() => {
-    const currentFilters = {
-      types: selectedTypes,
-      roles: selectedLevels,
-      remote: isRemoteOnly,
-      salaryRanges: selectedSalaryRanges,
-      visa: isVisaSponsorship,
-    };
-
-    const hasChanges = Object.entries(currentFilters).some(([key, value]) => {
-      const initialValue = initialFilters[key as keyof typeof initialFilters];
-      if (Array.isArray(value) && Array.isArray(initialValue)) {
-        return JSON.stringify(value) !== JSON.stringify(initialValue);
-      }
-      return value !== initialValue;
-    });
-
-    if (hasChanges) {
-      if (selectedTypes !== initialFilters.types) {
-        onFilterChange("type", selectedTypes);
-      }
-      if (selectedLevels !== initialFilters.roles) {
-        onFilterChange("role", selectedLevels);
-      }
-      if (isRemoteOnly !== initialFilters.remote) {
-        onFilterChange("remote", isRemoteOnly);
-      }
-      if (selectedSalaryRanges !== initialFilters.salaryRanges) {
-        onFilterChange("salary", selectedSalaryRanges);
-      }
-      if (isVisaSponsorship !== initialFilters.visa) {
-        onFilterChange("visa", isVisaSponsorship);
-      }
-    }
-  }, [
-    selectedTypes,
-    selectedLevels,
-    isRemoteOnly,
-    selectedSalaryRanges,
-    isVisaSponsorship,
-    onFilterChange,
-    initialFilters,
-  ]);
-
-  const handleTypeChange = useCallback((checked: boolean, value: string) => {
-    setSelectedTypes((prev) => {
-      const newTypes = new Set(prev);
-      if (checked) {
-        newTypes.add(value);
-      } else {
-        newTypes.delete(value);
-      }
-      return Array.from(newTypes);
-    });
-  }, []);
-
-  const handleLevelChange = useCallback(
-    (checked: boolean, value: CareerLevel) => {
-      setSelectedLevels((prev) => {
-        const newLevels = new Set(prev);
-        if (checked) {
-          newLevels.add(value);
-        } else {
-          newLevels.delete(value);
-        }
-        return Array.from(newLevels);
-      });
-    },
-    []
-  );
-
-  const handleRemoteChange = useCallback((checked: boolean) => {
-    setIsRemoteOnly(checked);
-  }, []);
-
-  const handleSalaryChange = useCallback((checked: boolean, value: string) => {
-    setSelectedSalaryRanges((prev) => {
-      const newRanges = new Set(prev);
-      if (checked) {
-        newRanges.add(value);
-      } else {
-        newRanges.delete(value);
-      }
-      return Array.from(newRanges);
-    });
-  }, []);
-
-  const handleVisaChange = useCallback((checked: boolean) => {
-    setIsVisaSponsorship(checked);
-  }, []);
-
-  const handleClearFilters = useCallback(() => {
-    setSelectedTypes([]);
-    setSelectedLevels([]);
-    setIsRemoteOnly(false);
-    setIsVisaSponsorship(false);
-    setSelectedSalaryRanges([]);
-    onFilterChange("clear", true);
-  }, [onFilterChange]);
-
-  const handleShowMoreLevels = () => {
-    setShowAllLevels(!showAllLevels);
-  };
-
-  const typeCounts = useMemo(() => {
-    const counts: Record<string, number> = {
-      "Full-time": 0,
-      "Part-time": 0,
-      Contract: 0,
-    };
-    jobs.forEach((job) => {
-      if (job.type in counts) {
-        counts[job.type]++;
-      }
-    });
-    return counts;
-  }, [jobs]);
-
-  const roleCounts = useMemo(() => {
-    const counts: Record<CareerLevel, number> = {} as Record<
-      CareerLevel,
-      number
-    >;
-    jobs.forEach((job) => {
-      job.career_level.forEach((level: CareerLevel) => {
-        counts[level] = (counts[level] || 0) + 1;
-      });
-    });
-    return counts;
-  }, [jobs]);
-
-  const remoteCount = useMemo(() => {
-    return jobs.filter((job) => job.workplace_type === "Remote").length;
-  }, [jobs]);
-
-  const visaCount = useMemo(() => {
-    return jobs.filter((job) => job.visa_sponsorship === "Yes").length;
-  }, [jobs]);
-
-  const salaryRangeCounts = useMemo(() => {
-    const counts: Record<string, number> = {
-      "< $50K": 0,
-      "$50K - $100K": 0,
-      "$100K - $200K": 0,
-      "> $200K": 0,
-    };
-    jobs.forEach((job) => {
-      if (!job.salary) return;
-      const annualSalary = normalizeAnnualSalary(job.salary);
-      if (annualSalary < 50000) counts["< $50K"]++;
-      else if (annualSalary <= 100000) counts["$50K - $100K"]++;
-      else if (annualSalary <= 200000) counts["$100K - $200K"]++;
-      else counts["> $200K"]++;
-    });
-    return counts;
-  }, [jobs]);
 
   return (
     <div className="p-5 border rounded-lg space-y-6 bg-gray-50 relative">
@@ -261,7 +261,7 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {typeCounts["Full-time"]}
+              {counts.types["Full-time"]}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -284,7 +284,7 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {typeCounts["Part-time"]}
+              {counts.types["Part-time"]}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -307,7 +307,30 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {typeCounts["Contract"]}
+              {counts.types["Contract"]}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <Checkbox
+                id="freelance"
+                checked={selectedTypes.includes("Freelance")}
+                onCheckedChange={(checked: boolean) =>
+                  handleTypeChange(checked, "Freelance")
+                }
+              />
+              <Label htmlFor="freelance" className="text-sm font-normal">
+                Freelance
+              </Label>
+            </div>
+            <span
+              className={`text-xs px-2 py-0.5 rounded-full ${
+                selectedTypes.includes("Freelance")
+                  ? "bg-zinc-900 text-zinc-50"
+                  : "bg-zinc-100 text-zinc-500"
+              }`}
+            >
+              {counts.types["Freelance"]}
             </span>
           </div>
         </div>
@@ -341,13 +364,13 @@ export function JobFilters({
                     : "bg-zinc-100 text-zinc-500"
                 }`}
               >
-                {roleCounts[level] || 0}
+                {counts.roles[level] || 0}
               </span>
             </div>
           ))}
         </div>
         <button
-          onClick={handleShowMoreLevels}
+          onClick={() => setShowAllLevels(!showAllLevels)}
           className="text-sm underline underline-offset-4 text-zinc-900 hover:text-zinc-700 transition-colors"
         >
           {showAllLevels ? "Show fewer levels" : "Show more levels"}
@@ -378,7 +401,7 @@ export function JobFilters({
                 : "bg-zinc-100 text-zinc-500"
             }`}
           >
-            {remoteCount} of {jobs.length}
+            {counts.remote} of {jobs.length}
           </span>
         </div>
       </div>
@@ -387,7 +410,7 @@ export function JobFilters({
       <div className="space-y-4">
         <h2 className="text-md font-semibold">Salary Range</h2>
         <div className="space-y-3">
-          {Object.entries(salaryRangeCounts).map(([range, count]) => (
+          {Object.entries(counts.salary).map(([range, count]) => (
             <div key={range} className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <Checkbox
@@ -444,9 +467,52 @@ export function JobFilters({
                 : "bg-zinc-100 text-zinc-500"
             }`}
           >
-            {visaCount}
+            {counts.visa}
           </span>
         </div>
+      </div>
+
+      {/* Languages */}
+      <div className="space-y-4">
+        <h2 className="text-md font-semibold">Languages</h2>
+        <div className="space-y-3">
+          {languageEntries.visible.map(([lang, count]) => (
+            <div key={lang} className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={`lang-${lang.toLowerCase()}`}
+                  checked={selectedLanguages.includes(lang as Language)}
+                  onCheckedChange={(checked: boolean) =>
+                    handleLanguageChange(checked, lang as Language)
+                  }
+                />
+                <Label
+                  htmlFor={`lang-${lang.toLowerCase()}`}
+                  className="text-sm font-normal"
+                >
+                  {LANGUAGE_DISPLAY_NAMES[lang as Language]}
+                </Label>
+              </div>
+              <span
+                className={`text-xs px-2 py-0.5 rounded-full ${
+                  selectedLanguages.includes(lang as Language)
+                    ? "bg-zinc-900 text-zinc-50"
+                    : "bg-zinc-100 text-zinc-500"
+                }`}
+              >
+                {count}
+              </span>
+            </div>
+          ))}
+        </div>
+        {languageEntries.additional.length > 0 && (
+          <button
+            onClick={() => setShowAllLanguages(!showAllLanguages)}
+            className="text-sm underline underline-offset-4 text-zinc-900 hover:text-zinc-700 transition-colors"
+          >
+            {showAllLanguages ? "Show fewer languages" : "Show more languages"}
+          </button>
+        )}
       </div>
     </div>
   );

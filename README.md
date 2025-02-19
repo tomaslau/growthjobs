@@ -31,11 +31,12 @@ Bordful is a modern, minimal job board built with Next.js, Tailwind CSS, and Air
 - Similar jobs suggestions based on title and location
 - URL-based filter persistence for sharing and bookmarking
 - Comprehensive filtering system with multiple parameters
-  - Job type (Full-time, Part-time, Contract)
+  - Job type (Full-time, Part-time, Contract, Freelance)
   - Career level (18 standardized levels)
   - Remote work preference
   - Salary ranges
   - Visa sponsorship status
+  - Languages
 - Enhanced user experience
   - Keyboard navigation for search (Escape to clear)
   - Loading states with smooth transitions
@@ -137,6 +138,7 @@ npm install
   career_level: Multiple select (Internship, Entry Level, Associate, Junior, Mid Level, Senior, Staff, Principal, Lead, Manager, Senior Manager, Director, Senior Director, VP, SVP, EVP, C-Level, Founder, Not Specified)
   visa_sponsorship: Single select (Yes, No, Not specified)
   featured: Checkbox
+  languages: Multiple select (English, Spanish, French, German, Chinese, Japanese, Korean, Portuguese, Russian, Arabic, Hindi, Italian, Dutch, Polish, Turkish, Vietnamese, Thai, Indonesian)
   ```
 
 For both options:
@@ -358,11 +360,12 @@ The job board supports comprehensive URL parameters for sharing and bookmarking:
 - `page` - Current page number
 - `per_page` - Items per page (10, 25, 50, 100)
 - `sort` - Sort order (newest, oldest, salary)
-- `types` - Comma-separated job types (Full-time, Part-time, Contract)
+- `types` - Comma-separated job types (Full-time, Part-time, Contract, Freelance)
 - `roles` - Comma-separated career levels
 - `remote` - Remote work filter (true)
 - `salary` - Comma-separated salary ranges
 - `visa` - Visa sponsorship filter (true)
+- `languages` - Comma-separated language requirements
 
 Example URLs:
 

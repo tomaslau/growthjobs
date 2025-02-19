@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.52] - 2025-02-19
+
+### Added
+- Added language-based job filtering:
+  - New /jobs/languages directory page
+  - Individual language-specific job listing pages
+  - Language filter in sidebar with show/hide functionality
+  - Support for multiple language selection
+
+### Changed
+- Enhanced job filters with improved state management:
+  - Added custom hooks for array and boolean filters
+  - Optimized filter performance and reduced re-renders
+  - Fixed "Clear all" functionality for language filters
+  - Added missing "Freelance" job type option
+  - Improved filter synchronization with URL parameters
+
 ## [0.0.51] - 2025-02-11
 
 ### Added

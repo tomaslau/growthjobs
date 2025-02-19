@@ -1,5 +1,6 @@
 import { CareerLevel, Salary, formatSalary } from "@/lib/db/airtable";
 import { WorkplaceType, RemoteRegion } from "@/lib/constants/workplace";
+import { Language, LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
 import {
   Calendar,
   MapPin,
@@ -10,6 +11,7 @@ import {
   Globe,
   Clock,
   Flag,
+  Languages,
 } from "lucide-react";
 
 interface JobDetailsSidebarProps {
@@ -24,6 +26,7 @@ interface JobDetailsSidebarProps {
   career_level: CareerLevel[];
   apply_url: string;
   visa_sponsorship: string;
+  languages: Language[];
 }
 
 function formatCareerLevel(level: CareerLevel): string {
@@ -64,6 +67,7 @@ export function JobDetailsSidebar({
   career_level,
   apply_url,
   visa_sponsorship,
+  languages,
 }: JobDetailsSidebarProps) {
   const showSalary = salary && (salary.min !== null || salary.max !== null);
   const careerLevels = Array.from(
@@ -212,6 +216,26 @@ export function JobDetailsSidebar({
           {timezone_requirements || "Not specified"}
         </p>
       </div>
+
+      {/* Languages */}
+      {languages && languages.length > 0 && (
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <Languages className="h-4 w-4 text-gray-500 shrink-0" />
+            <h2 className="text-sm font-medium">Languages</h2>
+          </div>
+          <div className="flex flex-wrap gap-1.5 ml-6">
+            {languages.map((lang) => (
+              <span
+                key={lang}
+                className="inline-block px-2 py-0.5 text-xs bg-white border text-gray-700 rounded-full"
+              >
+                {LANGUAGE_DISPLAY_NAMES[lang]}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

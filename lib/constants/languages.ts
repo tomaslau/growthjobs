@@ -1,0 +1,43 @@
+export type Language = (typeof languages)[number];
+
+export const languages = [
+  "English",
+  "Spanish",
+  "French",
+  "German",
+  "Chinese",
+  "Japanese",
+  "Korean",
+  "Portuguese",
+  "Russian",
+  "Arabic",
+  "Hindi",
+  "Italian",
+  "Dutch",
+  "Polish",
+  "Turkish",
+  "Vietnamese",
+  "Thai",
+  "Indonesian",
+] as const;
+
+export const LANGUAGE_DISPLAY_NAMES: Record<Language, string> = {
+  English: "English",
+  Spanish: "Spanish",
+  French: "French",
+  German: "German",
+  Chinese: "Chinese",
+  Japanese: "Japanese",
+  Korean: "Korean",
+  Portuguese: "Portuguese",
+  Russian: "Russian",
+  Arabic: "Arabic",
+  Hindi: "Hindi",
+  Italian: "Italian",
+  Dutch: "Dutch",
+  Polish: "Polish",
+  Turkish: "Turkish",
+  Vietnamese: "Vietnamese",
+  Thai: "Thai",
+  Indonesian: "Indonesian",
+} as const;
