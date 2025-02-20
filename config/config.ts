@@ -32,7 +32,7 @@ export const config = {
         src: "https://umami.craftled.com/script.js",
         strategy: "afterInteractive",
         attributes: {
-          "data-website-id": "b93ebd4d-b4fd-49f3-9507-c32245ac447f",
+          "data-website-id": "aeabdbe7-e5a6-4403-8af5-9a036d36eaf4",
           defer: "",
         },
       },
