@@ -102,7 +102,7 @@ export const config = {
     brand: {
       show: true,
       description:
-        "Growth Jobs is a niche job board connecting growth-driven professionals with scaling companies. Updated daily.",
+        "Growth Jobs is a specialized job board connecting growth-driven professionals with scaling companies. Updated daily.",
     },
 
     // Resources section
@@ -151,7 +151,7 @@ export const config = {
     copyright: {
       show: true,
       startYear: 2025,
-      text: "Growth Jobs - A niche job board for growth professionals. Empowering businesses to scale and professionals to thrive.",
+      text: "Growth Jobs - A specialized job board for growth professionals. Empowering businesses to scale and professionals to thrive.",
     },
 
     // Built with section
