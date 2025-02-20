@@ -1,23 +1,24 @@
 /**
  * Configuration Loader
  * ------------------
- * Loads configuration from config.ts if it exists,
- * otherwise falls back to config.example.ts
+ * This module exports the configuration for the job board.
+ * By default, it uses the example configuration from config.example.ts.
+ * Users can create their own config.ts to override the defaults.
  */
 
-import type { Config as BaseConfig } from "./config.example";
+import { config as exampleConfig } from "./config.example";
 
-let config: BaseConfig;
-
+// Try to load custom config if it exists
+let customConfig;
 try {
-  // Try to load user's config.ts
-  config = require('./config').config;
+  customConfig = require('./config').config;
   console.info('Using custom configuration from config.ts');
 } catch (error) {
-  // Fallback to example config if config.ts doesn't exist
-  config = require('./config.example').config;
-  console.info('No config.ts found, using config.example.ts as fallback');
+  console.info('Using default configuration from config.example.ts');
 }
 
-export type Config = BaseConfig;
+// Use custom config if available, otherwise use example config
+const config = customConfig || exampleConfig;
+
+export type Config = typeof exampleConfig;
 export default config; 

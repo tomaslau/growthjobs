@@ -1,7 +1,6 @@
 import { getJobs, CareerLevel } from "@/lib/db/airtable";
 import { GraduationCap } from "lucide-react";
 import type { Metadata } from "next";
-import type { Config } from "@/config";
 import config from "@/config";
 import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";

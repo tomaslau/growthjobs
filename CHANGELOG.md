@@ -9,11 +9,14 @@ All notable changes to this project will be documented in this file.
   - Complete example with detailed comments
   - TypeScript type safety
   - All customizable options documented
-  - Works as fallback if no custom config is present
+  - Works out of the box without requiring custom config
+  - Supports deep merging with custom config.ts when present
 
 ### Changed
 - Enhanced configuration system:
-  - Added smart fallback to example config if `config.ts` is not found
+  - Uses example config by default for immediate usability
+  - Supports optional config.ts for customization
+  - Deep merges custom config with example defaults
   - Improved configuration documentation
   - Better setup instructions for forked repositories
   - Replaced "Built by Craftled" with "Built with Bordful" in the footer
