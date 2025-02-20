@@ -177,7 +177,26 @@ Visit `http://localhost:3000` to see your job board.
 
 ## Configuration
 
-The job board can be easily customized through a single configuration file at `config/config.ts`:
+### Quick Start
+
+1. Copy the example configuration:
+   ```bash
+   cp config/config.example.ts config/config.ts
+   ```
+2. Make sure it's called `config.ts`
+3. Customize `config.ts` with your settings
+4. Commit your configuration to your repository
+
+### Updating
+
+When pulling updates from upstream:
+1. Your `config.ts` remains unchanged
+2. Check `config.example.ts` for new options
+3. Add any new options to your `config.ts`
+
+### Configuration Options
+
+The job board can be customized through the configuration file:
 
 ```typescript
 export const config = {

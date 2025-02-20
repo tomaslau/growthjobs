@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.54] - 2025-02-20
+
+### Added
+- Added `config.example.ts` as the template for job board configuration:
+  - Complete example with detailed comments
+  - TypeScript type safety
+  - All customizable options documented
+
+### Changed
+- Enhanced configuration system:
+  - Removed `config.ts` from repository (users create from `config.example.ts`)
+  - Replaced "Built by Craftled" with "Built with Bordful" in the footer
+  - Improved configuration documentation
+  - Better setup instructions for forked repositories
+
 ## [0.0.53] - 2025-02-19
 
 ### Changed
