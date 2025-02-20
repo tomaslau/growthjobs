@@ -1,7 +1,7 @@
 import { getJobs } from "@/lib/db/airtable";
 import { Briefcase } from "lucide-react";
 import type { Metadata } from "next";
-import { config } from "@/config/config";
+import config from "@/config";
 import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import {

@@ -1,7 +1,8 @@
 import { getJobs } from "@/lib/db/airtable";
 import { Globe2 } from "lucide-react";
 import type { Metadata } from "next";
-import { config } from "@/config/config";
+import type { Config } from "@/config";
+import config from "@/config";
 import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import type { LocationCounts } from "@/lib/constants/locations";

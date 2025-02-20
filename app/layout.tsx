@@ -5,12 +5,20 @@ import { GeistMono } from "geist/font/mono";
 import { Nav } from "@/components/ui/nav";
 import { Footer } from "@/components/ui/footer";
 import { Toaster } from "@/components/ui/toaster";
-import Script from "next/script";
-import config from "@/config/config";
+import Script, { ScriptProps } from "next/script";
+import config from "@/config";
+
+interface CustomScript {
+  src: string;
+  strategy: ScriptProps["strategy"];
+  attributes?: Record<string, string>;
+}
+
+const siteConfig = config;
 
 export const metadata: Metadata = {
-  title: `${config.title} | ${config.nav.title}`,
-  description: config.description,
+  title: `${siteConfig.title} | ${siteConfig.nav.title}`,
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
@@ -21,25 +29,25 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
       <head>
-        {config.scripts.head.map((script, index) => (
+        {siteConfig.scripts.head.map((script: CustomScript, index: number) => (
           <Script
-            key={index}
-            id={`head-script-${index}`}
+            key={`head-script-${index}`}
             src={script.src}
             strategy={script.strategy}
             {...script.attributes}
           />
         ))}
       </head>
-      <body className={`${GeistSans.className} flex min-h-screen flex-col`}>
-        <Nav />
-        <main className="flex-1">{children}</main>
-        <Footer />
+      <body>
+        <div className="flex min-h-screen flex-col">
+          <Nav />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
         <Toaster />
-        {config.scripts.body.map((script, index) => (
+        {siteConfig.scripts.body.map((script: CustomScript, index: number) => (
           <Script
-            key={index}
-            id={`body-script-${index}`}
+            key={`body-script-${index}`}
             src={script.src}
             strategy={script.strategy}
             {...script.attributes}

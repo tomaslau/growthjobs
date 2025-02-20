@@ -1,4 +1,4 @@
-import config from "@/config/config";
+import config from "@/config";
 
 export const metadata = {
   title: `Privacy & Cookies - ${config.nav.title}`,

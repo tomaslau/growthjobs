@@ -27,7 +27,7 @@ import {
 import { JobFilters } from "@/components/ui/job-filters";
 import { PostJobBanner } from "@/components/ui/post-job-banner";
 import { HeroSection } from "@/components/ui/hero-section";
-import config from "@/config/config";
+import config from "@/config";
 import { Language } from "@/lib/constants/languages";
 
 type SortOption = "newest" | "oldest" | "salary";

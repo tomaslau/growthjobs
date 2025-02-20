@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import config from "@/config/config";
+import config from "@/config";
 import dynamic from "next/dynamic";
 import { PlusCircle, Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
