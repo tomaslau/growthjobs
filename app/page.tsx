@@ -1,7 +1,7 @@
-import { getJobs } from "@/lib/db/airtable";
 import { HomePage } from "@/components/home/HomePage";
 import { Metadata } from "next";
-import config from "@/config/config";
+import config from "@/config";
+import { getJobs } from "@/lib/db/airtable";
 
 // Add metadata for SEO
 export const metadata: Metadata = {
@@ -23,6 +23,7 @@ export const metadata: Metadata = {
   },
 };
 
+// Revalidate every 5 minutes
 export const revalidate = 300;
 
 export default async function Page() {

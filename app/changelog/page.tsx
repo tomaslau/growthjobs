@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import ReactMarkdown from "react-markdown";
 import { Metadata } from "next";
-import config from "@/config/config";
+import config from "@/config";
 
 // Add metadata for SEO
 export const metadata: Metadata = {

@@ -7,7 +7,7 @@ import {
   ArrowUpRight,
 } from "lucide-react";
 import type { Metadata } from "next";
-import { config } from "@/config/config";
+import config from "@/config";
 import type { CareerLevel } from "@/lib/db/airtable";
 import { Button } from "@/components/ui/button";
 import { PostJobBanner } from "@/components/ui/post-job-banner";

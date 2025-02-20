@@ -7,7 +7,7 @@ import {
 import { Building2, Users2, Globe2 } from "lucide-react";
 import { Metadata } from "next";
 import { HeroSection } from "@/components/ui/hero-section";
-import config from "@/config/config";
+import config from "@/config";
 
 // Add metadata for SEO
 export const metadata: Metadata = {

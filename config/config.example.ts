@@ -1,7 +1,19 @@
 /**
- * Job Board Configuration
- * ---------------------
- * Customize your job board by editing this file.
+ * Job Board Configuration Example
+ * ----------------------------
+ * This is a template for your job board configuration.
+ * 
+ * Quick Start:
+ * 1. Copy this file: cp config/config.example.ts config/config.ts
+ * 2. Make sure it's called config.ts
+ * 3. Customize config.ts with your settings
+ * 4. Commit config.ts to your repository
+ * 
+ * When updating from upstream (original bordful repo):
+ * - Pull the latest changes
+ * - Your config.ts will remain unchanged
+ * - Check this file for new options
+ * - Add desired new options to your config.ts
  */
 
 import type { ScriptProps } from "next/script";
@@ -148,12 +160,12 @@ export const config = {
       text: "Growth Jobs - A niche job board for growth professionals. Empowering businesses to scale and professionals to thrive.",
     },
 
-    // Built By section
-    builtBy: {
+    // Built with section
+    builtWith: {
       show: true,
-      text: "Built by",
-      name: "Craftled",
-      link: "https://craftled.com/",
+      text: "Built with",
+      name: "Bordful",
+      link: "https://bordful.com/",
       showLogo: true,
     },
   },
