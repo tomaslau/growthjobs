@@ -462,37 +462,6 @@ The project uses Tailwind CSS for styling. Main configuration files:
 - `app/globals.css`: Global styles
 - `components/*`: Individual component styles
 
-### Data Source
-
-Current implementation uses Airtable. To use a different data source:
-
-1. Modify `lib/db/airtable.ts`
-2. Implement the same interface for job data
-
-## Deployment
-
-1. Push to GitHub
-2. Deploy on Vercel:
-   - Connect your GitHub repository
-   - Add environment variables
-   - Deploy
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-MIT License - feel free to use this for your own job board!
-
-## Support
-
-If you find this helpful, please ⭐️ this repository!
-
-## Credits
-
-Built by [Craftled](https://craftled.com)
-
 ### Script Management
 
 The job board provides a flexible system for adding analytics, tracking, or any third-party scripts using Next.js's built-in Script component. Scripts can be easily configured in `config/config.ts`:
@@ -583,4 +552,33 @@ This implementation:
 - Supports any third-party script
 - Optimizes performance with proper loading strategies
 
-### Environment Variables
+### Data Source
+
+Current implementation uses Airtable. To use a different data source:
+
+1. Modify `lib/db/airtable.ts`
+2. Implement the same interface for job data
+
+## Deployment
+
+1. Push to GitHub
+2. Deploy on Vercel:
+   - Connect your GitHub repository
+   - Add environment variables
+   - Deploy
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+MIT License - feel free to use this for your own job board!
+
+## Support
+
+If you find this helpful, please ⭐️ this repository!
+
+## Credits
+
+Built by [Craftled](https://craftled.com)
