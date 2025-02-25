@@ -4,12 +4,12 @@ import config from "@/config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JobsLayout } from "@/components/jobs/JobsLayout";
-import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 import type { Language } from "@/lib/constants/languages";
 import { LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
 
 // Revalidate based on config setting
-export const revalidate = REVALIDATE_INTERVAL;
+export const revalidate = getRevalidationInterval();
 
 interface Props {
   params: {

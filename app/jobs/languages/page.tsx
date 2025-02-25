@@ -6,7 +6,7 @@ import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import type { Language } from "@/lib/constants/languages";
 import { LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
-import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 // Revalidate based on config setting
-export const revalidate = REVALIDATE_INTERVAL;
+export const revalidate = getRevalidationInterval();
 
 interface LanguageCardProps {
   href: string;

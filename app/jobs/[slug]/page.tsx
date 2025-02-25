@@ -1,7 +1,7 @@
 import { getJobs, formatSalary } from "@/lib/db/airtable";
 import { formatDate } from "@/lib/utils/formatDate";
 import { generateJobSlug } from "@/lib/utils/slugify";
-import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -69,7 +69,7 @@ export async function generateMetadata({
 }
 
 // Use revalidation from config instead of force-dynamic
-export const revalidate = REVALIDATE_INTERVAL;
+export const revalidate = getRevalidationInterval();
 
 export default async function JobPage({
   params,

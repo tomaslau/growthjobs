@@ -5,7 +5,7 @@ import config from "@/config";
 import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
-import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 // Revalidate based on config setting
-export const revalidate = REVALIDATE_INTERVAL;
+export const revalidate = getRevalidationInterval();
 
 interface LevelCardProps {
   href: string;

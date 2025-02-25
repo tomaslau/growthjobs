@@ -2,7 +2,7 @@ import { HomePage } from "@/components/home/HomePage";
 import { Metadata } from "next";
 import config from "@/config";
 import { getJobs } from "@/lib/db/airtable";
-import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Add metadata for SEO
 export const metadata: Metadata = {
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 // Revalidate based on config setting
-export const revalidate = REVALIDATE_INTERVAL;
+export const revalidate = getRevalidationInterval();
 
 export default async function Page() {
   const jobs = await getJobs();
