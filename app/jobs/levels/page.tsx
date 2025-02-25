@@ -5,6 +5,7 @@ import config from "@/config";
 import { HeroSection } from "@/components/ui/hero-section";
 import Link from "next/link";
 import { CAREER_LEVEL_DISPLAY_NAMES } from "@/lib/constants/career-levels";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -13,8 +14,8 @@ export const metadata: Metadata = {
     "Explore tech jobs by experience level. Find positions that match your career stage, from internships to executive roles.",
 };
 
-// Revalidate page every 5 minutes
-export const revalidate = 300;
+// Revalidate based on config setting
+export const revalidate = getRevalidationInterval();
 
 interface LevelCardProps {
   href: string;

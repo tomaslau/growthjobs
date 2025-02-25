@@ -9,6 +9,7 @@ import {
   formatLocationTitle,
   createLocationSlug,
 } from "@/lib/constants/locations";
+import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -17,8 +18,8 @@ export const metadata: Metadata = {
     "Explore tech jobs by location. Find remote opportunities or positions in your preferred country.",
 };
 
-// Revalidate page every 5 minutes
-export const revalidate = 300;
+// Revalidate based on config setting
+export const revalidate = getRevalidationInterval();
 
 interface LocationCardProps {
   href: string;

@@ -318,17 +318,23 @@ Create a `.env` file in your project root and add these variables there.
 
 The job board uses Next.js Incremental Static Regeneration (ISR) and server-side caching to keep data fresh:
 
-- Pages automatically revalidate every 5 minutes
+- Pages revalidate based on the configured interval (default: 1 hour)
+- Configurable through `config.ts`:
+  ```typescript
+  revalidation: {
+    interval: 3600, // Time in seconds (1 hour), for testing purposes, set to 10 seconds
+  }
+  ```
 - Server-side caching with unstable_cache
 - Content-specific loading states
 - New jobs appear without manual rebuilds
 - Maintains fast static page delivery
 - Zero downtime updates
 
-You can adjust the revalidation interval in:
-
-- `app/page.tsx` (job listing page)
-- `app/jobs/[id]/page.tsx` (individual job pages)
+The revalidation interval can be adjusted in your `config.ts` file. The value is in seconds and should be:
+- Minimum: 60 seconds (1 minute)
+- Maximum: 86400 seconds (24 hours)
+- Default: 3600 seconds (1 hour), for testing purposes, set to 10 seconds
 
 ## Project Structure
 

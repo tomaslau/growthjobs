@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.55] - 2025-02-25
+
+### Added
+- Configurable revalidation interval through `config.ts`
+  - Default: 1 hour (3600 seconds)
+  - Minimum: 1 minute (60 seconds)
+  - Maximum: 24 hours (86400 seconds)
+- New utility function `getRevalidationInterval()` for consistent revalidation handling
+
+### Changed
+- Removed `force-dynamic` from job detail pages in favor of configurable revalidation
+- Updated all pages to use centralized revalidation config
+- Improved documentation for revalidation settings
+
 ## [0.0.54] - 2025-02-20
 
 ### Added
