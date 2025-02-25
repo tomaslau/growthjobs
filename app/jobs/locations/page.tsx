@@ -9,7 +9,7 @@ import {
   formatLocationTitle,
   createLocationSlug,
 } from "@/lib/constants/locations";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
+import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 // Revalidate based on config setting
-export const revalidate = getRevalidationInterval();
+export const revalidate = REVALIDATE_INTERVAL;
 
 interface LocationCardProps {
   href: string;

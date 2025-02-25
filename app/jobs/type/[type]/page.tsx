@@ -4,7 +4,7 @@ import config from "@/config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JobsLayout } from "@/components/jobs/JobsLayout";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
+import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
 import {
   JobType,
   JOB_TYPE_DISPLAY_NAMES,
@@ -12,7 +12,7 @@ import {
 } from "@/lib/constants/job-types";
 
 // Revalidate based on config setting
-export const revalidate = getRevalidationInterval();
+export const revalidate = REVALIDATE_INTERVAL;
 
 interface Props {
   params: {

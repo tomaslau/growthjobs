@@ -9,7 +9,7 @@ import {
   JOB_TYPE_DISPLAY_NAMES,
   JOB_TYPE_DESCRIPTIONS,
 } from "@/lib/constants/job-types";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
+import { REVALIDATE_INTERVAL } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 };
 
 // Revalidate based on config setting
-export const revalidate = getRevalidationInterval();
+export const revalidate = REVALIDATE_INTERVAL;
 
 interface TypeCardProps {
   href: string;
