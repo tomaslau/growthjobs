@@ -21,7 +21,6 @@ import {
   formatLocationTitle,
   createLocationSlug,
 } from "@/lib/constants/locations";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -30,8 +29,8 @@ export const metadata: Metadata = {
     "Explore tech jobs by category, location, experience level, and job type. Find the perfect role that matches your skills and preferences.",
 };
 
-// Revalidate based on config setting
-export const revalidate = getRevalidationInterval();
+// Revalidate page every 5 minutes
+export const revalidate = 300;
 
 interface JobCounts {
   types: Record<string, number>;

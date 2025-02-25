@@ -1,7 +1,6 @@
 import { getJobs, formatSalary } from "@/lib/db/airtable";
 import { formatDate } from "@/lib/utils/formatDate";
 import { generateJobSlug } from "@/lib/utils/slugify";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
@@ -68,8 +67,8 @@ export async function generateMetadata({
   };
 }
 
-// Use revalidation from config instead of force-dynamic
-export const revalidate = getRevalidationInterval();
+// Make the page dynamic to fetch fresh data
+export const dynamic = "force-dynamic";
 
 export default async function JobPage({
   params,

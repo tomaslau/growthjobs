@@ -4,12 +4,11 @@ import config from "@/config";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { JobsLayout } from "@/components/jobs/JobsLayout";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
 import type { Language } from "@/lib/constants/languages";
 import { LANGUAGE_DISPLAY_NAMES } from "@/lib/constants/languages";
 
-// Revalidate based on config setting
-export const revalidate = getRevalidationInterval();
+// Revalidate page every 5 minutes
+export const revalidate = 300;
 
 interface Props {
   params: {

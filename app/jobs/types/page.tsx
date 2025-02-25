@@ -9,7 +9,6 @@ import {
   JOB_TYPE_DISPLAY_NAMES,
   JOB_TYPE_DESCRIPTIONS,
 } from "@/lib/constants/job-types";
-import { getRevalidationInterval } from "@/lib/utils/revalidation";
 
 // Generate metadata for SEO
 export const metadata: Metadata = {
@@ -18,8 +17,8 @@ export const metadata: Metadata = {
     "Explore tech jobs by employment type. Find full-time, part-time, or contract positions that match your preferences.",
 };
 
-// Revalidate based on config setting
-export const revalidate = getRevalidationInterval();
+// Revalidate page every 5 minutes
+export const revalidate = 300;
 
 interface TypeCardProps {
   href: string;
