@@ -322,7 +322,7 @@ The job board uses Next.js Incremental Static Regeneration (ISR) and server-side
 - Configurable through `config.ts`:
   ```typescript
   revalidation: {
-    interval: 3600, // Time in seconds (1 hour), for testing purposes, set to 10 seconds
+    interval: 3600, // Time in seconds (1 hour), for testing purposes, set to 60 seconds
   }
   ```
 - Server-side caching with unstable_cache
@@ -334,7 +334,7 @@ The job board uses Next.js Incremental Static Regeneration (ISR) and server-side
 The revalidation interval can be adjusted in your `config.ts` file. The value is in seconds and should be:
 - Minimum: 60 seconds (1 minute)
 - Maximum: 86400 seconds (24 hours)
-- Default: 3600 seconds (1 hour), for testing purposes, set to 10 seconds
+- Default: 3600 seconds (1 hour), for testing purposes, set to 60 seconds
 
 ## Project Structure
 
