@@ -183,16 +183,28 @@ Visit `http://localhost:3000` to see your job board.
    ```bash
    cp config/config.example.ts config/config.ts
    ```
-2. Make sure it's called `config.ts`
-3. Customize `config.ts` with your settings
-4. Commit your configuration to your repository
+2. Customize `config.ts` with your settings
+3. The app will now use your custom configuration
+
+### How It Works
+
+The configuration system is designed to be:
+- Easy to set up (just copy and customize)
+- Flexible (customize any aspect of your job board)
+- Maintainable (pull updates without losing your customizations)
+
+When the app starts:
+1. It first tries to load your custom `config.ts`
+2. If not found, falls back to `config.example.ts`
+3. TypeScript ensures type safety in both cases
 
 ### Updating
 
 When pulling updates from upstream:
-1. Your `config.ts` remains unchanged
-2. Check `config.example.ts` for new options
-3. Add any new options to your `config.ts`
+1. Your `config.ts` stays as is with your customizations
+2. You might get updates to `config.example.ts`
+3. Check `config.example.ts` for new options
+4. Add desired new options to your `config.ts`
 
 ### Configuration Options
 
@@ -318,34 +330,17 @@ Create a `.env` file in your project root and add these variables there.
 
 The job board uses Next.js Incremental Static Regeneration (ISR) and server-side caching to keep data fresh:
 
-<<<<<<< HEAD
-- Pages revalidate based on the configured interval (default: 1 hour)
-- Configurable through `config.ts`:
-  ```typescript
-  revalidation: {
-    interval: 3600, // Time in seconds (1 hour), for testing purposes, set to 60 seconds
-  }
-  ```
-=======
 - Pages automatically revalidate every 5 minutes
->>>>>>> parent of a49840b (Configurable revalidation interval through `config.ts`)
 - Server-side caching with unstable_cache
 - Content-specific loading states
 - New jobs appear without manual rebuilds
 - Maintains fast static page delivery
 - Zero downtime updates
 
-<<<<<<< HEAD
-The revalidation interval can be adjusted in your `config.ts` file. The value is in seconds and should be:
-- Minimum: 60 seconds (1 minute)
-- Maximum: 86400 seconds (24 hours)
-- Default: 3600 seconds (1 hour), for testing purposes, set to 60 seconds
-=======
 You can adjust the revalidation interval in:
-
 - `app/page.tsx` (job listing page)
 - `app/jobs/[id]/page.tsx` (individual job pages)
->>>>>>> parent of a49840b (Configurable revalidation interval through `config.ts`)
+- `app/jobs/language/[language]/page.tsx` (language-specific job pages)
 
 ## Project Structure
 
