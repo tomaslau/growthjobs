@@ -31,7 +31,7 @@ export const config = {
   description:
     "Curated growth jobs in marketing, business development, and startup roles. Join fast-growing companies and drive your career forward.",
   url:
-    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
     (process.env.NODE_ENV === "development"
       ? "http://localhost:3000"
       : "https://growthjobs.org"),
