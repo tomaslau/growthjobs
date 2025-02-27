@@ -6,6 +6,9 @@ export const metadata = {
     "Our terms of service outline the rules and guidelines for using our job board platform.",
 };
 
+// This page will be static
+export const dynamic = "force-static";
+
 export default function TermsPage() {
   return (
     <main className="container py-6">

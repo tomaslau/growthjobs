@@ -34,6 +34,9 @@ export const metadata: Metadata = {
   },
 };
 
+// This page will be static
+export const dynamic = "force-static";
+
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background">

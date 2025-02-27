@@ -67,8 +67,8 @@ export async function generateMetadata({
   };
 }
 
-// Make the page dynamic to fetch fresh data
-export const dynamic = "force-dynamic";
+// Revalidate page every 5 minutes (300 seconds) instead of forcing dynamic rendering
+export const revalidate = 300;
 
 export default async function JobPage({
   params,
