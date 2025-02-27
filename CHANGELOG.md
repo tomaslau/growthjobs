@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.56] - 2025-02-27
+
+### Changed
+- Optimized Airtable API usage with consistent revalidation strategy:
+  - Standardized 5-minute (300 seconds) revalidation across all dynamic pages
+  - Replaced `force-dynamic` with revalidation on job detail pages
+  - Added `force-static` to static content pages (about, privacy, terms)
+  - Enhanced documentation with revalidation customization guide
+
 ## [0.0.55] - 2025-02-27
 
 ### Added

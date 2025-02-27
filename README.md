@@ -216,7 +216,7 @@ export const config = {
   badge: "The #1 Open Source Tech Job Board",
   title: "Find Your Next Tech Role",
   description: "Browse curated tech opportunities...",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
 
   // Scripts Configuration (analytics, tracking, etc.)
   scripts: {
@@ -290,7 +290,7 @@ export const config = {
 
 The site URL automatically adjusts based on the environment:
 
-1. Uses `NEXT_PUBLIC_SITE_URL` if provided
+1. Uses `NEXT_PUBLIC_APP_URL` if provided
 2. Falls back to `localhost:3000` in development
 3. Uses production URL in production
 
@@ -337,10 +337,39 @@ The job board uses Next.js Incremental Static Regeneration (ISR) and server-side
 - Maintains fast static page delivery
 - Zero downtime updates
 
-You can adjust the revalidation interval in:
-- `app/page.tsx` (job listing page)
-- `app/jobs/[id]/page.tsx` (individual job pages)
-- `app/jobs/language/[language]/page.tsx` (language-specific job pages)
+### Customizing Revalidation Periods
+
+You can adjust the revalidation interval by modifying the `revalidate` constant in page files:
+
+```typescript
+// Set revalidation period in seconds (e.g., 300 = 5 minutes)
+export const revalidate = 300;
+```
+
+Considerations when adjusting revalidation periods:
+- **Shorter periods** (e.g., 60 seconds): More frequent updates but more API calls to Airtable
+- **Longer periods** (e.g., 3600 seconds): Fewer API calls but less frequent content updates
+- **Static content** (e.g., about, terms pages): Consider using `export const dynamic = "force-static"` instead
+
+All page files consistently use a 5-minute (300 seconds) revalidation period by default. Files with revalidation settings:
+
+- `app/page.tsx` (home page)
+- `app/jobs/[slug]/page.tsx` (individual job pages)
+- `app/jobs/page.tsx` (main jobs listing page)
+- `app/jobs/levels/page.tsx` (career levels directory)
+- `app/jobs/languages/page.tsx` (languages directory)
+- `app/jobs/location/[location]/page.tsx` (location-specific jobs)
+- `app/jobs/level/[level]/page.tsx` (career level-specific jobs)
+- `app/jobs/language/[language]/page.tsx` (language-specific jobs)
+- `app/jobs/locations/page.tsx` (locations directory)
+- `app/jobs/types/page.tsx` (job types directory)
+- `app/jobs/type/[type]/page.tsx` (job type-specific jobs)
+
+For static content that rarely changes, the app uses `export const dynamic = "force-static"` in these files:
+- `app/about/page.tsx`
+- `app/privacy/page.tsx`
+- `app/terms/page.tsx`
+- `app/changelog/page.tsx`
 
 ## Project Structure
 

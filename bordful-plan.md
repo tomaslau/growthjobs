@@ -62,7 +62,7 @@ Create a `.env.local` file:
 ```env
 AIRTABLE_API_KEY=your_api_key
 AIRTABLE_BASE_ID=your_base_id
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 5. Project Structure:

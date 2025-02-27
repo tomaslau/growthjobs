@@ -6,6 +6,9 @@ export const metadata = {
     "Our commitment to protecting your privacy and personal information.",
 };
 
+// This page will be static
+export const dynamic = "force-static";
+
 export default function PrivacyPage() {
   return (
     <main className="container py-6">
