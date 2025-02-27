@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.58] - 2025-02-27
+
+### Fixed
+- Fixed configuration loading in production by removing development-only check:
+  - Custom `config.ts` now loads in all environments
+  - Ensures consistent configuration between development and production
+  - Resolves issue with example config being used in production
+
+## [0.0.57] - 2025-02-27
+
+### Changed
+- Updated Next.js to version 15.2.0
+
 ## [0.0.56] - 2025-02-27
 
 ### Changed
