@@ -216,7 +216,7 @@ export const config = {
   badge: "The #1 Open Source Tech Job Board",
   title: "Find Your Next Tech Role",
   description: "Browse curated tech opportunities...",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000",
 
   // Scripts Configuration (analytics, tracking, etc.)
   scripts: {
@@ -290,7 +290,7 @@ export const config = {
 
 The site URL automatically adjusts based on the environment:
 
-1. Uses `NEXT_PUBLIC_SITE_URL` if provided
+1. Uses `NEXT_PUBLIC_APP_URL` if provided
 2. Falls back to `localhost:3000` in development
 3. Uses production URL in production
 
