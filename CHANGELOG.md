@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.55] - 2025-02-27
+
+### Added
+- Added reusable `JobBadge` component for consistent badge styling across the application:
+  - Centralized badge styling for workplace types, visa status, career levels, and languages
+  - Improved code maintainability through DRY principle
+  - Added "New" badge for jobs posted within the last 48 hours
+  - Consistent visual language for all badge types
+  - TypeScript type safety for badge variants
+
 ## [0.0.54] - 2025-02-20
 
 ### Added
