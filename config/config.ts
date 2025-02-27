@@ -2,13 +2,13 @@
  * Job Board Configuration Example
  * ----------------------------
  * This is a template for your job board configuration.
- * 
+ *
  * Quick Start:
  * 1. Copy this file: cp config/config.example.ts config/config.ts
  * 2. Make sure it's called config.ts
  * 3. Customize config.ts with your settings
  * 4. Commit config.ts to your repository
- * 
+ *
  * When updating from upstream (original bordful repo):
  * - Pull the latest changes
  * - Your config.ts will remain unchanged
