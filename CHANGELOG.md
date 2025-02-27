@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.57] - 2025-02-27
+
+### Changed
+- Updated Next.js to version 15.2.0
+
 ## [0.0.56] - 2025-02-27
 
 ### Changed
