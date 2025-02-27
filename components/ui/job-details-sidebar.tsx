@@ -13,6 +13,7 @@ import {
   Flag,
   Languages,
 } from "lucide-react";
+import { JobBadge } from "@/components/ui/job-badge";
 
 interface JobDetailsSidebarProps {
   fullDate: string;
@@ -130,19 +131,21 @@ export function JobDetailsSidebar({
           <Laptop className="h-4 w-4 text-gray-500 shrink-0" />
           <h2 className="text-sm font-medium">Workplace Type</h2>
         </div>
-        <span
-          className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
-            workplace_type === "Remote"
-              ? "bg-green-50 border-green-100 border text-green-700"
-              : workplace_type === "On-site"
-              ? "bg-red-50 border-red-100 border text-red-700"
-              : workplace_type === "Hybrid"
-              ? "bg-blue-50 border-blue-100 border text-blue-700"
-              : "bg-white border text-gray-700"
-          }`}
-        >
-          {workplace_type}
-        </span>
+        <div className="ml-6">
+          <JobBadge
+            type={
+              workplace_type === "Not specified"
+                ? "not specified"
+                : (workplace_type.toLowerCase() as
+                    | "remote"
+                    | "onsite"
+                    | "hybrid"
+                    | "default")
+            }
+          >
+            {workplace_type}
+          </JobBadge>
+        </div>
       </div>
 
       {showSalary && (
@@ -164,12 +167,9 @@ export function JobDetailsSidebar({
         </div>
         <div className="flex flex-wrap gap-1.5 ml-6">
           {careerLevels.map((level, index) => (
-            <span
-              key={`${level}-${index}`}
-              className="inline-block px-2 py-0.5 text-xs bg-white border text-gray-700 rounded-full"
-            >
+            <JobBadge key={`${level}-${index}`} type="career-level">
               {formatCareerLevel(level)}
-            </span>
+            </JobBadge>
           ))}
         </div>
       </div>
@@ -194,17 +194,19 @@ export function JobDetailsSidebar({
           <Globe className="h-4 w-4 text-gray-500 shrink-0" />
           <h2 className="text-sm font-medium">Visa Sponsorship</h2>
         </div>
-        <span
-          className={`inline-block px-2 py-0.5 text-xs rounded-full ml-6 ${
-            visa_sponsorship === "Yes"
-              ? "bg-green-50 border-green-100 border text-green-700"
-              : visa_sponsorship === "No"
-              ? "bg-red-50 border-red-100 border text-red-700"
-              : "bg-white border text-gray-700"
-          }`}
-        >
-          {visa_sponsorship}
-        </span>
+        <div className="ml-6">
+          <JobBadge
+            type={
+              visa_sponsorship === "Yes"
+                ? "visa-yes"
+                : visa_sponsorship === "No"
+                ? "visa-no"
+                : "visa-not-specified"
+            }
+          >
+            {visa_sponsorship}
+          </JobBadge>
+        </div>
       </div>
 
       <div>
@@ -226,12 +228,9 @@ export function JobDetailsSidebar({
           </div>
           <div className="flex flex-wrap gap-1.5 ml-6">
             {languages.map((lang) => (
-              <span
-                key={lang}
-                className="inline-block px-2 py-0.5 text-xs bg-white border text-gray-700 rounded-full"
-              >
+              <JobBadge key={lang} type="language">
                 {LANGUAGE_DISPLAY_NAMES[lang]}
-              </span>
+              </JobBadge>
             ))}
           </div>
         </div>

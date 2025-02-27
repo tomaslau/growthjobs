@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils/formatDate";
 import { generateJobSlug } from "@/lib/utils/slugify";
 import { Sparkles, ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { JobBadge } from "@/components/ui/job-badge";
 
 export function JobCard({ job }: { job: Job }) {
   const { fullDate, relativeTime } = formatDate(job.posted_date);
@@ -28,6 +29,16 @@ export function JobCard({ job }: { job: Job }) {
           .filter(Boolean)
           .join(", ") || null;
 
+  // Check if job was posted within the last 48 hours
+  const isNew = () => {
+    const now = new Date();
+    const postedDate = new Date(job.posted_date);
+    const diffInHours = Math.floor(
+      (now.getTime() - postedDate.getTime()) / (1000 * 60 * 60)
+    );
+    return diffInHours <= 48;
+  };
+
   return (
     <div className="group relative">
       <Link
@@ -40,12 +51,14 @@ export function JobCard({ job }: { job: Job }) {
       >
         <div className="space-y-2">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-base font-medium">{job.title}</h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-base font-medium">{job.title}</h2>
+              {isNew() && <JobBadge type="new">New</JobBadge>}
+            </div>
             {job.featured && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-zinc-50 bg-zinc-900 rounded-full">
-                <Sparkles className="w-3 h-3" />
+              <JobBadge type="featured" icon={<Sparkles className="w-3 h-3" />}>
                 Featured
-              </span>
+              </JobBadge>
             )}
           </div>
           <div className="text-sm text-gray-600">{job.company}</div>

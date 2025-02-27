@@ -573,6 +573,22 @@ Current implementation uses Airtable. To use a different data source:
 
 ## Deployment
 
+### Local Build Verification
+
+Before deploying to production, it's recommended to verify your build locally:
+
+```bash
+# Build the project
+npm run build
+
+# Test the production build
+npm start
+```
+
+This ensures that your changes work correctly in a production environment before deploying to Vercel.
+
+### Deploying to Vercel
+
 1. Push to GitHub
 2. Deploy on Vercel:
    - Connect your GitHub repository
