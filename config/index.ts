@@ -16,14 +16,12 @@ import type { Config } from "./config.example";
 const config: Config = exampleConfig;
 
 // Try to load custom config if it exists
-if (process.env.NODE_ENV === "development") {
-  try {
-    const userConfig = require("./config").config;
-    Object.assign(config, userConfig);
-    console.log("Using custom config.ts");
-  } catch (e) {
-    console.log("Using config.example.ts (no custom config.ts found)");
-  }
+try {
+  const userConfig = require("./config").config;
+  Object.assign(config, userConfig);
+  console.log("Using custom config.ts");
+} catch (e) {
+  console.log("Using config.example.ts (no custom config.ts found)");
 }
 
 export type { Config };
