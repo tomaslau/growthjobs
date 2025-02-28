@@ -261,7 +261,7 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {counts.types["Full-time"]}
+              {counts.types["Full-time"] || 0}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -284,7 +284,7 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {counts.types["Part-time"]}
+              {counts.types["Part-time"] || 0}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -307,7 +307,7 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {counts.types["Contract"]}
+              {counts.types["Contract"] || 0}
             </span>
           </div>
           <div className="flex items-center justify-between">
@@ -330,7 +330,7 @@ export function JobFilters({
                   : "bg-zinc-100 text-zinc-500"
               }`}
             >
-              {counts.types["Freelance"]}
+              {counts.types["Freelance"] || 0}
             </span>
           </div>
         </div>
@@ -467,7 +467,7 @@ export function JobFilters({
                 : "bg-zinc-100 text-zinc-500"
             }`}
           >
-            {counts.visa}
+            {counts.visa || 0}
           </span>
         </div>
       </div>
