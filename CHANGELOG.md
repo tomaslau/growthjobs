@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.59] - 2025-02-28
+
+### Fixed
+- Fixed job filters count indicators to consistently show 0 for empty categories:
+  - Added fallback zero values for Job Type filters
+  - Standardized count display across all filter sections
+  - Improved visual consistency with Career Level options
+
 ## [0.0.58] - 2025-02-27
 
 ### Fixed
